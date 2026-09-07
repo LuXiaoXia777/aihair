@@ -1,0 +1,250 @@
+.photo-selection {
+  padding-bottom: 112px;
+}
+.photo-guidance {
+  padding-bottom: 25px;
+  border-bottom: 1px solid var(--line);
+}
+.good-example {
+  height: 238px;
+  border-radius: 22px;
+  overflow: hidden;
+  position: relative;
+  background: #e5e1e7;
+}
+.good-example img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+.good-example > span {
+  position: absolute;
+  left: 13px;
+  bottom: 13px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #f8f6f8e8;
+  color: #423b49;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font: 700 10px "Manrope";
+  letter-spacing: 0.03em;
+}
+.good-example > span svg {
+  color: var(--accent);
+}
+.photo-guidance h1 {
+  font: 600 17px "Manrope";
+  line-height: 1.42;
+  letter-spacing: -0.025em;
+  text-align: center;
+  margin: 18px 0;
+}
+.bad-examples {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.bad-examples > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+.bad-examples small {
+  font-size: 10px;
+  color: var(--muted);
+}
+.bad-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.2;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background: #ddd;
+  filter: saturate(0.72);
+}
+.bad-photo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+.bad-photo.covered i {
+  position: absolute;
+  width: 44px;
+  height: 20px;
+  border-radius: 12px;
+  background: #b7b0ba;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%, -50%);
+  opacity: 0.88;
+}
+.bad-photo.side img {
+  object-position: 23% center;
+  transform: scale(1.18) translateX(11px);
+}
+.bad-photo.multiple {
+  display: flex;
+}
+.bad-photo.multiple img {
+  width: 60%;
+  margin-right: -20%;
+}
+.bad-photo.multiple img + img {
+  margin-left: auto;
+  margin-right: 0;
+}
+.your-photo {
+  padding-top: 24px;
+}
+.your-photo > div:first-child span {
+  font: 700 9px "Manrope";
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+.your-photo h2 {
+  font: 700 20px "Manrope";
+  letter-spacing: -0.035em;
+  margin: 5px 0 15px;
+}
+.photo-selection-row {
+  display: flex;
+  gap: 11px;
+}
+.add-photo-tile,
+.selected-photo {
+  width: 112px;
+  aspect-ratio: 0.86;
+  border-radius: 17px;
+}
+.add-photo-tile {
+  border: 1.5px dashed #aaa2b0;
+  background: #f0edf2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #5f5865;
+}
+.add-photo-tile svg {
+  width: 21px;
+}
+.add-photo-tile strong {
+  font-size: 11px;
+}
+.selected-photo {
+  overflow: hidden;
+  position: relative;
+  border: 2px solid var(--accent);
+  background: #ddd;
+}
+.selected-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.selected-photo span,
+.photo-grid button > span {
+  position: absolute;
+  right: 7px;
+  bottom: 7px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 2px 8px #3f37704d;
+}
+.continue-dock {
+  position: fixed;
+  z-index: 15;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: min(430px, 100%);
+  padding: 13px 18px calc(14px + env(safe-area-inset-bottom));
+  background: #f8f6f4e8;
+  backdrop-filter: blur(18px);
+  border-top: 1px solid var(--line);
+}
+.continue-dock .primary:disabled {
+  background: #ded9e1;
+  color: #9a939f;
+  cursor: not-allowed;
+}
+.continue-dock .primary:disabled:active {
+  transform: none;
+  opacity: 1;
+}
+.action-sheet-title {
+  text-align: left;
+  padding: 0 3px 12px;
+}
+.action-sheet-title h2 {
+  margin-bottom: 4px;
+}
+.action-sheet-title p {
+  margin: 0;
+}
+.system-actions {
+  display: grid;
+  border-radius: 17px;
+  background: #ebe7ed;
+  overflow: hidden;
+}
+.system-actions button {
+  min-height: 60px;
+  display: grid;
+  grid-template-columns: 38px 1fr 24px;
+  align-items: center;
+  text-align: left;
+  gap: 8px;
+  padding: 8px 13px;
+  border-bottom: 1px solid #dcd6df;
+}
+.system-actions button:last-child {
+  border-bottom: 0;
+}
+.system-actions button > span {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: #fff;
+  color: var(--accent);
+}
+.system-actions button > span svg {
+  width: 18px;
+}
+.system-actions button > strong {
+  font-size: 14px;
+}
+.system-actions button > svg {
+  width: 16px;
+  color: #928b96;
+}
+.action-cancel {
+  margin-top: 8px;
+}
+.photo-grid button {
+  position: relative;
+}
+.photo-grid button.selected {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+@media (min-width: 431px) {
+  .continue-dock {
+    bottom: 18px;
+    border-radius: 0 0 28px 28px;
+  }
+}
