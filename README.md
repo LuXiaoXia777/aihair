@@ -4,7 +4,7 @@
 
 **[打开在线原型](https://luxiaoxia777.github.io/aihair/)** · **[浏览器中编辑源码](https://github.dev/LuXiaoXia777/aihair)**
 
-在线原型由 GitHub Pages 部署。首次部署成功后预览链接才可访问。编辑器用于修改代码，实时运行请使用本地开发环境；提交到 main 后会自动更新在线原型。
+在线原型由 GitHub Pages 公开部署，无需登录即可体验。编辑器用于修改代码，实时运行请使用本地开发环境；提交到 main 后会自动更新在线原型。
 
 ## 体验方式
 

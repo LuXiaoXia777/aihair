@@ -17,7 +17,7 @@
 - 当前构建状态：已通过。
 - 当前 `5173` 服务应来自本项目。此前该端口曾被旧项目 `/Users/design/Documents/Codex/2026-09-07/gen-j/outputs/ai-hair-mvp-local` 占用，导致浏览器显示低保真旧页面；已关闭旧服务并启动当前项目。再次出现旧 UI 时先用 `lsof -nP -iTCP:5173 -sTCP:LISTEN` 和 `lsof -a -p <PID> -d cwd -Fn` 核对进程目录。
 
-项目不是一个独立 Git 仓库。当前目录向上会落入用户范围很大的 Git 工作树，因此不要在未核对仓库根目录前执行 `git add .`、提交、清理或回滚。
+本次已在项目目录建立独立 Git 仓库，origin 为 `https://github.com/LuXiaoXia777/aihair.git`，main 已推送。Git 操作仍需先确认根目录，避免影响其他项目。
 
 ## 2. 产品定位与核心目标
 
@@ -382,7 +382,7 @@ Cancel
 ## 14. 验收与运行
 
 - `npm ci` 安装，`npm run dev` 本地预览，`npm run build` 编译。
-- `npm test` 运行 14 项浏览器回归；本机默认使用 Chrome，CI 使用 Playwright Chromium。
+- 本次 `npm test` 的 14 项浏览器回归全部通过；另在 `/aihair/` 生产构建子路径下通过 2 项图片加载与原图按钮回归。本机默认使用 Chrome，CI 使用 Playwright Chromium。
 - 测试覆盖：Library 分类返回、Photo Selection 禁用/启用与替换、结果原图按钮和照片快照、同 Look 多次保存及重复保存去重、作品筛选/删除/取消、发色 Camera、下载 Toast、六种脸型推荐直接复用照片、分析离页取消与重新分析、375/390/430 布局和本地图片加载。
 - GitHub Pages 构建命令：`npm run build -- --base=/aihair/`。部署时所有本地图片与 favicon 必须兼容此子路径。
 - 旧会话的 Slider 拖拽验收已失效，禁止据此恢复旧交互。
@@ -399,7 +399,7 @@ Cancel
 
 ## 16. 下一步优先级 / TODO
 
-1. 完成 GitHub 推送与 Pages 发布，并确认公开预览可加载本地素材。
+1. 维护 GitHub Pages 自动发布，任何核心交互改动必须先运行回归。仓库和公开 Pages 已配置，实际运行状态以 Actions 为准。
 2. 持续维护现有回归测试，不重新设计已确认流程。
 3. 仅在用户要求更逼真原型时制作同人物配对素材，不接真实 AI API。
 4. 仅在用户明确要求时引入跨刷新持久化或离线字体。
@@ -438,4 +438,12 @@ Cancel
 - 每次生成创建独立数字 ID（当前内存生命周期内单调递增），结果 Screen 保存完整 Creation 快照；Save 按实例 ID 去重，同一 Look 可以生成并保存多次。
 - 所有导航操作取消正在进行的 Mock timer，卸载时也清理；分析退出不留下迟到结果。
 - Library 分类保存在 Screen 栈条目中，返回保留用户实际选中的分类。
-- 用户要求将项目导入指定 GitHub 仓库并提供可点击预览、可修改源码；Pages 配置与 README 已准备。共享贡献通过 Fork / Pull Request，有仓库写权限的人可直接提交，不擅自授予陌生人写权限。
+- 用户要求将项目导入指定 GitHub 仓库并提供对外公开网站与可修改源码；完整项目已推送，Pages 已配置为公开且强制 HTTPS，main 更新后由 Actions 自动发布。共享贡献通过 Fork / Pull Request，有仓库写权限的人可直接提交，不擅自授予陌生人写权限。
+
+## 20. GitHub 交付
+
+- 仓库：`https://github.com/LuXiaoXia777/aihair`（Public）。
+- 公开网站：`https://luxiaoxia777.github.io/aihair/`，访客无需登录。
+- 浏览器代码编辑：`https://github.dev/LuXiaoXia777/aihair`；协作者需要写权限，其他人通过 Fork / Pull Request 贡献。
+- 仓库 About 已设置网站链接，README 提供预览和编辑入口。
+- main 自动运行测试、构建和 Pages 发布；运行记录位于仓库 Actions。
