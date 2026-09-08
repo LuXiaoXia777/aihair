@@ -29,9 +29,10 @@ export type Creation = {
   image: string;
   createdAt: number;
 };
-export type CreationFilter = "全部" | "发型" | "发色" | "艺术照";
 export type Screen =
   | { kind: RootTab }
+  | { kind: "settings" }
+  | { kind: "agreement"; agreement: "privacy" | "terms" }
   | { kind: "library"; type: LookType; category: string }
   | { kind: "detail"; id: string }
   | { kind: "generating"; result: Creation }

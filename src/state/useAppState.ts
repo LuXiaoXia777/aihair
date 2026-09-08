@@ -11,7 +11,6 @@ import type {
   ActiveSheet,
   AIProfile,
   Creation,
-  CreationFilter,
   MockPhoto,
   PhotoDraft,
   PhotoSlot,
@@ -32,7 +31,6 @@ export function useAppState() {
   const [draft, setDraft] = useState<PhotoDraft>(emptyDraft);
   const [photoErrors, setPhotoErrors] = useState<PhotoSlot[]>([]);
   const [creations, setCreations] = useState<Creation[]>([]);
-  const [filter, setFilter] = useState<CreationFilter>("全部");
   const [toast, setToast] = useState("");
   const nextId = useRef(0);
   const nextProfileNumber = useRef(0);
@@ -248,8 +246,6 @@ export function useAppState() {
     draft,
     photoErrors,
     creations,
-    filter,
-    setFilter,
     toast,
     notify: setToast,
     push,

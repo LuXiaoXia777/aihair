@@ -18,13 +18,6 @@ export function LookCard({
     >
       <span className="image-wrap">
         <img src={look.image} alt={`${look.name}效果示例`} />
-        <i>
-          {look.type === "color"
-            ? "发色"
-            : look.type === "portrait"
-              ? "艺术照"
-              : "发型"}
-        </i>
       </span>
       <strong>{look.name}</strong>
     </button>

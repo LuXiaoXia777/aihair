@@ -1076,3 +1076,29 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 }
 .capture-guide.left { left: 44%; right: auto; }
 .capture-guide.right { left: 56%; right: auto; }
+.creations .page-title { position: relative; padding-right: 54px; margin-bottom: 10px; }
+.settings-button { position: absolute; right: 0; top: 32px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: white; }
+.creations .empty { min-height: calc(var(--phone-height) - 230px); }
+.settings-group { margin-top: 22px; border-radius: 18px; overflow: hidden; background: white; border: 1px solid var(--line); }
+.settings-group button { display: flex; align-items: center; gap: 13px; width: 100%; min-height: 66px; padding: 16px; text-align: left; }
+.settings-group button + button { border-top: 1px solid var(--line); }
+.settings-group button > svg:first-child { color: var(--accent); width: 21px; }
+.settings-group button span { flex: 1; font-size: 15px; font-weight: 600; }
+.settings-group button > svg:last-child { color: var(--muted); }
+.agreement-copy { padding: 8px 3px 24px; }
+.agreement-copy .agreement-note { color: var(--muted); font-size: 12px; margin: 8px 0 28px; }
+.agreement-copy section { margin-bottom: 26px; }
+.agreement-copy h2 { font-size: 17px; margin: 0 0 10px; }
+.agreement-copy p { font-size: 14px; line-height: 1.9; color: #655e6e; margin: 0; }
+/* Compact discovery rails: three full cards plus the next, four rows per phone. */
+.explore .brand-head { min-height: 66px; padding: 12px 0; }
+.explore .brand-head h1 { font-size: 23px; }
+.explore .brand-head p { margin-top: 3px; font-size: 12px; }
+.explore .rail-section { margin-bottom: 8px; }
+.explore .section-head { min-height: 24px; margin-bottom: 4px; align-items: center; }
+.explore .section-head h2 { font-size: 15px; }
+.explore .section-head button { font-size: 11px; padding: 4px 0; }
+.explore .look-rail { grid-auto-columns: 28%; gap: 8px; }
+.explore .image-wrap { aspect-ratio: auto; height: clamp(54px, calc((var(--phone-height) - 390px) / 4), 114px); border-radius: 12px; }
+.explore .look-card img { object-position: center 32%; }
+.explore .look-card strong { font-size: 11px; line-height: 16px; margin-top: 4px; }

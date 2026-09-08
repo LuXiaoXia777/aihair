@@ -14,6 +14,7 @@ import { MyAI } from "./screens/MyAI";
 import { Library } from "./screens/Library";
 import { Detail } from "./screens/Detail";
 import { Result } from "./screens/Result";
+import { SettingsScreen, Agreement } from "./screens/Settings";
 import { Creations } from "./screens/Creations";
 import { CreationDetail } from "./screens/CreationDetail";
 import {
@@ -88,11 +89,16 @@ export function App() {
       {screen.kind === "creations" && (
         <Creations
           creations={state.creations}
-          filter={state.filter}
-          onFilter={state.setFilter}
+          onSettings={() => push({ kind: "settings" })}
           onExplore={() => home("explore")}
           onOpen={(creationId) => push({ kind: "creation", creationId })}
         />
+      )}
+      {screen.kind === "settings" && (
+        <SettingsScreen onBack={back} onAgreement={(agreement) => push({kind: "agreement", agreement})} />
+      )}
+      {screen.kind === "agreement" && (
+        <Agreement kind={screen.agreement} onBack={back} />
       )}
       {screen.kind === "library" && (
         <Library

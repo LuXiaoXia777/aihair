@@ -32,7 +32,7 @@ export function Explore({
           </button>
         )}
       </header>
-      {exploreSections.map((section, index) => (
+      {exploreSections.map((section) => (
           <section
             className="rail-section"
             key={section.title}
@@ -40,7 +40,6 @@ export function Explore({
           >
             <div className="section-head">
               <div>
-                <span>{String(index + 1).padStart(2, "0")}</span>
                 <h2>{section.title}</h2>
               </div>
               <button

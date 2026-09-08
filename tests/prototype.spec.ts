@@ -189,9 +189,9 @@ test("C: 我的分身 recommendations and face-result return stack", async ({
   await expect(screen(page, "我的分身")).toBeVisible();
 });
 
-for (const [name, section, filter, label] of [
-  ["樱花粉", "流行发色", "发色", "发色"],
-  ["梦幻光影", "艺术照", "艺术照", "艺术照"],
+for (const [name, section, label] of [
+  ["樱花粉", "流行发色", "发色"],
+  ["梦幻光影", "艺术照", "艺术照"],
 ] as const) {
   test(`D/E: ${label} detail, generate, save, filter and creation 重新生成`, async ({
     page,
@@ -205,7 +205,7 @@ for (const [name, section, filter, label] of [
     await button(page, "保存到作品").click();
     await backExplore(page);
     await tab(page, "作品").click();
-    await button(page, filter).click();
+    await expect(page.locator(".filter-tabs")).toHaveCount(0);
     await expect(page.locator(".creation-grid button")).toHaveCount(1);
     await button(page, `${name}, 小月`).click();
     await expect(page.getByText(label, { exact: true })).toBeVisible();
@@ -694,5 +694,61 @@ for (const [section, name] of [['人气发型', '蝴蝶层次剪'], ['流行发�
     await page.reload();
     await expect(page.locator('.rail-section')).toHaveCount(7);
     await expect(button(page,'创建我的分身')).toHaveCount(0);
+  });
+}
+
+test('creations use one list; settings agreements return to preserved creations', async ({page}) => {
+  await tab(page,'作品').click();
+  await expect(page.locator('.filter-tabs')).toHaveCount(0);
+  await expect(page.getByText('还没有作品')).toBeVisible();
+  await button(page,'设置').click();
+  for (const name of ['隐私协议','用户协议']) {
+    await button(page,name).click();
+    await expect(screen(page,name)).toBeVisible();
+    await expect(page.getByRole('navigation')).toHaveCount(0);
+    await expect(page.locator('.agreement-copy section')).toHaveCount(5);
+    await button(page,'返回').click();
+    await expect(screen(page,'设置')).toBeVisible();
+  }
+  await button(page,'返回').click();
+  await expect(screen(page,'作品')).toBeVisible();
+  await tab(page,'发现').click();
+  await setup(page);
+  for (const name of ['蝴蝶层次剪','樱花粉','梦幻光影']) {
+    await button(page,name).first().click();
+    await generate(page);
+    await button(page,'保存到作品').click();
+    await backExplore(page);
+  }
+  await tab(page,'作品').click();
+  await expect(page.locator('.creation-grid button')).toHaveCount(3);
+  await button(page,'设置').click();
+  await button(page,'隐私协议').click();
+  await button(page,'返回').click();
+  await button(page,'返回').click();
+  await expect(page.locator('.creation-grid button')).toHaveCount(3);
+});
+
+for (const [width, height] of [[458,762],[390,844]]) {
+  test(`discovery shows four compact rows with three-plus cards ${width}`, async ({page}) => {
+    await page.setViewportSize({width,height});
+    await expect(page.locator('.explore .section-head span')).toHaveCount(0);
+    await expect(page.locator('.look-card .image-wrap i')).toHaveCount(0);
+    const firstRail = page.locator('.explore .look-rail').first();
+    const cards = firstRail.locator('.look-card');
+    const rail = (await firstRail.boundingBox())!;
+    const third = (await cards.nth(2).boundingBox())!;
+    const fourth = (await cards.nth(3).boundingBox())!;
+    expect(third.x + third.width).toBeLessThan(rail.x + rail.width);
+    expect(fourth.x).toBeLessThan(rail.x + rail.width);
+    expect(fourth.x + fourth.width).toBeGreaterThan(rail.x + rail.width);
+    const fourthRow = (await page.locator('.explore .rail-section').nth(3).boundingBox())!;
+    const nav = (await page.getByRole('navigation').boundingBox())!;
+    expect(fourthRow.y + fourthRow.height).toBeLessThanOrEqual(nav.y);
+    await page.screenshot({path:`test-results/compact-discovery-${width}.png`});
+    await tab(page,'作品').click();
+    await page.screenshot({path:`test-results/simple-creations-${width}.png`});
+    await button(page,'设置').click();
+    await page.screenshot({path:`test-results/settings-${width}.png`});
   });
 }
