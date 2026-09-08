@@ -38,7 +38,6 @@ export type Screen =
   | { kind: "generating"; result: Creation }
   | { kind: "result"; result: Creation }
   | { kind: "creation"; creationId: string }
-  | { kind: "create-intro"; returnTo: RootTab }
   | { kind: "profile-photos"; returnTo: RootTab }
   | { kind: "camera"; slot: PhotoSlot }
   | {

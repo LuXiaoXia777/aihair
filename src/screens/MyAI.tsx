@@ -1,17 +1,15 @@
 import { faceLabels } from "../state/faceData";
-import { ArrowUpRight, Check, ChevronRight, Plus } from "lucide-react";
+import { ArrowUpRight, Check, ChevronRight, Plus, ScanFace } from "lucide-react";
 import { byId } from "../data";
-import { mockPhotos, faceDescriptions } from "../state/faceData";
+import { mockPhotos, faceDescriptions, slots, slotLabels } from "../state/faceData";
 import type { AIProfile } from "../state/types";
 import { LookCard } from "../components/ui";
 export function ProfileGate({
   onCreate,
   onSwitch,
-  myAI = false,
 }: {
   onCreate: () => void;
   onSwitch?: () => void;
-  myAI?: boolean;
 }) {
   return (
     <section className="profile-gate">
@@ -22,17 +20,10 @@ export function ProfileGate({
       <div className="gate-copy">
         <span className="eyebrow">从你开始，发现新造型</span>
         <h1>创建专属分身</h1>
-        <p>
-          {myAI ? (
-            "准备三张照片，创建自己的专属分身。"
-          ) : (
-            <>
-              只需准备一次正面、左侧面、右侧面照片。
-              <br />
-              之后就能自由体验发型、发色和艺术照。
-            </>
-          )}
-        </p>
+        <p>一次创建，即可体验发型、发色和艺术照。<br />准备同一个人的三张清晰照片，支持拍摄或相册选择。</p>
+        <div className="angle-guide">
+          {slots.map((slot) => <div key={slot}><ScanFace /><span>{slotLabels[slot]}</span></div>)}
+        </div>
         <button className="primary" onClick={onCreate}>
           创建我的分身 <ArrowUpRight size={18} />
         </button>
@@ -70,7 +61,6 @@ export function MyAI({
       </header>
       {!profile ? (
         <ProfileGate
-          myAI
           onCreate={onCreate}
           onSwitch={profiles.length ? onSwitch : undefined}
         />

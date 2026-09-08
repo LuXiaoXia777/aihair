@@ -1,5 +1,6 @@
-import { ChevronDown, ChevronRight, UserRoundPlus } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { byId, exploreSections, type LookType } from "../data";
+import { mockPhotos } from "../state/faceData";
 import { LookCard } from "../components/ui";
 import type { AIProfile } from "../state/types";
 export function Explore({
@@ -17,10 +18,12 @@ export function Explore({
 }) {
   return (
     <div className="screen explore" data-screen-label="发现">
+      <section className="discovery-banner" aria-label="创建专属模特">
+      <img className="banner-portrait" src={mockPhotos[0].image} alt="" />
+      <div className="banner-shade" />
       <header className="brand-head">
         <div>
           <h1>发型灵感</h1>
-          <p>找到适合你的新造型</p>
         </div>
         {profile && (
           <button
@@ -34,11 +37,12 @@ export function Explore({
           </button>
         )}
       </header>
-      <button className="create-model-banner" onClick={onCreate} aria-label="创建我的模特">
-        <span className="banner-icon"><UserRoundPlus size={22} /></span>
-        <span className="banner-copy"><strong>创建我的模特</strong><small>三张照片，开启你的专属造型</small></span>
-        <ChevronRight size={18} />
-      </button>
+      <div className="discovery-banner-copy">
+        <h2>发现属于你的<br />新造型</h2>
+        <p>三张照片<br />开启你的专属模特</p>
+        <button className="create-model-banner" onClick={onCreate}>创建我的模特 <ChevronRight size={16} /></button>
+      </div>
+      </section>
       {exploreSections.map((section) => (
           <section
             className="rail-section"

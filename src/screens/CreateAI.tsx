@@ -8,56 +8,15 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Top, UsingAI } from "../components/ui";
-import { mockPhotos, slotLabels, slots } from "../state/faceData";
+import { slotLabels, slots } from "../state/faceData";
 import type {
   AIProfile,
   Creation,
   PhotoDraft,
   PhotoSlot,
 } from "../state/types";
-export function CreateIntro({
-  templateName,
-  onBack,
-  onStart,
-}: {
-  onBack: () => void;
-  onStart: () => void;
-  templateName?: string;
-}) {
-  return (
-    <div className="screen create-intro" data-screen-label="Create AI">
-      <Top title="创建专属分身" onBack={onBack} />
-      <div className="create-intro-hero">
-        <img src={mockPhotos[0].image} alt="分身示例照片" />
-        <span>
-          准备三张照片
-          <br />开启新的自己
-        </span>
-      </div>
-      <div className="setup-copy">
-        <span className="eyebrow">一次创建，反复体验</span>
-        <h1>让每个造型都属于你</h1>
-        <p>{templateName ? `先创建分身，即可应用「${templateName}」。准备同一个人的三张清晰照片，完成后继续。` : "拍摄或选择同一个人的三张清晰照片。"}</p>
-      </div>
-      <div className="angle-guide">
-        {slots.map((slot, index) => (
-          <div key={slot}>
-            <ScanFace
-              style={{
-                transform: `rotateY(${index === 1 ? "-35deg" : index === 2 ? "35deg" : "0deg"})`,
-              }}
-            />
-            <span>{slotLabels[slot]}</span>
-          </div>
-        ))}
-      </div>
-      <button className="primary" onClick={onStart}>
-        开始创建 <ChevronRight size={18} />
-      </button>
-    </div>
-  );
-}
 export function ProfilePhotos({
+  templateName,
   draft,
   errors,
   validating,
@@ -66,6 +25,7 @@ export function ProfilePhotos({
   onCamera,
   onContinue,
 }: {
+  templateName?: string;
   draft: PhotoDraft;
   errors: PhotoSlot[];
   validating: boolean;
@@ -85,7 +45,7 @@ export function ProfilePhotos({
           <br />
           记录完整的你
         </h1>
-        <p>请准备同一个人的正面和左右侧面照片。</p>
+        <p>{templateName ? `先创建分身，即可应用「${templateName}」。请准备同一个人的正面和左右侧面照片。` : "请准备同一个人的正面和左右侧面照片。"}</p>
       </div>
       <button
         className="secondary take-photos"

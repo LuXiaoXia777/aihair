@@ -334,34 +334,6 @@
 .switch-profiles svg {
   color: var(--accent);
 }
-.create-intro-hero {
-  height: 330px;
-  overflow: hidden;
-  border-radius: 24px;
-  position: relative;
-}
-.create-intro-hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 30%;
-}
-.create-intro-hero:after {
-  content: "";
-  position: absolute;
-  inset: 50% 0 0;
-  background: linear-gradient(transparent, #17142199);
-}
-.create-intro-hero > span {
-  position: absolute;
-  left: 22px;
-  bottom: 22px;
-  z-index: 1;
-  color: #fff;
-  font: 700 13px "Manrope";
-  line-height: 1.6;
-  letter-spacing: 0.09em;
-}
 .setup-copy {
   padding: 27px 5px 18px;
   text-align: center;
@@ -1035,7 +1007,6 @@ body { min-width: 0; }
 .gate-copy { padding-top: 22px; }
 .gate-copy h1, .setup-copy h1 { font-size: 27px; line-height: 1.4; }
 .gate-copy p { font-size: 14px; margin-bottom: 20px; }
-.create-intro-hero { height: clamp(160px, calc(var(--phone-height) * .32), 250px); }
 .setup-copy { padding: 20px 2px 18px; }
 .profile-photos .setup-copy { padding: 16px 0 18px; }
 .profile-photos .setup-copy h1 { font-size: 26px; line-height: 1.4; margin: 8px 0; }
@@ -1103,10 +1074,18 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .explore .look-card img { object-position: center 32%; }
 .explore .look-card strong { font-size: 11px; line-height: 16px; margin-top: 4px; }
 
-.create-model-banner { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 60px; padding: 9px 12px; margin-bottom: 12px; border-radius: 14px; background: linear-gradient(110deg, #e9e2ff, #f0eaf7); text-align: left; border: 1px solid #ded5f3; }
-.banner-icon { display: grid; place-items: center; width: 36px; height: 36px; flex-shrink: 0; border-radius: 12px; color: var(--accent); background: #ffffffa8; }
-.banner-copy { flex: 1; display: grid; gap: 3px; }
-.banner-copy strong { font-size: 14px; }
-.banner-copy small { font-size: 11px; color: #797088; }
-.create-model-banner > svg { color: #77678e; flex-shrink: 0; }
 .creations .settings-button { top: 22px; }
+
+.profile-gate .gate-copy p { margin-bottom: 16px; }
+.profile-gate .angle-guide { padding-bottom: 20px; }
+
+.discovery-banner { position: relative; isolation: isolate; height: 280px; margin: 0 -18px 20px; overflow: hidden; border-radius: 0 0 28px 28px; background: #e9e5f3; }
+.banner-portrait { position: absolute; z-index: -2; right: -20px; top: 0; width: 72%; height: 100%; object-fit: cover; object-position: center 30%; }
+.banner-shade { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, #e8e8f7 10%, #e8e8f7f5 35%, #e8e8f766 57%, transparent 75%); }
+.explore .discovery-banner .brand-head { padding: 14px 20px; height: 64px; }
+.discovery-banner .profile-chip { background: #ffffffc9; }
+.discovery-banner-copy { position: relative; padding: 16px 20px 20px; width: 60%; }
+.discovery-banner-copy h2 { font-size: 28px; line-height: 1.35; letter-spacing: -.04em; margin: 0 0 12px; }
+.discovery-banner-copy p { font-size: 12px; line-height: 1.7; color: #706982; margin: 0 0 18px; }
+.create-model-banner { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-height: 42px; padding: 0 13px; border-radius: 999px; background: var(--ink); color: white; white-space: nowrap; font-size: 12px; font-weight: 600; }
+@media (max-width: 374px) { .discovery-banner { margin-left: -15px; margin-right: -15px; } }

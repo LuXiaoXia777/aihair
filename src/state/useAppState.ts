@@ -75,7 +75,7 @@ export function useAppState() {
   };
   // A template-led setup retains the exact browsing stack underneath it.
   const setupPrefix = () => {
-    const start = stack.findIndex((entry) => entry.kind === "create-intro");
+    const start = stack.findIndex((entry) => ["profile-photos", "validating", "creating-ai", "ai-ready", "analyzing-ai"].includes(entry.kind));
     return start >= 0 ? stack.slice(0, start) : [{ kind: rootTab() } as Screen];
   };
   const setupTemplate = [...stack].reverse().find((entry) => entry.kind === "detail");
@@ -96,8 +96,8 @@ export function useAppState() {
     setPhotoErrors([]);
     if (replaceCurrent) {
       closeTransient();
-      setStack([...setupPrefix(), { kind: "create-intro", returnTo }]);
-    } else push({ kind: "create-intro", returnTo });
+      setStack([...setupPrefix(), { kind: "profile-photos", returnTo }]);
+    } else push({ kind: "profile-photos", returnTo });
   };
   const pickPhoto = (slot: PhotoSlot, photo: MockPhoto) => {
     setDraft((value) => ({ ...value, [slot]: photo }));

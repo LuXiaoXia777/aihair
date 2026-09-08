@@ -20,7 +20,6 @@ import { CreationDetail } from "./screens/CreationDetail";
 import {
   AIReady,
   AnalyzingAI,
-  CreateIntro,
   CreatingAI,
   Generating,
   ProfilePhotos,
@@ -152,17 +151,9 @@ export function App() {
           }
         />
       )}
-      {screen.kind === "create-intro" && (
-        <CreateIntro
-          templateName={state.setupTemplateId ? byId(state.setupTemplateId).name : undefined}
-          onBack={back}
-          onStart={() =>
-            push({ kind: "profile-photos", returnTo: screen.returnTo })
-          }
-        />
-      )}
       {(screen.kind === "profile-photos" || screen.kind === "validating") && (
         <ProfilePhotos
+          templateName={state.setupTemplateId ? byId(state.setupTemplateId).name : undefined}
           draft={state.draft}
           errors={state.photoErrors}
           validating={screen.kind === "validating"}
