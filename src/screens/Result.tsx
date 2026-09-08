@@ -23,10 +23,10 @@ export function Result({
       <img
         className="result-image"
         src={result.image}
-        alt={`${result.templateName} result`}
+        alt={`${result.templateName}效果`}
       />
       <div className="result-copy">
-        <span>Your new look</span>
+        <span>你的新造型</span>
         <h1>{result.templateName}</h1>
         <UsingAI
           profile={{
@@ -39,15 +39,15 @@ export function Result({
             className={`primary ${saved ? "saved" : ""}`}
             onClick={onSave}
           >
-            {saved ? "Saved ✓" : "Save"}
+            {saved ? "已保存 ✓" : "保存到作品"}
           </button>
           <button className="secondary" onClick={onRegenerate}>
-            Regenerate
+            重新生成
           </button>
         </div>
       </div>
       <section className="similar">
-        <h2>More Like This</h2>
+        <h2>试试其他风格</h2>
         <div className="look-rail">
           {similarLooks(look).map((item) => (
             <LookCard

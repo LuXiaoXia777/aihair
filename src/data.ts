@@ -14,108 +14,108 @@ const hair = (
   id: string,
   name: string,
   categories: string[],
-  tags = ["Polished", "Modern", "Wearable"],
+  tags = ["精致", "简约", "日常"],
 ): Look => ({
   id,
   name,
   type: "hairstyle",
   image: img(id),
   tags,
-  description: `A modern ${name.toLowerCase()} with soft movement and an effortless finish.`,
+  description: `${name}：轻盈的发丝走向与自然层次，让日常造型更有变化。`,
   categories,
 });
 const color = (
   id: string,
   name: string,
   categories: string[],
-  tags = ["Fresh", "Expressive", "Luminous"],
+  tags = ["清新", "个性", "光泽感"],
 ): Look => ({
   id,
   name,
   type: "color",
   image: img(id),
   tags,
-  description: `A dimensional ${name.toLowerCase()} shade for a fresh, luminous look.`,
+  description: `${name}：用富有层次的色泽改变整体氛围，看看这款发色带来的新感觉。`,
   categories,
 });
 export const looks: Look[] = [
   hair(
     "butterfly-cut",
-    "Butterfly Cut",
-    ["Trending", "Face-Framing"],
-    ["Layers", "Face-framing", "Trendy"],
+    "蝴蝶层次剪",
+    ["热门", "修饰脸型"],
+    ["层次感", "修饰脸型", "流行"],
   ),
-  hair("french-bob", "French Bob", ["Trending", "Chic Short"]),
-  hair("wolf-cut", "Wolf Cut", ["Trending", "Bold & Trendy"]),
-  hair("soft-layers", "Soft Layers", ["Trending", "Face-Framing"]),
-  hair("hollywood-waves", "Hollywood Waves", ["Glam Waves"]),
-  hair("soft-waves", "Soft Waves", ["Glam Waves"]),
-  hair("romantic-waves", "Romantic Waves", ["Glam Waves"]),
-  hair("voluminous-curls", "Voluminous Curls", ["Glam Waves", "Bold & Trendy"]),
-  hair("long-straight", "Long Straight", ["Sleek & Straight"]),
-  hair("layered-straight", "Layered Straight", ["Sleek & Straight"]),
-  hair("silky-straight", "Silky Straight", ["Sleek & Straight"]),
-  hair("center-part-straight", "Center-Part Straight", ["Sleek & Straight"]),
-  hair("curtain-bangs", "Curtain Bangs", ["Face-Framing"]),
-  hair("face-framing-layers", "Face-Framing Layers", ["Face-Framing"]),
-  hair("wispy-bangs", "Wispy Bangs", ["Face-Framing"]),
-  hair("butterfly-layers", "Butterfly Layers", ["Face-Framing"]),
-  hair("classic-bob", "Classic Bob", ["Chic Short"]),
-  hair("bixie", "Bixie", ["Chic Short", "Bold & Trendy"]),
-  hair("pixie", "Pixie", ["Chic Short", "Bold & Trendy"]),
-  hair("hush-cut", "Hush Cut", ["Trending", "Bold & Trendy"]),
-  color("espresso-brown", "Espresso Brown", ["Trending", "Natural"]),
-  color("chocolate", "Chocolate", ["Trending", "Natural"]),
-  color("ash-blonde", "Ash Blonde", ["Trending", "Blonde"]),
-  color("copper", "Copper", ["Trending", "Red"]),
+  hair("french-bob", "法式波波头", ["热门", "利落短发"]),
+  hair("wolf-cut", "狼尾剪", ["热门", "个性潮流"]),
+  hair("soft-layers", "轻盈层次剪", ["热门", "修饰脸型"]),
+  hair("hollywood-waves", "复古大波浪", ["蓬松卷发"]),
+  hair("soft-waves", "自然微卷", ["蓬松卷发"]),
+  hair("romantic-waves", "浪漫波浪卷", ["蓬松卷发"]),
+  hair("voluminous-curls", "丰盈卷发", ["蓬松卷发", "个性潮流"]),
+  hair("long-straight", "柔顺长直发", ["柔顺直发"]),
+  hair("layered-straight", "层次直发", ["柔顺直发"]),
+  hair("silky-straight", "丝滑直发", ["柔顺直发"]),
+  hair("center-part-straight", "中分直发", ["柔顺直发"]),
+  hair("curtain-bangs", "八字刘海", ["修饰脸型"]),
+  hair("face-framing-layers", "修颜层次剪", ["修饰脸型"]),
+  hair("wispy-bangs", "空气刘海", ["修饰脸型"]),
+  hair("butterfly-layers", "蝴蝶层次长发", ["修饰脸型"]),
+  hair("classic-bob", "经典波波头", ["利落短发"]),
+  hair("bixie", "精灵波波头", ["利落短发", "个性潮流"]),
+  hair("pixie", "精灵短发", ["利落短发", "个性潮流"]),
+  hair("hush-cut", "轻羽层次剪", ["热门", "个性潮流"]),
+  color("espresso-brown", "浓咖棕", ["热门", "自然色系"]),
+  color("chocolate", "巧克力色", ["热门", "自然色系"]),
+  color("ash-blonde", "冷灰金", ["热门", "金色系"]),
+  color("copper", "铜橘色", ["热门", "红色系"]),
   color(
     "pink",
-    "Pink",
-    ["Trending", "Fantasy"],
-    ["Trendy", "Playful", "Creative"],
+    "樱花粉",
+    ["热门", "创意色系"],
+    ["流行", "活泼", "创意"],
   ),
-  color("blue", "Blue", ["Trending", "Fantasy"]),
-  color("purple", "Purple", ["Trending", "Fantasy"]),
-  color("burgundy", "Burgundy", ["Trending", "Red"]),
-  color("black", "Black", ["Natural"]),
-  color("espresso", "Espresso", ["Natural"]),
-  color("chocolate-2", "Chocolate Brown", ["Natural"]),
-  color("ash-brown", "Ash Brown", ["Natural"]),
-  color("warm-brown", "Warm Brown", ["Natural"]),
-  color("platinum", "Platinum", ["Blonde"]),
-  color("honey-blonde", "Honey Blonde", ["Blonde"]),
-  color("champagne-blonde", "Champagne Blonde", ["Blonde"]),
-  color("vivid-red", "Vivid Red", ["Red"]),
-  color("lavender", "Lavender", ["Fantasy"]),
-  color("rose-gold", "Rose Gold", ["Fantasy"]),
-  color("deep-blue", "Deep Blue", ["Fantasy"]),
+  color("blue", "雾蓝色", ["热门", "创意色系"]),
+  color("purple", "紫罗兰", ["热门", "创意色系"]),
+  color("burgundy", "酒红色", ["热门", "红色系"]),
+  color("black", "自然黑", ["自然色系"]),
+  color("espresso", "深咖色", ["自然色系"]),
+  color("chocolate-2", "巧克力棕", ["自然色系"]),
+  color("ash-brown", "冷雾棕", ["自然色系"]),
+  color("warm-brown", "暖茶棕", ["自然色系"]),
+  color("platinum", "铂金色", ["金色系"]),
+  color("honey-blonde", "蜂蜜金", ["金色系"]),
+  color("champagne-blonde", "香槟金", ["金色系"]),
+  color("vivid-red", "莓果红", ["红色系"]),
+  color("lavender", "薰衣草紫", ["创意色系"]),
+  color("rose-gold", "玫瑰金", ["创意色系"]),
+  color("deep-blue", "深海蓝", ["创意色系"]),
 ];
 export const byId = (id: string) => looks.find((x) => x.id === id)!;
 export const hairstyleCategories = [
-  "Trending",
-  "Glam Waves",
-  "Sleek & Straight",
-  "Face-Framing",
-  "Chic Short",
-  "Bold & Trendy",
+  "热门",
+  "蓬松卷发",
+  "柔顺直发",
+  "修饰脸型",
+  "利落短发",
+  "个性潮流",
 ];
 export const colorCategories = [
-  "Trending",
-  "Natural",
-  "Blonde",
-  "Red",
-  "Fantasy",
+  "热门",
+  "自然色系",
+  "金色系",
+  "红色系",
+  "创意色系",
 ];
 export const exploreSections = [
   {
-    title: "Trending Now",
-    category: "Trending",
+    title: "人气发型",
+    category: "热门",
     type: "hairstyle" as LookType,
     ids: ["butterfly-cut", "french-bob", "wolf-cut", "soft-layers"],
   },
   {
-    title: "Glam Waves",
-    category: "Glam Waves",
+    title: "蓬松卷发",
+    category: "蓬松卷发",
     type: "hairstyle" as LookType,
     ids: [
       "hollywood-waves",
@@ -125,8 +125,8 @@ export const exploreSections = [
     ],
   },
   {
-    title: "Sleek & Straight",
-    category: "Sleek & Straight",
+    title: "柔顺直发",
+    category: "柔顺直发",
     type: "hairstyle" as LookType,
     ids: [
       "long-straight",
@@ -136,8 +136,8 @@ export const exploreSections = [
     ],
   },
   {
-    title: "Face-Framing",
-    category: "Face-Framing",
+    title: "修饰脸型",
+    category: "修饰脸型",
     type: "hairstyle" as LookType,
     ids: [
       "curtain-bangs",
@@ -147,14 +147,14 @@ export const exploreSections = [
     ],
   },
   {
-    title: "Chic Short Hair",
-    category: "Chic Short",
+    title: "气质短发",
+    category: "利落短发",
     type: "hairstyle" as LookType,
     ids: ["french-bob", "classic-bob", "bixie", "pixie"],
   },
   {
-    title: "Trending Hair Colors",
-    category: "Trending",
+    title: "流行发色",
+    category: "热门",
     type: "color" as LookType,
     ids: [
       "espresso-brown",
@@ -171,25 +171,25 @@ export const exploreSections = [
 // Existing local hair imagery is reused for these recommendation aliases.
 looks.push(
   {
-    ...hair("long-layers", "Long Layers", ["Face-Framing", "Sleek & Straight"]),
+    ...hair("long-layers", "长层次发", ["修饰脸型", "柔顺直发"]),
     image: img("layered-straight"),
   },
   {
-    ...hair("chin-length-bob", "Chin-Length Bob", ["Chic Short"]),
+    ...hair("chin-length-bob", "齐下巴波波头", ["利落短发"]),
     image: img("classic-bob"),
   },
   ...[
     [
       "classic",
-      "Classic",
-      "Timeless studio light and an effortlessly elegant finish.",
+      "经典肖像",
+      "柔和的影棚布光，呈现自然、耐看的经典肖像。",
     ],
-    ["dreamy", "Dreamy", "Soft light and an airy, romantic atmosphere."],
-    ["vintage", "Vintage", "Warm film tones with a little nostalgia."],
+    ["dreamy", "梦幻光影", "轻柔光线与通透色调，营造浪漫的梦幻氛围。"],
+    ["vintage", "复古胶片", "温暖胶片色调，留住充满故事感的复古瞬间。"],
     [
       "editorial",
-      "Editorial",
-      "Bold black-and-white light, made for the spotlight.",
+      "时尚大片",
+      "鲜明黑白光影，呈现简洁有力的杂志大片风格。",
     ],
   ].map(([id, name, description]): Look => ({
     id: `portrait-${id}`,
@@ -197,35 +197,35 @@ looks.push(
     description,
     type: "portrait",
     image: `${import.meta.env.BASE_URL}assets/portraits/${id}.png`,
-    tags: ["Portrait", name],
-    categories: ["All", name],
+    tags: ["艺术照", name],
+    categories: ["全部", name],
   })),
 );
 export const portraitCategories = [
-  "All",
-  "Classic",
-  "Dreamy",
-  "Vintage",
-  "Editorial",
+  "全部",
+  "经典肖像",
+  "梦幻光影",
+  "复古胶片",
+  "时尚大片",
 ];
 export const typeLabel = (type: LookType) =>
   type === "color"
-    ? "Hair Color"
+    ? "发色"
     : type === "portrait"
-      ? "Portrait"
-      : "Hairstyle";
+      ? "艺术照"
+      : "发型";
 export const libraryTitle = (type: LookType) =>
   type === "color"
-    ? "Hair Colors"
+    ? "发色"
     : type === "portrait"
-      ? "AI Portraits"
-      : "Hairstyles";
+      ? "艺术照"
+      : "发型";
 export const similarTitle = (type: LookType) =>
   type === "color"
-    ? "Similar Colors"
+    ? "更多发色"
     : type === "portrait"
-      ? "Similar Portraits"
-      : "Similar Looks";
+      ? "更多艺术照"
+      : "更多发型";
 export const similarLooks = (look: Look) =>
   looks
     .filter((item) => item.type === look.type && item.id !== look.id)
@@ -240,8 +240,8 @@ export const similarLooks = (look: Look) =>
     )
     .slice(0, 4);
 exploreSections.push({
-  title: "AI Portraits",
-  category: "All",
+  title: "艺术照",
+  category: "全部",
   type: "portrait",
   ids: [
     "portrait-classic",
@@ -250,3 +250,32 @@ exploreSections.push({
     "portrait-editorial",
   ],
 });
+
+// Concrete copy helps people choose a template before generating.
+const hairstyleDescriptions: Record<string, string> = {
+  "butterfly-cut": "脸侧短层次与长发尾自然衔接，吹出向外翻的弧度，呈现轻盈的蝴蝶轮廓。",
+  "french-bob": "下巴附近的利落长度，搭配自然弯度，营造随性又精致的法式气质。",
+  "wolf-cut": "头顶蓬松、发尾轻薄，前短后长的层次让整体更有个性。",
+  "soft-layers": "用柔和、低调的层次保留长发质感，让发尾多一点自然流动。",
+  "hollywood-waves": "整齐连贯的大弧度波浪，强调光泽与复古感，适合想尝试优雅造型的你。",
+  "soft-waves": "松弛的小弧度从脸侧延伸至发尾，呈现自然、不刻意的微卷效果。",
+  "romantic-waves": "柔软波浪与蓬松发尾相互呼应，让造型更温柔，也更有空气感。",
+  "voluminous-curls": "饱满卷度增加两侧蓬松感，呈现醒目、富有活力的卷发轮廓。",
+  "long-straight": "保留长发的简洁线条，顺直发丝自然垂落，呈现清爽耐看的日常造型。",
+  "layered-straight": "直发中加入细腻层次，保留顺滑质感，同时让发尾更轻盈。",
+  "silky-straight": "突出丝滑光泽和整齐发尾，用简洁的发型轮廓展现干净气质。",
+  "center-part-straight": "中分发缝搭配垂顺长发，露出五官，让整体线条更简洁。",
+  "curtain-bangs": "刘海从中间自然分开，向两侧延伸，柔和衔接额头与颧骨轮廓。",
+  "face-framing-layers": "在脸颊周围加入长短层次，让发丝沿着脸部轮廓自然落下。",
+  "wispy-bangs": "轻薄、带空隙的刘海，让额头若隐若现，增添轻盈柔和的感觉。",
+  "butterfly-layers": "高低层次搭配向外展开的卷度，让长发呈现更明显的蓬松与流动感。",
+  "classic-bob": "整齐的波波头轮廓与微微内扣的发尾，简洁利落，适合日常风格。",
+  "bixie": "介于波波头和精灵短发之间，保留柔和层次，也拥有短发的轻快感。",
+  "pixie": "短而利落的发型轮廓突出五官，细碎发尾让造型更轻盈。",
+  "hush-cut": "羽毛般轻薄的层次与自然发尾，呈现松弛、随性的空气感。",
+  "long-layers": "保留长发长度，在脸侧和发尾加入层次，减少厚重感，增加自然弧度。",
+  "chin-length-bob": "发尾停在下巴附近，突出清晰的轮廓，以轻微内扣平衡脸侧线条。",
+};
+for (const look of looks) {
+  if (hairstyleDescriptions[look.id]) look.description = hairstyleDescriptions[look.id];
+}

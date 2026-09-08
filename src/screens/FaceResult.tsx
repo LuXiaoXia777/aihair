@@ -1,3 +1,4 @@
+import { faceLabels } from "../state/faceData";
 import { ChevronRight } from "lucide-react";
 import { byId } from "../data";
 import { faceDescriptions } from "../state/faceData";
@@ -18,21 +19,21 @@ export function FaceResult({
 }) {
   if (!profile.faceShape) return null;
   return (
-    <div className="screen face-result" data-screen-label="Face Shape Result">
-      <Top title="Face Shape Result" onBack={onBack} />
+    <div className="screen face-result" data-screen-label="脸型与推荐">
+      <Top title="脸型与推荐" onBack={onBack} />
       <div className="face-result-hero">
         <img src={profile.avatar} alt={profile.name} />
         <span>{profile.name}</span>
       </div>
       <div className="shape-copy">
-        <small>Your Face Shape</small>
-        <h1>{profile.faceShape}</h1>
+        <small>你的脸型</small>
+        <h1>{faceLabels[profile.faceShape]}</h1>
         <p>{faceDescriptions[profile.faceShape]}</p>
       </div>
       <section className="recommendations">
         <div className="recommendation-head">
-          <span>CHOSEN FOR YOU</span>
-          <h2>Recommended for You</h2>
+          <span>根据脸型精选</span>
+          <h2>适合你的发型</h2>
         </div>
         <div className="library-grid">
           {profile.recommendations.map((id) => (
@@ -47,10 +48,10 @@ export function FaceResult({
       </section>
       <button className="primary finish-setup" onClick={onDone}>
         {returnTo === "my-ai"
-          ? "Go to My AI"
+          ? "返回我的分身"
           : returnTo === "creations"
-            ? "Go to Creations"
-            : "Explore Looks"}
+            ? "返回作品"
+            : "去发现新造型"}
         <ChevronRight size={18} />
       </button>
     </div>

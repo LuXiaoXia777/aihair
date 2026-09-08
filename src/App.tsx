@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { byId } from "./data";
 import { useAppState } from "./state/useAppState";
-import { mockPhotos } from "./state/faceData";
+import { mockPhotos, slots } from "./state/faceData";
+import { CapturePhoto } from "./screens/CapturePhoto";
 import { BottomNav } from "./components/ui";
 import {
   DeleteSheet,
@@ -47,12 +48,18 @@ export function App() {
   const openLook = (id: string) => push({ kind: "detail", id });
   const findProfile = (id: string) =>
     aiProfiles.find((profile) => profile.id === id)!;
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
+  const viewport = useRef<HTMLDivElement>(null);
+  const scrollPositions = useRef(new WeakMap<object, number>());
+  useLayoutEffect(() => {
+    const element = viewport.current;
+    if (!element) return;
+    element.scrollTop = scrollPositions.current.get(screen) ?? 0;
+    return () => { scrollPositions.current.set(screen, element.scrollTop); };
   }, [screen]);
   return (
     <main className={`app-shell ${root ? "with-nav" : ""}`}>
       <div className="noise" />
+      <div className="app-viewport" ref={viewport} inert={sheet ? true : undefined}>
       {screen.kind === "explore" && (
         <Explore
           profile={current}
@@ -128,7 +135,7 @@ export function App() {
             (creation) => creation.id === screen.creationId,
           )!}
           onBack={back}
-          onDownload={() => state.notify("Download started")}
+          onDownload={() => state.notify("下载演示已完成")}
           onRegenerate={() =>
             openLook(
               state.creations.find(
@@ -156,7 +163,28 @@ export function App() {
           validating={screen.kind === "validating"}
           onBack={back}
           onAdd={(slot) => setSheet({ kind: "photo-action", slot })}
+          onCamera={() => push({ kind: "camera", slot: "front", mode: "all" })}
           onContinue={state.validatePhotos}
+        />
+      )}
+      {screen.kind === "camera" && (
+        <CapturePhoto
+          key={`${screen.mode}-${screen.slot}`}
+          slot={screen.slot}
+          mode={screen.mode}
+          photo={
+            state.draft.front?.quality === "good"
+              ? state.draft.front
+              : mockPhotos[2]
+          }
+          onBack={back}
+          onUse={(photo) => {
+            state.pickPhoto(screen.slot, photo);
+            const next = slots[slots.indexOf(screen.slot) + 1];
+            if (screen.mode === "all" && next)
+              replace({ ...screen, slot: next });
+            else back();
+          }}
         />
       )}
       {screen.kind === "creating-ai" && (
@@ -184,6 +212,7 @@ export function App() {
           onLook={openLook}
         />
       )}
+      </div>
       {root && (
         <BottomNav
           active={screen.kind as "explore" | "my-ai" | "creations"}
@@ -204,12 +233,7 @@ export function App() {
           onClose={() => setSheet(null)}
           onLibrary={() => setSheet({ kind: "picker", slot: sheet.slot })}
           onCamera={() =>
-            state.pickPhoto(
-              sheet.slot,
-              state.draft.front?.quality === "good"
-                ? state.draft.front
-                : mockPhotos[2],
-            )
+            push({ kind: "camera", slot: sheet.slot, mode: "single" })
           }
         />
       )}

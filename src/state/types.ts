@@ -29,7 +29,7 @@ export type Creation = {
   image: string;
   createdAt: number;
 };
-export type CreationFilter = "All" | "Hairstyles" | "Hair Colors" | "Portraits";
+export type CreationFilter = "全部" | "发型" | "发色" | "艺术照";
 export type Screen =
   | { kind: RootTab }
   | { kind: "library"; type: LookType; category: string }
@@ -39,6 +39,7 @@ export type Screen =
   | { kind: "creation"; creationId: string }
   | { kind: "create-intro"; returnTo: RootTab }
   | { kind: "profile-photos"; returnTo: RootTab }
+  | { kind: "camera"; slot: PhotoSlot; mode: "all" | "single" }
   | {
       kind: "validating";
       returnTo: RootTab;

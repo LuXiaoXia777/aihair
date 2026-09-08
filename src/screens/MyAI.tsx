@@ -1,3 +1,4 @@
+import { faceLabels } from "../state/faceData";
 import { ArrowUpRight, Check, ChevronRight, Plus } from "lucide-react";
 import { byId } from "../data";
 import { mockPhotos, faceDescriptions } from "../state/faceData";
@@ -15,29 +16,29 @@ export function ProfileGate({
   return (
     <section className="profile-gate">
       <div className="gate-photo">
-        <img src={mockPhotos[0].image} alt="Your personal AI portrait" />
-        <span>ONE AI. ENDLESS LOOKS.</span>
+        <img src={mockPhotos[0].image} alt="分身示例照片" />
+        <span>一个分身，多种可能</span>
       </div>
       <div className="gate-copy">
-        <span className="eyebrow">YOUR LOOK STARTS WITH YOU</span>
-        <h1>Create Your AI</h1>
+        <span className="eyebrow">从你开始，发现新造型</span>
+        <h1>创建专属分身</h1>
         <p>
           {myAI ? (
-            "Create your personal AI model with 3 photos."
+            "准备三张照片，创建自己的专属分身。"
           ) : (
             <>
-              Upload 3 photos once.
+              只需准备一次正面、左侧面、右侧面照片。
               <br />
-              Then try any hairstyle, hair color or portrait instantly.
+              之后就能自由体验发型、发色和艺术照。
             </>
           )}
         </p>
         <button className="primary" onClick={onCreate}>
-          Create My AI <ArrowUpRight size={18} />
+          创建我的分身 <ArrowUpRight size={18} />
         </button>
         {onSwitch && (
           <button className="plain" onClick={onSwitch}>
-            Choose Your AI
+            选择分身
           </button>
         )}
       </div>
@@ -62,10 +63,10 @@ export function MyAI({
   onRecommendations: () => void;
 }) {
   return (
-    <div className="screen my-ai" data-screen-label="My AI">
+    <div className="screen my-ai" data-screen-label="我的分身">
       <header className="page-title">
-        <span>MADE AROUND YOU</span>
-        <h1>My AI</h1>
+        <span>为你而定</span>
+        <h1>我的分身</h1>
       </header>
       {!profile ? (
         <ProfileGate
@@ -78,25 +79,25 @@ export function MyAI({
           <div className="ai-profile-hero">
             <img src={profile.avatar} alt={profile.name} />
             <div>
-              <span>YOUR PERSONAL AI</span>
+              <span>当前分身</span>
               <h2>{profile.name}</h2>
               <button onClick={onSwitch}>
-                Switch AI <ChevronRight size={16} />
+                切换分身 <ChevronRight size={16} />
               </button>
             </div>
           </div>
           {profile.faceShape && (
             <>
               <section className="my-face-shape">
-                <span className="eyebrow">FACE SHAPE</span>
-                <h2>{profile.faceShape}</h2>
+                <span className="eyebrow">脸型特点</span>
+                <h2>{faceLabels[profile.faceShape]}</h2>
                 <p>{faceDescriptions[profile.faceShape]}</p>
               </section>
               <section className="rail-section">
                 <div className="section-head">
-                  <h2>Recommended for You</h2>
+                  <h2>适合你的发型</h2>
                   <button onClick={onRecommendations}>
-                    See All <ChevronRight size={15} />
+                    查看全部 <ChevronRight size={15} />
                   </button>
                 </div>
                 <div className="look-rail">
@@ -112,7 +113,7 @@ export function MyAI({
             </>
           )}
           <section className="profiles-section">
-            <h2>My AI Profiles</h2>
+            <h2>我的分身库</h2>
             <div className="profile-rail">
               {profiles.map((item) => (
                 <button
@@ -136,7 +137,7 @@ export function MyAI({
                 <span>
                   <Plus />
                 </span>
-                <strong>New AI</strong>
+                <strong>新建分身</strong>
               </button>
             </div>
           </section>

@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Check, ChevronRight, Plus, ScanFace, Sparkles } from "lucide-react";
+import {
+  Camera,
+  Check,
+  ChevronRight,
+  Plus,
+  ScanFace,
+  Sparkles,
+} from "lucide-react";
 import { Top, UsingAI } from "../components/ui";
 import { mockPhotos, slotLabels, slots } from "../state/faceData";
 import type {
@@ -17,18 +24,18 @@ export function CreateIntro({
 }) {
   return (
     <div className="screen create-intro" data-screen-label="Create AI">
-      <Top title="Create Your AI" onBack={onBack} />
+      <Top title="创建专属分身" onBack={onBack} />
       <div className="create-intro-hero">
-        <img src={mockPhotos[0].image} alt="Personal AI portrait" />
+        <img src={mockPhotos[0].image} alt="分身示例照片" />
         <span>
-          JUST THREE PHOTOS.
-          <br />A WHOLE NEW YOU.
+          准备三张照片
+          <br />开启新的自己
         </span>
       </div>
       <div className="setup-copy">
-        <span className="eyebrow">ONCE IS ALL IT TAKES</span>
-        <h1>Make it yours.</h1>
-        <p>Upload 3 clear photos to create your personal AI.</p>
+        <span className="eyebrow">一次创建，反复体验</span>
+        <h1>让每个造型都属于你</h1>
+        <p>拍摄或选择同一个人的三张清晰照片。</p>
       </div>
       <div className="angle-guide">
         {slots.map((slot, index) => (
@@ -43,7 +50,7 @@ export function CreateIntro({
         ))}
       </div>
       <button className="primary" onClick={onStart}>
-        Start <ChevronRight size={18} />
+        开始创建 <ChevronRight size={18} />
       </button>
     </div>
   );
@@ -54,6 +61,7 @@ export function ProfilePhotos({
   validating,
   onBack,
   onAdd,
+  onCamera,
   onContinue,
 }: {
   draft: PhotoDraft;
@@ -61,21 +69,35 @@ export function ProfilePhotos({
   validating: boolean;
   onBack: () => void;
   onAdd: (slot: PhotoSlot) => void;
+  onCamera: () => void;
   onContinue: () => void;
 }) {
   const count = slots.filter((slot) => draft[slot]).length;
   return (
-    <div className="screen profile-photos" data-screen-label="Add 3 Photos">
-      <Top title="Add 3 Photos" onBack={onBack} />
+    <div className="screen profile-photos" data-screen-label="添加三张照片">
+      <Top title="添加三张照片" onBack={onBack} />
       <div className="setup-copy">
-        <span className="eyebrow">YOUR AI STARTS HERE</span>
+        <span className="eyebrow">创建分身 · 照片准备</span>
         <h1>
-          Three angles.
+          三个角度，
           <br />
-          One you.
+          记录完整的你
         </h1>
-        <p>Use clear, well-lit photos.</p>
+        <p>请准备同一个人的正面和左右侧面照片。</p>
       </div>
+      <button
+        className="secondary take-photos"
+        disabled={validating}
+        onClick={onCamera}
+      >
+        <Camera size={20} />
+        拍摄三张照片
+      </button>
+      <p className="photo-source-hint">
+        跟随引导，依次拍摄三个角度。
+        <br />
+        也可以点击下方位置，分别拍照或选图。
+      </p>
       <div className="upload-slots">
         {slots.map((slot) => (
           <div className="upload-slot" key={slot}>
@@ -83,7 +105,7 @@ export function ProfilePhotos({
               className={`${draft[slot] ? "has-photo" : ""} ${errors.includes(slot) ? "photo-error" : ""}`}
               disabled={validating}
               onClick={() => onAdd(slot)}
-              aria-label={`${draft[slot] ? "Replace" : "Add"} ${slotLabels[slot]} photo`}
+              aria-label={`${draft[slot] ? "更换" : "添加"}${slotLabels[slot]}照片`}
               aria-invalid={errors.includes(slot)}
               aria-describedby={
                 errors.includes(slot) ? `${slot}-error` : undefined
@@ -96,7 +118,7 @@ export function ProfilePhotos({
                       draft[slot]?.quality === "poor" ? "blurred-sample" : ""
                     }
                     src={draft[slot]!.image}
-                    alt={`${slotLabels[slot]} photo`}
+                    alt={`${slotLabels[slot]}照片`}
                   />
                   <span>
                     <Check size={14} />
@@ -105,30 +127,30 @@ export function ProfilePhotos({
               ) : (
                 <>
                   <Plus />
-                  <small>Add Photo</small>
+                  <small>添加照片</small>
                 </>
               )}
             </button>
             <strong>{slotLabels[slot]}</strong>
             {errors.includes(slot) && (
               <p id={`${slot}-error`} role="alert">
-                This photo may not work well.
+                这张照片不够清晰，
                 <br />
-                Please replace it.
+                请重新拍摄或选择。
               </p>
             )}
           </div>
         ))}
       </div>
-      <div className="photo-counter">{count} of 3 photos added</div>
+      <div className="photo-counter">已添加 {count} / 3 张照片</div>
       <section className="quality-guide">
-        <h2>A little light goes a long way.</h2>
+        <h2>这样拍，效果更好</h2>
         <div>
           <Check size={16} />
-          <p>Face clearly visible · One person · Good lighting</p>
+          <p>面部无遮挡 · 单人入镜 · 光线充足</p>
         </div>
         <p className="avoid-copy">
-          Avoid covered faces, blurry photos, or multiple people.
+          避免模糊、逆光、多人合影，三张照片须为同一人。
         </p>
       </section>
       <div className="continue-dock">
@@ -137,7 +159,7 @@ export function ProfilePhotos({
           disabled={count < 3 || validating}
           onClick={onContinue}
         >
-          {validating ? "Checking your photos..." : "Continue"}
+          {validating ? "正在检查照片…" : "下一步"}
           {!validating && <ChevronRight size={18} />}
         </button>
       </div>
@@ -164,16 +186,16 @@ export function CreatingAI({
       <Top onBack={onBack} />
       <div className="progress-content">
         <div className="profile-progress-photo">
-          <img src={avatar} alt="Your AI in progress" />
+          <img src={avatar} alt="正在创建的分身" />
           <span className="progress-ring" />
         </div>
-        <h1>Creating your AI...</h1>
-        <p>Preparing your personal AI model.</p>
+        <h1>正在创建分身…</h1>
+        <p>正在整理照片，建立你的专属分身。</p>
         <ol className="progress-steps">
           {[
-            "Analyzing photos",
-            "Creating identity",
-            "Preparing your model",
+            "检查照片",
+            "建立分身",
+            "准备就绪",
           ].map((label, index) => (
             <li key={label} className={index <= step ? "active" : ""}>
               {index < step ? <Check size={14} /> : <i />}
@@ -206,15 +228,15 @@ export function AIReady({
         </span>
       </div>
       <div className="setup-copy">
-        <span className="eyebrow">MEET YOUR PERSONAL AI</span>
-        <h1>Your AI is ready!</h1>
+        <span className="eyebrow">专属分身，准备就绪</span>
+        <h1>你的分身已就绪</h1>
         <p className="ready-name">{profile.name}</p>
       </div>
       <button className="primary" onClick={onUse}>
-        Use This AI <Sparkles size={18} />
+        使用这个分身 <Sparkles size={18} />
       </button>
       <button className="plain" onClick={onAnother}>
-        Create Another
+        再创建一个
       </button>
     </div>
   );
@@ -238,8 +260,8 @@ export function AnalyzingAI({
           <span />
           <ScanFace size={25} />
         </div>
-        <h1>Analyzing your face shape...</h1>
-        <p>Finding hairstyles that suit you.</p>
+        <h1>正在分析脸型…</h1>
+        <p>为你挑选更适合的发型。</p>
       </div>
     </div>
   );
@@ -260,7 +282,7 @@ export function Generating({
           <span />
           <Sparkles size={29} />
         </div>
-        <h1>Creating your new look...</h1>
+        <h1>正在生成新造型…</h1>
         <UsingAI
           profile={{
             name: result.aiProfileName,

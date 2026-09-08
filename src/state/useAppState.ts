@@ -32,7 +32,7 @@ export function useAppState() {
   const [draft, setDraft] = useState<PhotoDraft>(emptyDraft);
   const [photoErrors, setPhotoErrors] = useState<PhotoSlot[]>([]);
   const [creations, setCreations] = useState<Creation[]>([]);
-  const [filter, setFilter] = useState<CreationFilter>("All");
+  const [filter, setFilter] = useState<CreationFilter>("全部");
   const [toast, setToast] = useState("");
   const nextId = useRef(0);
   const nextProfileNumber = useRef(0);
@@ -142,12 +142,12 @@ export function useAppState() {
         ? value
         : [result, ...value],
     );
-    setToast("Saved to Creations");
+    setToast("已保存到作品");
   };
   const remove = (id: string) => {
     setCreations((value) => value.filter((creation) => creation.id !== id));
     home("creations");
-    setToast("Creation deleted");
+    setToast("作品已删除");
   };
   useEffect(() => {
     if (!toast) return;

@@ -15,24 +15,24 @@ export function Creations({
 }) {
   const shown = creations.filter(
     (item) =>
-      filter === "All" ||
+      filter === "全部" ||
       item.type ===
         (
           {
-            Hairstyles: "hairstyle",
-            "Hair Colors": "color",
-            Portraits: "portrait",
+            发型: "hairstyle",
+            "发色": "color",
+            艺术照: "portrait",
           } as const
         )[filter],
   );
   return (
-    <div className="screen creations" data-screen-label="Creations">
+    <div className="screen creations" data-screen-label="作品">
       <header className="page-title">
-        <span>YOUR LOOKS, ALL HERE</span>
-        <h1>Creations</h1>
+        <span>收藏每一个心动造型</span>
+        <h1>作品</h1>
       </header>
-      <div className="filter-tabs" aria-label="Filter creations">
-        {(["All", "Hairstyles", "Hair Colors", "Portraits"] as const).map(
+      <div className="filter-tabs" aria-label="筛选作品">
+        {(["全部", "发型", "发色", "艺术照"] as const).map(
           (item) => (
             <button
               key={item}
@@ -66,14 +66,14 @@ export function Creations({
           <div>
             <Images />
           </div>
-          <h2>No creations yet</h2>
+          <h2>{creations.length ? "暂无这类作品" : "还没有作品"}</h2>
           <p>
-            Explore a hairstyle, hair color or portrait
+            从发型、发色或艺术照中选择喜欢的风格，
             <br />
-            to create your first look.
+            生成并保存你的第一张作品。
           </p>
           <button className="primary" onClick={onExplore}>
-            Explore
+            发现
           </button>
         </div>
       )}

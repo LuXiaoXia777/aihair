@@ -1,6 +1,7 @@
 # AI Hair 项目交接上下文
 
-> 当前产品版本：2026-09-08 AI Profile MVP。
+> 当前产品版本：2026-09-08 中文手机原型。
+> 最新优先约束：全中文交互、固定手机高度、内部滚动、底部 Tab 固定在手机容器底部。下文英文流程名仅用于对照原始规格，不代表界面文案。第 14 节优先于旧版英文 UI 约定。
 > 本文件与 `docs/MVP_SPEC_2026-09-08.md` 为最新约束。此前的两 Tab、单照片 Try-On 和原图查看逻辑已经被最新用户要求替换，不得恢复。
 
 ## 1. 项目与运行
@@ -57,13 +58,14 @@ Generate 必须检查 currentAIProfile；缺失则进入创建流程。存在时
 
 1. Create Your AI：说明和 Front / Left / Right 指引，Start。
 2. Add 3 Photos：三个独立上传位；每个位打开 Add Photo 二级 Action Sheet（Photo Library / Camera / Cancel）。
-3. Photo Library：原项目六张本地 Mock 人物照；额外提供 Blurry photo 低质量示例，以便真实点击体验失败/替换流程。Camera 选择 Front 的合格人物素材，没有 Front 时使用 Photo 3。
-4. 三张完整时 Continue Enabled；缺任一张 Disabled。校验 450ms，期间防止重复操作。
-5. 低质量样例按上传位显示 `This photo may not work well. Please replace it.`。仅替换对应位，其他照片保留。
-6. 合格后 Creating your AI...，约 1.25 秒；依次显示 Analyzing photos / Creating identity / Preparing your model。
-7. AI Profile Created：Your AI is ready!、自动分配名称、Use This AI、Create Another。
-8. Use This AI 设置为 currentAIProfile，自动进入约 1 秒脸型分析，不要求再次上传或主动 Analyze Face。
-9. Face Shape Result 显示分身图、脸型与 4–5 个推荐。Explore 来源显示 Explore Looks；My AI 来源显示 Go to My AI。点击完成按钮或 Back 回到正确一级页，详情 Back 返回该结果。
+3. Add 3 Photos 顶部直接显示 Take Photos，依次引导 Front / Left / Right 拍照。每一步有取景预览、角度文案、Take Photo、Retake、Use Photo。确认一张才写入对应槽位，取消保留此前已确认照片。
+4. 每个槽位的 Camera 进入该角度的单张拍摄，确认后返回三图页，不自动补齐其他位置。Photo Library 仍保留六张本地人物与 Blurry photo 校验样例。相机继续 Mock，以 Front 合格照片为示例人物，无 Front 时使用 Photo 3；不请求摄像头权限。
+5. 三张完整时 Continue Enabled；缺任一张 Disabled。校验 450ms，期间防止重复操作。
+6. 低质量样例按上传位显示 `This photo may not work well. Please replace it.`。仅替换对应位，其他照片保留。
+7. 合格后 Creating your AI...，约 1.25 秒；依次显示 Analyzing photos / Creating identity / Preparing your model。
+8. AI Profile Created：Your AI is ready!、自动分配名称、Use This AI、Create Another。
+9. Use This AI 设置为 currentAIProfile，自动进入约 1 秒脸型分析，不要求再次上传或主动 Analyze Face。
+10. Face Shape Result 显示分身图、脸型与 4–5 个推荐。Explore 来源显示 Explore Looks；My AI 来源显示 Go to My AI。点击完成按钮或 Back 回到正确一级页，详情 Back 返回该结果。
 
 **回流解释：** 为保留最新需求明确要求的 Face Shape Result 可阅读与可点击推荐页，不用计时器自动跳过它。结果页完成按钮负责最后一步回到来源；整个流程无需用户再选择目的地。
 
@@ -152,3 +154,19 @@ Creation Detail：图片、模板名、AI 名、类型；Download / Regenerate /
 后续每次核心交互或产品决定变化都更新本文件。原始最新用户规格保存在 docs/MVP_SPEC_2026-09-08.md。所有新增 UI 都必须有实际行为，不添加当前 MVP 之外的功能。
 
 本次本地验收：21 项主流程与边界回归已验证；另在 `/aihair/` 生产构建路径下通过首次创建、艺术照与 375px 布局/素材的 3 项回归。最终发布仍以 GitHub Actions 的成功状态为准。
+
+## 13. 2026-09-08 拍照入口修正
+
+用户指出三图页面只看到上传。最新决定：拍照必须在该页直接可见，不能仅藏在来源 Sheet 中；Camera 不再一点击就自动填图。新增 CapturePhoto 页面和 camera 栈状态，支持三角度连续拍摄、单角度补拍、重拍、确认与取消。上传和拍摄可以混用。模拟取景素材不是实时摄像头画面。增加连续拍摄、混合来源/取消、三个移动宽度的回归测试。
+
+
+## 14. 2026-09-08 中文与手机容器修正（最新）
+
+- 用户明确要求整个交互使用中文；覆盖导航、标题、按钮、弹层、照片角度、提示、无障碍名称、发型/发色/艺术照名称、分类、介绍与脸型说明。品牌展示为「发型灵感」，分身示例名称使用小月、小夏等。英文代码标识不作为界面文案。
+- 三个一级页导航名称为「发现 / 我的分身 / 作品」。仍只在一级页出现，不新增产品功能或恢复已删除方案。
+- 桌面手机宽最大 430px，高度为 min(844px, 浏览器可视高度 - 32px)，四周留白并完整显示圆角边界；移动端宽不超过 430px 时占满可视区。页面不得撑高整个网页。
+- app-viewport 为唯一正文纵向滚动区。底部导航为容器内独立区域，不遮住正文；弹层、提示和照片页操作栏也限制在手机内部。返回上游页面恢复该栈条目的滚动位置。
+- 创建页压缩大标题和装饰留白，突出「拍摄三张照片」与三个独立照片位；小高度下正文可滚动，下一步固定在手机底部。拍照仍是模拟取景，并用中文明示。
+- 发型详情提供各自的轮廓、层次和造型特点；脸型说明提供对应推荐理由，不使用通用占位英文。作品筛选无结果与全部无作品区分提示。
+- 中文字体采用系统中文字体，移除外部 Google Fonts 请求；补充键盘焦点样式与减少动态效果设置。
+- 本次回归覆盖既有 24 项流程，另增加多种窗口高度、手机边界、Tab 固定、返回滚动位置与全中文主流程检查。以最新本地和 GitHub Actions 结果为发布依据。

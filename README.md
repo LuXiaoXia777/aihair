@@ -7,7 +7,7 @@
 ## 完整体验
 
 1. Explore → Create My AI → Start。
-2. 添加 Front / Left / Right 三张示例照片，Continue。
+2. 点击 Take Photos 依次模拟拍摄 Front / Left / Right，每张可重拍和确认；也可在三个位置单独上传或补拍，完成后 Continue。
 3. 创建完成后 Use This AI，自动分析脸型并推荐发型。
 4. Explore Looks 返回首页，选择任意模板，Generate 直接使用当前分身。
 5. Save 保存到 Creations，Regenerate 重新生成。
@@ -45,3 +45,7 @@ CI=1 npm test
 - 有写权限的协作者可在线编辑并提交；其他人 Fork 后通过 Pull Request 贡献。
 - main 更新后 GitHub Actions 自动测试、构建并发布公开网站。
 - GitHub Pages 构建使用 `/aihair/` 基础路径；Settings → Pages → Source 保持 GitHub Actions。
+
+### 中文手机原型
+
+界面已统一为中文。桌面手机高度最多 844px，始终小于浏览器可视高度；正文内部滚动，三个底部导航固定在手机内部，返回列表保留浏览位置。拍照为中文引导的模拟流程，支持正面、左侧面、右侧面、重拍和确认。

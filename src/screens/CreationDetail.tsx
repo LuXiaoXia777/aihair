@@ -30,14 +30,14 @@ export function CreationDetail({
         <div className="creation-actions">
           <button className="primary" onClick={onDownload}>
             <Download size={18} />
-            Download
+            下载图片
           </button>
           <button className="secondary" onClick={onRegenerate}>
-            Regenerate
+            重新生成
           </button>
           <button className="danger" onClick={onDelete}>
             <Trash2 size={18} />
-            Delete
+            删除作品
           </button>
         </div>
       </div>

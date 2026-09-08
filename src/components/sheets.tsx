@@ -1,3 +1,4 @@
+import { faceLabels } from "../state/faceData";
 import { useEffect, useRef, type ReactNode } from "react";
 import {
   Camera,
@@ -86,28 +87,28 @@ export function PhotoActionSheet({
   onCamera: () => void;
 }) {
   return (
-    <Sheet title="Add Photo" onClose={onClose}>
+    <Sheet title="添加照片" onClose={onClose}>
       <div className="action-sheet-title">
-        <h2>Add Photo</h2>
+        <h2>添加照片</h2>
       </div>
       <div className="system-actions">
         <button onClick={onLibrary}>
           <span>
             <Images />
           </span>
-          <strong>Photo Library</strong>
+          <strong>从相册选择</strong>
           <ChevronRight />
         </button>
         <button onClick={onCamera}>
           <span>
             <Camera />
           </span>
-          <strong>Camera</strong>
+          <strong>相机拍照</strong>
           <ChevronRight />
         </button>
       </div>
       <button className="plain action-cancel" onClick={onClose}>
-        Cancel
+        取消
       </button>
     </Sheet>
   );
@@ -122,10 +123,10 @@ export function Picker({
   selected: MockPhoto | null;
 }) {
   return (
-    <Sheet title="Photo Library" onClose={onClose}>
+    <Sheet title="从相册选择" onClose={onClose}>
       <div className="picker-head">
-        <h2>Photo Library</h2>
-        <button aria-label="Close" onClick={onClose}>
+        <h2>从相册选择</h2>
+        <button aria-label="关闭" onClick={onClose}>
           <X />
         </button>
       </div>
@@ -148,14 +149,14 @@ export function Picker({
         ))}
       </div>
       <div className="poor-example">
-        <button onClick={() => onPick(poorPhoto)} aria-label="Blurry photo">
+        <button onClick={() => onPick(poorPhoto)} aria-label="模糊照片">
           <img
             src={poorPhoto.image}
             className="blurred-sample"
-            alt="Blurry photo"
+            alt="模糊照片"
           />
           <span>
-            Blurry photo<small>Low quality example</small>
+            模糊照片<small>低清晰度示例</small>
           </span>
           <ChevronRight size={16} />
         </button>
@@ -177,10 +178,10 @@ export function SwitchSheet({
   onClose: () => void;
 }) {
   return (
-    <Sheet title="Choose Your AI" onClose={onClose}>
+    <Sheet title="选择分身" onClose={onClose}>
       <div className="picker-head">
-        <h2>Choose Your AI</h2>
-        <button aria-label="Close" onClick={onClose}>
+        <h2>选择分身</h2>
+        <button aria-label="关闭" onClick={onClose}>
           <X />
         </button>
       </div>
@@ -194,7 +195,7 @@ export function SwitchSheet({
             <img src={profile.avatar} alt="" />
             <span>
               <strong>{profile.name}</strong>
-              <small>{profile.faceShape ?? "Ready to use"}</small>
+              <small>{profile.faceShape ? faceLabels[profile.faceShape] : "待使用"}</small>
             </span>
             {profile.id === selectedId && <Check size={18} />}
           </button>
@@ -202,7 +203,7 @@ export function SwitchSheet({
       </div>
       <button className="secondary" onClick={onNew}>
         <Plus size={18} />
-        Create New AI
+        新建分身
       </button>
     </Sheet>
   );
@@ -215,17 +216,17 @@ export function DeleteSheet({
   onDelete: () => void;
 }) {
   return (
-    <Sheet title="Delete this creation?" onClose={onClose}>
+    <Sheet title="确定删除这张作品？" onClose={onClose}>
       <div className="sheet-icon danger-icon">
         <Trash2 />
       </div>
-      <h2>Delete this creation?</h2>
-      <p>This will remove it from Creations.</p>
+      <h2>确定删除这张作品？</h2>
+      <p>删除后无法恢复，其他作品不受影响。</p>
       <button className="danger filled" onClick={onDelete}>
-        Delete
+        删除作品
       </button>
       <button className="plain" onClick={onClose}>
-        Cancel
+        取消
       </button>
     </Sheet>
   );

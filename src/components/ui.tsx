@@ -17,13 +17,13 @@ export function LookCard({
       aria-label={look.name}
     >
       <span className="image-wrap">
-        <img src={look.image} alt={`${look.name} on a person`} />
+        <img src={look.image} alt={`${look.name}效果示例`} />
         <i>
           {look.type === "color"
-            ? "COLOR"
+            ? "发色"
             : look.type === "portrait"
-              ? "PORTRAIT"
-              : "STYLE"}
+              ? "艺术照"
+              : "发型"}
         </i>
       </span>
       <strong>{look.name}</strong>
@@ -41,7 +41,7 @@ export function Top({
 }) {
   return (
     <header className="topbar">
-      <button aria-label="Back" onClick={onBack}>
+      <button aria-label="返回" onClick={onBack}>
         <ArrowLeft />
       </button>
       <div>{title && <h1>{title}</h1>}</div>
@@ -57,12 +57,12 @@ export function BottomNav({
   onGo: (tab: RootTab) => void;
 }) {
   return (
-    <nav className="bottom-nav" aria-label="Main navigation">
+    <nav className="bottom-nav" aria-label="主导航">
       {(
         [
-          ["explore", "Explore", Sparkles],
-          ["my-ai", "My AI", UserRound],
-          ["creations", "Creations", Images],
+          ["explore", "发现", Sparkles],
+          ["my-ai", "我的分身", UserRound],
+          ["creations", "作品", Images],
         ] as const
       ).map(([id, label, Icon]) => (
         <button
@@ -86,7 +86,7 @@ export function UsingAI({
   return (
     <div className="using-ai">
       <img src={profile.avatar} alt="" />
-      <span>Using {profile.name}</span>
+      <span>当前分身：{profile.name}</span>
     </div>
   );
 }

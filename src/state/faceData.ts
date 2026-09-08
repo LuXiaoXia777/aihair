@@ -1,9 +1,9 @@
 import type { FaceShape, MockPhoto, PhotoDraft, PhotoSlot } from "./types";
 export const slots: PhotoSlot[] = ["front", "left", "right"];
 export const slotLabels: Record<PhotoSlot, string> = {
-  front: "Front",
-  left: "Left",
-  right: "Right",
+  front: "正面",
+  left: "左侧面",
+  right: "右侧面",
 };
 export const emptyDraft = (): PhotoDraft => ({
   front: null,
@@ -20,14 +20,14 @@ export const mockPhotos: MockPhoto[] = [
 ].map((id, i) => ({
   id,
   image: `${import.meta.env.BASE_URL}assets/photos/${id}.webp`,
-  name: `Portrait ${i + 1}`,
+  name: `示例照片 ${i + 1}`,
   quality: "good",
 }));
 // A deterministic, selectable poor-quality sample makes the validation/replacement flow testable.
 export const poorPhoto: MockPhoto = {
   id: "blurry-example",
   image: mockPhotos[0].image,
-  name: "Blurry photo",
+  name: "模糊照片",
   quality: "poor",
 };
 export const faceShapes: FaceShape[] = [
@@ -38,14 +38,14 @@ export const faceShapes: FaceShape[] = [
   "Diamond",
   "Oblong",
 ];
-export const profileNames = ["Luna", "Emma", "Alex", "Mia", "Leo", "Ava"];
+export const profileNames = ["小月", "小夏", "小林", "小米", "小森", "小禾"];
 export const faceDescriptions: Record<FaceShape, string> = {
-  Oval: "Balanced proportions with a softly rounded jawline.",
-  Round: "Soft curves with balanced width and length.",
-  Square: "Defined angles with a strong, balanced jawline.",
-  Heart: "A wider forehead with a softly tapered chin.",
-  Diamond: "Defined cheekbones with a softly tapered forehead and chin.",
-  Oblong: "Balanced features with a longer, softly structured shape.",
+  Oval: "脸部比例均衡，下颌线柔和。可以尝试层次剪或波波头，突出自然轮廓。",
+  Round: "脸部线条圆润。轻盈的长层次和八字刘海能增加纵向层次感。",
+  Square: "下颌轮廓鲜明。柔和卷度和脸侧层次能让整体线条更轻盈。",
+  Heart: "额头较宽、下巴收窄。下巴附近的蓬松感有助于平衡上下比例。",
+  Diamond: "颧骨轮廓突出，额头与下巴较窄。轻柔刘海与脸侧卷度能柔化线条。",
+  Oblong: "脸部纵向比例较长。刘海和两侧蓬松卷度能增加横向平衡感。",
 };
 export const faceRecommendations: Record<FaceShape, string[]> = {
   Oval: [
@@ -79,3 +79,5 @@ export const analyzeProfile = (front: MockPhoto): FaceShape =>
       mockPhotos.findIndex((photo) => photo.id === front.id),
     ) % faceShapes.length
   ];
+
+export const faceLabels = { Oval: "椭圆脸", Round: "圆脸", Heart: "心形脸", Square: "方脸", Diamond: "菱形脸", Oblong: "长脸" };

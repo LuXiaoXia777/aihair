@@ -19,17 +19,17 @@ export function Explore({
   onAll: (type: LookType, category: string) => void;
 }) {
   return (
-    <div className="screen explore" data-screen-label="Explore">
+    <div className="screen explore" data-screen-label="发现">
       <header className="brand-head">
         <div>
-          <h1>AI Hair</h1>
-          <p>Find your next look.</p>
+          <h1>发型灵感</h1>
+          <p>找到适合你的新造型</p>
         </div>
         {profile && (
           <button
             className="profile-chip"
             onClick={onSwitch}
-            aria-label={`Switch AI, current ${profile.name}`}
+            aria-label={`切换分身，当前${profile.name}`}
           >
             <img src={profile.avatar} alt="" />
             {profile.name}
@@ -56,9 +56,9 @@ export function Explore({
               </div>
               <button
                 onClick={() => onAll(section.type, section.category)}
-                aria-label={`See All ${section.title}`}
+                aria-label={`查看全部${section.title}`}
               >
-                See All <ChevronRight size={15} />
+                查看全部 <ChevronRight size={15} />
               </button>
             </div>
             <div className="look-rail">
