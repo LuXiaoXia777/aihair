@@ -75,6 +75,17 @@ export function useAppState() {
       ]);
     } else setStack((value) => (value.length > 1 ? value.slice(0, -1) : value));
   };
+  // A template-led setup retains the exact browsing stack underneath it.
+  const setupPrefix = () => {
+    const start = stack.findIndex((entry) => entry.kind === "create-intro");
+    return start >= 0 ? stack.slice(0, start) : [{ kind: rootTab() } as Screen];
+  };
+  const setupTemplate = [...stack].reverse().find((entry) => entry.kind === "detail");
+  const finishSetup = () => {
+    if (screen.kind !== "face-result") return;
+    if (stack[stack.length - 2]?.kind === "detail") back();
+    else home(screen.returnTo);
+  };
   const rootTab = (): RootTab => {
     const kind = stack[0].kind;
     return kind === "my-ai" || kind === "creations" ? kind : "explore";
@@ -87,7 +98,7 @@ export function useAppState() {
     setPhotoErrors([]);
     if (replaceCurrent) {
       closeTransient();
-      setStack([{ kind: returnTo }, { kind: "create-intro", returnTo }]);
+      setStack([...setupPrefix(), { kind: "create-intro", returnTo }]);
     } else push({ kind: "create-intro", returnTo });
   };
   const pickPhoto = (slot: PhotoSlot, photo: MockPhoto) => {
@@ -110,7 +121,7 @@ export function useAppState() {
     if (!profile.faceShape) {
       closeTransient();
       setStack([
-        { kind: returnTo },
+        ...setupPrefix(),
         { kind: "analyzing-ai", profileId: profile.id, returnTo },
       ]);
     }
@@ -250,6 +261,8 @@ export function useAppState() {
     validatePhotos,
     useProfile,
     generate,
+    setupTemplateId: setupTemplate?.id,
+    finishSetup,
     save,
     remove,
   };

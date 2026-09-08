@@ -2,18 +2,13 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import { byId, exploreSections, type LookType } from "../data";
 import { LookCard } from "../components/ui";
 import type { AIProfile } from "../state/types";
-import { ProfileGate } from "./MyAI";
 export function Explore({
   profile,
-  onCreate,
   onSwitch,
-  hasProfiles,
   onLook,
   onAll,
 }: {
   profile: AIProfile | null;
-  hasProfiles: boolean;
-  onCreate: () => void;
   onSwitch: () => void;
   onLook: (id: string) => void;
   onAll: (type: LookType, category: string) => void;
@@ -37,13 +32,7 @@ export function Explore({
           </button>
         )}
       </header>
-      {!profile ? (
-        <ProfileGate
-          onCreate={onCreate}
-          onSwitch={hasProfiles ? onSwitch : undefined}
-        />
-      ) : (
-        exploreSections.map((section, index) => (
+      {exploreSections.map((section, index) => (
           <section
             className="rail-section"
             key={section.title}
@@ -67,8 +56,7 @@ export function Explore({
               ))}
             </div>
           </section>
-        ))
-      )}
+        ))}
     </div>
   );
 }

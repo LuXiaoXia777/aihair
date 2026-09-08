@@ -7,12 +7,14 @@ import { LookCard, Top } from "../components/ui";
 export function FaceResult({
   profile,
   returnTo,
+  templateName,
   onBack,
   onDone,
   onLook,
 }: {
   profile: AIProfile;
   returnTo: RootTab;
+  templateName?: string;
   onBack: () => void;
   onDone: () => void;
   onLook: (id: string) => void;
@@ -47,7 +49,7 @@ export function FaceResult({
         </div>
       </section>
       <button className="primary finish-setup" onClick={onDone}>
-        {returnTo === "my-ai"
+        {templateName ? `返回应用「${templateName}」` : returnTo === "my-ai"
           ? "返回我的分身"
           : returnTo === "creations"
             ? "返回作品"

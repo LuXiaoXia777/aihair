@@ -63,8 +63,6 @@ export function App() {
       {screen.kind === "explore" && (
         <Explore
           profile={current}
-          hasProfiles={aiProfiles.length > 0}
-          onCreate={() => beginCreate("explore")}
           onSwitch={() => setSheet({ kind: "switch" })}
           onLook={openLook}
           onAll={(type, category) => push({ kind: "library", type, category })}
@@ -150,6 +148,7 @@ export function App() {
       )}
       {screen.kind === "create-intro" && (
         <CreateIntro
+          templateName={state.setupTemplateId ? byId(state.setupTemplateId).name : undefined}
           onBack={back}
           onStart={() =>
             push({ kind: "profile-photos", returnTo: screen.returnTo })
@@ -208,7 +207,8 @@ export function App() {
           profile={findProfile(screen.profileId)}
           returnTo={screen.returnTo}
           onBack={back}
-          onDone={() => home(screen.returnTo)}
+          templateName={state.setupTemplateId ? byId(state.setupTemplateId).name : undefined}
+          onDone={state.finishSetup}
           onLook={openLook}
         />
       )}

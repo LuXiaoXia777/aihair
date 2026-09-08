@@ -32,7 +32,7 @@ export function Detail({
         <p>{look.description}</p>
         {profile && <UsingAI profile={profile} />}
         <button className="primary" onClick={onGenerate}>
-          生成造型 <Sparkles size={18} />
+          应用 <Sparkles size={18} />
         </button>
       </div>
       <section className="similar">

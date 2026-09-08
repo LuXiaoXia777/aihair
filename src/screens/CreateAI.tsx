@@ -16,11 +16,13 @@ import type {
   PhotoSlot,
 } from "../state/types";
 export function CreateIntro({
+  templateName,
   onBack,
   onStart,
 }: {
   onBack: () => void;
   onStart: () => void;
+  templateName?: string;
 }) {
   return (
     <div className="screen create-intro" data-screen-label="Create AI">
@@ -35,7 +37,7 @@ export function CreateIntro({
       <div className="setup-copy">
         <span className="eyebrow">一次创建，反复体验</span>
         <h1>让每个造型都属于你</h1>
-        <p>拍摄或选择同一个人的三张清晰照片。</p>
+        <p>{templateName ? `先创建分身，即可应用「${templateName}」。准备同一个人的三张清晰照片，完成后继续。` : "拍摄或选择同一个人的三张清晰照片。"}</p>
       </div>
       <div className="angle-guide">
         {slots.map((slot, index) => (
