@@ -1096,3 +1096,26 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .face-axis.horizontal { width: 90%; left: 5%; top: 48%; border-top: 2px dashed white; }
 .capture-guide.left .vertical { left: 64%; transform: rotate(-10deg); }
 .capture-guide.right .vertical { left: 36%; transform: rotate(10deg); }
+.source-options { display: grid; gap: 12px; margin-bottom: 8px; }
+.source-options button { display: flex; align-items: center; gap: 13px; text-align: left; min-height: 82px; padding: 16px; border: 1px solid var(--line); border-radius: 18px; background: white; }
+.source-options button > svg:first-child { color: var(--accent); }
+.source-options button > svg:last-child { width: 18px; color: var(--muted); }
+.source-options span { flex: 1; display: grid; gap: 7px; }
+.source-options strong { font-size: 17px; }
+.source-options small { color: var(--muted); font-size: 12px; }
+.screen.photo-upload-screen, .screen.camera-review-screen { padding-bottom: 104px; }
+.local-photo-input { display: none; }
+.upload-large { width: 100%; min-height: 156px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; border: 1.5px dashed #a79acb; border-radius: 22px; background: #eee9fb; color: #6851b7; }
+.upload-large strong { font-size: 17px; }
+.upload-large span { font-size: 12px; color: var(--muted); }
+.upload-count { text-align: center; font-size: 13px; color: var(--muted); margin: 20px 0; }
+.upload-error { font-size: 13px; color: #b73f4b; line-height: 1.6; }
+.uploaded-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 20px; }
+.uploaded-grid > div { position: relative; aspect-ratio: 3 / 4; }
+.uploaded-grid img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+.uploaded-grid div button { position: absolute; right: 3px; top: 3px; background: #171421a8; color: white; border-radius: 50%; width: 30px; height: 30px; display: grid; place-items: center; }
+.add-more { border: 1px dashed #b2a6c6; border-radius: 12px; display: grid; place-items: center; color: var(--accent); min-height: 90px; }
+.camera-complete-icon { display: grid; place-items: center; width: 60px; height: 60px; background: var(--accent-soft); color: var(--accent); border-radius: 50%; margin: 25px auto 20px; }
+.camera-review-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 20px; text-align: center; }
+.camera-review-grid img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 14px; }
+.camera-review-grid strong { display: block; font-size: 13px; margin-top: 10px; }

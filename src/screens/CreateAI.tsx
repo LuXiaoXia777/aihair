@@ -1,133 +1,15 @@
 import { useEffect, useState } from "react";
 import {
-  Camera,
   Check,
   ChevronRight,
-  Plus,
   ScanFace,
   Sparkles,
 } from "lucide-react";
 import { Top, UsingAI } from "../components/ui";
-import { slotLabels, slots } from "../state/faceData";
 import type {
   AIProfile,
   Creation,
-  PhotoDraft,
-  PhotoSlot,
 } from "../state/types";
-export function ProfilePhotos({
-  templateName,
-  draft,
-  errors,
-  validating,
-  onBack,
-  onAdd,
-  onCamera,
-  onContinue,
-}: {
-  templateName?: string;
-  draft: PhotoDraft;
-  errors: PhotoSlot[];
-  validating: boolean;
-  onBack: () => void;
-  onAdd: (slot: PhotoSlot) => void;
-  onCamera: () => void;
-  onContinue: () => void;
-}) {
-  const count = slots.filter((slot) => draft[slot]).length;
-  return (
-    <div className="screen profile-photos" data-screen-label="添加三张照片">
-      <Top title="添加三张照片" onBack={onBack} />
-      <div className="setup-copy">
-        <span className="eyebrow">创建分身 · 照片准备</span>
-        <h1>
-          三个角度，
-          <br />
-          记录完整的你
-        </h1>
-        <p>{templateName ? `先创建分身，即可应用「${templateName}」。请准备同一个人的正面和左右侧面照片。` : "请准备同一个人的正面和左右侧面照片。"}</p>
-      </div>
-      <button
-        className="secondary take-photos"
-        disabled={validating}
-        onClick={onCamera}
-      >
-        <Camera size={20} />
-        拍摄三张照片
-      </button>
-      <p className="photo-source-hint">
-        跟随引导，依次拍摄三个角度。
-        <br />
-        也可以点击下方位置，直接从相册选图。
-      </p>
-      <div className="upload-slots">
-        {slots.map((slot) => (
-          <div className="upload-slot" key={slot}>
-            <button
-              className={`${draft[slot] ? "has-photo" : ""} ${errors.includes(slot) ? "photo-error" : ""}`}
-              disabled={validating}
-              onClick={() => onAdd(slot)}
-              aria-label={`${draft[slot] ? "更换" : "添加"}${slotLabels[slot]}照片`}
-              aria-invalid={errors.includes(slot)}
-              aria-describedby={
-                errors.includes(slot) ? `${slot}-error` : undefined
-              }
-            >
-              {draft[slot] ? (
-                <>
-                  <img
-                    className={
-                      draft[slot]?.quality === "poor" ? "blurred-sample" : ""
-                    }
-                    src={draft[slot]!.image}
-                    alt={`${slotLabels[slot]}照片`}
-                  />
-                  <span>
-                    <Check size={14} />
-                  </span>
-                </>
-              ) : (
-                <>
-                  <Plus />
-                  <small>添加照片</small>
-                </>
-              )}
-            </button>
-            <strong>{slotLabels[slot]}</strong>
-            {errors.includes(slot) && (
-              <p id={`${slot}-error`} role="alert">
-                这张照片不够清晰，
-                <br />
-                请重新拍摄或选择。
-              </p>
-            )}
-          </div>
-        ))}
-      </div>
-      <div className="photo-counter">已添加 {count} / 3 张照片</div>
-      <section className="quality-guide">
-        <h2>这样拍，效果更好</h2>
-        <div>
-          <Check size={16} />
-          <p>面部无遮挡 · 单人入镜 · 光线充足</p>
-        </div>
-        <p className="avoid-copy">
-          避免模糊、逆光、多人合影，三张照片须为同一人。
-        </p>
-      </section>
-      <div className="continue-dock">
-        <button
-          className="primary"
-          disabled={count < 3 || validating}
-          onClick={onContinue}
-        >
-          {validating ? "正在检查照片…" : "下一步"}
-          {!validating && <ChevronRight size={18} />}
-        </button>
-      </div>
-    </div>
-  );
-}
 export function CreatingAI({
   avatar,
   onBack,

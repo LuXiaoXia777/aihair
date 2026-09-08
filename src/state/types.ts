@@ -10,11 +10,13 @@ export type MockPhoto = {
   quality: "good" | "poor";
 };
 export type PhotoDraft = Record<PhotoSlot, MockPhoto | null>;
+export type SetupSource = "photos" | "camera";
 export type AIProfile = {
   id: string;
   name: string;
   avatar: string;
   photos: Record<PhotoSlot, MockPhoto>;
+  sourcePhotos: MockPhoto[];
   faceShape: FaceShape | null;
   recommendations: string[];
 };
@@ -38,19 +40,16 @@ export type Screen =
   | { kind: "generating"; result: Creation }
   | { kind: "result"; result: Creation }
   | { kind: "creation"; creationId: string }
-  | { kind: "profile-photos"; returnTo: RootTab }
-  | { kind: "camera"; slot: PhotoSlot }
-  | {
-      kind: "validating";
-      returnTo: RootTab;
-      photos: Record<PhotoSlot, MockPhoto>;
-    }
-  | { kind: "creating-ai"; returnTo: RootTab; profile: AIProfile }
+  | { kind: "photo-upload"; returnTo: RootTab }
+  | { kind: "camera"; slot: PhotoSlot; returnTo: RootTab }
+  | { kind: "camera-review"; returnTo: RootTab }
+  | { kind: "validating"; returnTo: RootTab; source: SetupSource; photos: MockPhoto[] }
+  | { kind: "creating-ai"; returnTo: RootTab; source: SetupSource; profile: AIProfile }
   | { kind: "ai-ready"; returnTo: RootTab; profileId: string }
   | { kind: "analyzing-ai"; returnTo: RootTab; profileId: string }
   | { kind: "face-result"; profileId: string; returnTo: RootTab };
 export type ActiveSheet =
   | null
-  | { kind: "picker"; slot: PhotoSlot }
+  | { kind: "create-source"; returnTo: RootTab }
   | { kind: "switch" }
   | { kind: "delete"; creationId: string };

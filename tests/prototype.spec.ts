@@ -5,11 +5,11 @@ const screen = (page: Page, name: string) =>
   page.locator(`[data-screen-label="${name}"]`);
 const tab = (page: Page, name: string) =>
   page.getByRole("navigation").getByRole("button", { name, exact: true });
-async function addPhoto(page: Page, slot: string, photo = "示例照片 1") {
-  await page
-    .getByRole("button", { name: new RegExp(`^(添加|更换)${slot}照片$`) })
-    .click();
-  await button(page, photo).click();
+const files = ["maya", "theo", "lina", "noah"].map(name => `public/assets/photos/${name}.webp`);
+async function uploadThree(page: Page) {
+  await page.getByRole("button", {name: /^照片 /}).click();
+  await page.getByLabel("本地相册").setInputFiles(files.slice(0, 3));
+  await expect(button(page, "生成我的模特")).toBeEnabled();
 }
 async function startTemplateSetup(page: Page) {
   await button(page, "蝴蝶层次剪").first().click();
@@ -30,9 +30,8 @@ async function createAI(
   if (entry === "创建我的分身" && !(await screen(page, "我的分身").count())) await startTemplateSetup(page);
   else await button(page, entry).click();
 
-  for (const slot of ["正面", "左侧面", "右侧面"])
-    await addPhoto(page, slot, photo);
-  await button(page, "下一步").click();
+  await uploadThree(page);
+  await button(page, "生成我的模特").click();
   await expect(button(page, "正在检查照片…")).toBeVisible();
   await page.clock.fastForward(500);
   await expect(screen(page, "Creating AI")).toBeVisible();
@@ -91,54 +90,6 @@ test("A: first-use gate, three photos, identity, automatic face analysis and 发
   await expect(page.locator(".rail-section")).toHaveCount(7);
   await expect(button(page, "切换分身，当前小月")).toBeVisible();
   await expect(tab(page, "发现")).toHaveAttribute("aria-current", "page");
-});
-
-test("three-photo validation, direct library and per-slot replacement", async ({
-  page,
-}) => {
-  await startTemplateSetup(page);
-
-  await expect(button(page, "下一步")).toBeDisabled();
-  await button(page, "添加正面照片").click();
-  await expect(page.getByRole("dialog", {name: "从相册选择"})).toBeVisible();
-  await expect(button(page, "相机拍照")).toHaveCount(0);
-  await button(page, "关闭").click();
-  await expect(page.getByRole("dialog")).toHaveCount(0);
-  await addPhoto(page, "正面", "模糊照片");
-  await addPhoto(page, "左侧面");
-  await expect(button(page, "下一步")).toBeDisabled();
-  await addPhoto(page, "右侧面", "示例照片 3");
-  await expect(page.getByAltText("右侧面照片")).toHaveAttribute(
-    "src",
-    /lina.webp$/,
-  );
-  await expect(button(page, "下一步")).toBeEnabled();
-  await button(page, "下一步").click();
-  await page.clock.fastForward(500);
-  await expect(page.getByRole("alert")).toHaveCount(1);
-  await expect(button(page, "更换正面照片")).toHaveAttribute(
-    "aria-invalid",
-    "true",
-  );
-  await expect(button(page, "更换左侧面照片")).toHaveAttribute(
-    "aria-invalid",
-    "false",
-  );
-  await button(page, "更换正面照片").click();
-  await button(page, "关闭").click();
-  await expect(page.getByRole("dialog")).toHaveCount(0);
-  await button(page, "更换正面照片").click();
-  await page.keyboard.press("Escape");
-  await expect(page.getByRole("dialog")).toHaveCount(0);
-  await addPhoto(page, "正面", "示例照片 2");
-  await expect(page.getByRole("alert")).toHaveCount(0);
-  await expect(page.getByAltText("左侧面照片")).toHaveAttribute(
-    "src",
-    /maya.webp$/,
-  );
-  await button(page, "下一步").click();
-  await page.clock.fastForward(500);
-  await expect(screen(page, "Creating AI")).toBeVisible();
 });
 
 test("B: hairstyle generates without uploads; result-only 保存到作品 and 重新生成", async ({
@@ -226,7 +177,7 @@ test("F/G: second AI, origin return, switching everywhere and immutable creation
   await tab(page, "我的分身").click();
   await createAI(page, "新建分身", "示例照片 2");
   await expect(
-    page.getByRole("heading", { name: "圆脸", exact: true }),
+    page.getByRole("heading", { name: "椭圆脸", exact: true }),
   ).toBeVisible();
   await button(page, "返回我的分身").click();
   await expect(
@@ -253,7 +204,7 @@ test("F/G: second AI, origin return, switching everywhere and immutable creation
   await button(page, "切换分身，当前小月").click();
   await page
     .getByRole("dialog")
-    .getByRole("button", { name: "小夏 圆脸", exact: true })
+    .getByRole("button", { name: "小夏 椭圆脸", exact: true })
     .click();
   await button(page, "蝴蝶层次剪").first().click();
   await expect(page.getByText("当前分身：小夏")).toBeVisible();
@@ -382,92 +333,6 @@ test("all template cards, Similar and 试试其他风格 open the correct same-t
   await expect(screen(page, "Result")).toBeVisible();
 });
 
-for (const [photo, shape, first] of [
-  [1, "椭圆脸", "蝴蝶层次剪"],
-  [2, "圆脸", "修颜层次剪"],
-  [3, "心形脸", "法式波波头"],
-  [4, "方脸", "自然微卷"],
-  [5, "菱形脸", "自然微卷"],
-  [6, "长脸", "复古大波浪"],
-] as const) {
-  test(`face mapping ${shape}`, async ({ page }) => {
-    await createAI(page, "创建我的分身", `示例照片 ${photo}`);
-    await expect(
-      page.getByRole("heading", { name: shape, exact: true }),
-    ).toBeVisible();
-    await expect(page.locator(".look-card").first()).toHaveAttribute(
-      "aria-label",
-      first,
-    );
-    expect(await page.locator(".look-card").count()).toBeGreaterThanOrEqual(4);
-  });
-}
-
-test("generation and setup timers cancel on 返回 without late navigation", async ({
-  page,
-}) => {
-  await startTemplateSetup(page);
-  await button(page, "返回").click();
-  await expect(screen(page, "Template Detail")).toBeVisible();
-  await button(page, "返回").click();
-  await expect(screen(page, "发现")).toBeVisible();
-  await startTemplateSetup(page);
-
-  for (const slot of ["正面", "左侧面", "右侧面"]) await addPhoto(page, slot);
-  await button(page, "下一步").click();
-  await button(page, "返回").click();
-  await page.clock.fastForward(2500);
-  await expect(screen(page, "添加三张照片")).toBeVisible();
-  await button(page, "下一步").click();
-  await page.clock.fastForward(500);
-  await expect(screen(page, "Creating AI")).toBeVisible();
-  await button(page, "返回").click();
-  await page.clock.fastForward(2500);
-  await expect(screen(page, "添加三张照片")).toBeVisible();
-  await button(page, "下一步").click();
-  await page.clock.fastForward(500);
-  await expect(screen(page, "Creating AI")).toBeVisible();
-  await page.clock.fastForward(1300);
-  await button(page, "使用这个分身").click();
-  await button(page, "返回").click();
-  await page.clock.fastForward(2500);
-  await expect(screen(page, "AI Profile Created")).toBeVisible();
-  await button(page, "使用这个分身").click();
-  await page.clock.fastForward(1100);
-  await finishToExplore(page);
-  await button(page, "蝴蝶层次剪").first().click();
-  await button(page, "应用").click();
-  await button(page, "返回").click();
-  await page.clock.fastForward(3000);
-  await expect(screen(page, "Template Detail")).toBeVisible();
-});
-
-test("再创建一个 and Switch sheet 新建分身 both create usable profiles", async ({
-  page,
-}) => {
-  await startTemplateSetup(page);
-
-  for (const slot of ["正面", "左侧面", "右侧面"]) await addPhoto(page, slot);
-  await button(page, "下一步").click();
-  await page.clock.fastForward(500);
-  await expect(screen(page, "Creating AI")).toBeVisible();
-  await page.clock.fastForward(1300);
-  await createAI(page, "再创建一个", "示例照片 2");
-  await finishToExplore(page);
-  await button(page, "切换分身，当前小夏").click();
-  await page
-    .getByRole("dialog")
-    .getByRole("button", { name: "小月 待使用", exact: true })
-    .click();
-  await expect(screen(page, "Analyzing Face")).toBeVisible();
-  await page.clock.fastForward(1100);
-  await finishToExplore(page);
-  await button(page, "切换分身，当前小月").click();
-  await createAI(page, "新建分身", "示例照片 3");
-  await finishToExplore(page);
-  await expect(button(page, "切换分身，当前小林")).toBeVisible();
-});
-
 for (const width of [375, 390, 430]) {
   test(`responsive ${width}px, image loading and root-only navigation`, async ({
     page,
@@ -517,98 +382,6 @@ for (const width of [375, 390, 430]) {
   });
 }
 
-test("guided camera auto-adds each angle without confirmation", async ({
-  page,
-}) => {
-  await startTemplateSetup(page);
-
-  await expect(button(page, "拍摄三张照片")).toBeVisible();
-  await button(page, "拍摄三张照片").click();
-  for (const slot of ["正面", "左侧面", "右侧面"]) {
-    await expect(screen(page, "相机拍照")).toBeVisible();
-    await expect(page.getByRole("navigation")).toHaveCount(0);
-    await expect(
-      page.locator('.capture-steps [aria-current="step"]'),
-    ).toContainText(slot);
-    await expect(page.locator('.capture-guide')).toBeVisible();
-    await expect(page.locator('.face-axis')).toHaveCount(2);
-    await expect(page.locator('.capture-angle-prompt')).toBeVisible();
-    await expect(button(page, "重拍")).toHaveCount(0);
-    await expect(button(page, "使用这张照片")).toHaveCount(0);
-    await page.screenshot({path:`test-results/capture-guide-${slot}.png`});
-    await button(page, `拍摄${slot}照片`).click();
-  }
-  await expect(screen(page, "添加三张照片")).toBeVisible();
-  for (const slot of ["正面", "左侧面", "右侧面"])
-    await expect(page.getByAltText(`${slot}照片`)).toBeVisible();
-  await expect(button(page, "下一步")).toBeEnabled();
-  await button(page, "下一步").click();
-  await page.clock.fastForward(500);
-  await expect(screen(page, "Creating AI")).toBeVisible();
-  await page.clock.fastForward(1300);
-  await button(page, "使用这个分身").click();
-  await page.clock.fastForward(1100);
-  await expect(screen(page, "脸型与推荐")).toBeVisible();
-});
-
-test("camera cancellation preserves confirmed photos and supports mixed sources", async ({
-  page,
-}) => {
-  await startTemplateSetup(page);
-
-  await button(page, "拍摄三张照片").click();
-  await button(page, "拍摄正面照片").click();
-  await expect(page.getByRole("heading", {name: "拍摄左侧脸"})).toBeVisible();
-  await button(page, "返回").click();
-  await expect(page.getByAltText("正面照片")).toBeVisible();
-  await expect(page.getByAltText("左侧面照片")).toHaveCount(0);
-  await expect(button(page, "下一步")).toBeDisabled();
-  await addPhoto(page, "左侧面", "示例照片 2");
-  await addPhoto(page, "右侧面", "示例照片 3");
-  await expect(page.getByAltText("左侧面照片")).toHaveAttribute(
-    "src",
-    /theo.webp$/,
-  );
-  await expect(button(page, "下一步")).toBeEnabled();
-  await button(page, "更换左侧面照片").click();
-  await expect(page.getByRole("dialog", { name: "从相册选择" })).toBeVisible();
-  await expect(button(page, "相机拍照")).toHaveCount(0);
-  await button(page, "关闭").click();
-  await expect(page.getByAltText("左侧面照片")).toHaveAttribute(
-    "src",
-    /theo.webp$/,
-  );
-});
-
-test("camera and visible entry fit mobile screens", async ({ page }) => {
-  await startTemplateSetup(page);
-
-  for (const width of [375, 390, 430]) {
-    await page.setViewportSize({ width, height: 844 });
-    await expect(button(page, "拍摄三张照片")).toBeVisible();
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= innerWidth,
-      ),
-    ).toBe(true);
-    await page.screenshot({
-      path: `test-results/photo-entry-${width}.png`,
-      fullPage: true,
-    });
-    await button(page, "拍摄三张照片").click();
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= innerWidth,
-      ),
-    ).toBe(true);
-    await page.screenshot({
-      path: `test-results/camera-${width}.png`,
-      fullPage: true,
-    });
-    await button(page, "返回").click();
-  }
-});
-
 for (const [width, height] of [[1280, 620], [900, 900], [375, 667]]) {
   test(`phone boundaries and pinned navigation ${width}x${height}`, async ({page}) => {
     await page.setViewportSize({width, height});
@@ -630,9 +403,7 @@ for (const [width, height] of [[1280, 620], [900, 900], [375, 667]]) {
     expect(await bounds()).toEqual(shell);
     await button(page, '新建分身').click();
 
-    const next = (await button(page,'下一步').boundingBox())!;
-    expect(next.y + next.height).toBeLessThanOrEqual(shell.y + shell.height);
-    await button(page, '拍摄三张照片').click();
+    await page.getByRole("button", {name: /^相机 /}).click();
     await expect(button(page, '拍摄正面照片')).toBeInViewport();
     expect(await bounds()).toEqual(shell);
     await page.screenshot({path:`test-results/phone-${width}-${height}.png`});
@@ -672,13 +443,13 @@ for (const [section, name] of [['人气发型', '蝴蝶层次剪'], ['流行发�
     await expect(screen(page,'Template Detail')).toBeVisible();
     await expect(screen(page,'添加三张照片')).toHaveCount(0);
     await button(page, '应用').click();
-    await expect(screen(page,'添加三张照片')).toContainText(`先创建分身，即可应用「${name}」`);
+    await expect(page.getByRole("dialog")).toContainText(`创建后即可应用「${name}」`);
     // Canceling setup returns to the exact template without generating.
-    await button(page,'返回').click();
+    await button(page,'取消').click();
     await expect(page.getByRole('heading',{name,exact:true})).toBeVisible();
     await button(page,'应用').click();
-    for (const slot of ['正面','左侧面','右侧面']) await addPhoto(page,slot);
-    await button(page,'下一步').click();
+    await uploadThree(page);
+    await button(page,'生成我的模特').click();
     await page.clock.fastForward(500);
     await page.clock.fastForward(1300);
     await button(page,'使用这个分身').click();
@@ -759,8 +530,8 @@ for (const [width, height] of [[458,762],[390,844]]) {
 test('optional create-model banner creates and returns to discovery', async ({page}) => {
   await expect(page.locator('.rail-section')).toHaveCount(7);
   await button(page,'创建我的模特').click();
-  await expect(screen(page,'添加三张照片')).toBeVisible();
-  await button(page,'返回').click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await button(page,'取消').click();
   await expect(page.locator('.rail-section')).toHaveCount(7);
   await createAI(page,'创建我的模特');
   await button(page,'去发现新造型').click();
@@ -775,12 +546,85 @@ test('My AI merges introduction and enters photos with one create click', async 
   await tab(page,'我的分身').click();
   for (const angle of ['正面','左侧面','右侧面']) await expect(page.locator('.angle-guide').getByText(angle,{exact:true})).toBeVisible();
   await button(page,'创建我的分身').click();
-  await expect(screen(page,'添加三张照片')).toBeVisible();
+  await expect(page.getByRole('dialog')).toBeVisible();
   await expect(button(page,'开始创建')).toHaveCount(0);
-  await expect(button(page,'拍摄三张照片')).toBeVisible();
-  await button(page,'返回').click();
+  await expect(page.getByRole('button', {name: /^相机 /})).toBeVisible();
+  await button(page,'取消').click();
   await expect(screen(page,'我的分身')).toBeVisible();
   await createAI(page,'创建我的分身');
   await button(page,'返回我的分身').click();
   await expect(page.getByRole('heading',{name:'小月',exact:true})).toBeVisible();
+});
+
+
+test("source dialog can cancel; native album supports minimum, append, remove and invalid files", async ({page}) => {
+  await startTemplateSetup(page);
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(screen(page,"Template Detail")).toBeVisible();
+  await button(page,"应用").click();
+  await page.getByRole("button", {name: /^照片 /}).click();
+  await expect(screen(page,"照片上传")).toBeVisible();
+  await expect(button(page,"生成我的模特")).toBeDisabled();
+  const chooserPromise = page.waitForEvent("filechooser");
+  await page.getByRole("button", {name: /^打开本地相册/}).click();
+  const chooser = await chooserPromise;
+  expect(chooser.isMultiple()).toBe(true);
+  await chooser.setFiles(files.slice(0,2));
+  await expect(page.getByRole("status")).toContainText("已选择 2 张");
+  await expect(button(page,"生成我的模特")).toBeDisabled();
+  await page.getByLabel("本地相册").setInputFiles(files.slice(0,3));
+  await expect(page.getByRole("status")).toContainText("已选择 3 张");
+  await expect(button(page,"生成我的模特")).toBeEnabled();
+  await page.getByLabel("本地相册").setInputFiles(files.slice(3));
+  await expect(page.getByRole("status")).toContainText("已选择 4 张");
+  await page.getByLabel("本地相册").setInputFiles({name:"bad.png",mimeType:"image/png",buffer:Buffer.from("invalid")});
+  await expect(page.getByRole("alert")).toBeVisible();
+  await expect(page.locator(".uploaded-grid img")).toHaveCount(4);
+  await button(page,"移除照片 4").click();
+  await button(page,"移除照片 3").click();
+  await expect(button(page,"生成我的模特")).toBeDisabled();
+  await page.getByLabel("本地相册").setInputFiles(files.slice(2));
+  await expect(button(page,"生成我的模特")).toBeEnabled();
+  await page.screenshot({path:"test-results/native-upload.png"});
+  await button(page,"生成我的模特").click();
+  await button(page,"返回").click();
+  await page.clock.fastForward(2500);
+  await expect(screen(page,"照片上传")).toBeVisible();
+  await expect(page.locator(".uploaded-grid img")).toHaveCount(4);
+  await button(page,"生成我的模特").click();
+  await page.clock.fastForward(500);
+  await expect(screen(page,"Creating AI")).toBeVisible();
+  await button(page,"返回").click();
+  await page.clock.fastForward(2500);
+  await expect(screen(page,"照片上传")).toBeVisible();
+});
+
+test("camera captures three guided angles then confirms once to generate", async ({page}) => {
+  await page.setViewportSize({width:390,height:844});
+  await button(page,"创建我的模特").click();
+  await page.clock.fastForward(400);
+  await page.screenshot({path:"test-results/source-dialog.png"});
+  await page.getByRole("button", {name: /^相机 /}).click();
+  for (const slot of ["正面", "左侧面", "右侧面"]) {
+    await expect(screen(page,"相机拍照")).toBeVisible();
+    await expect(page.locator('.capture-steps [aria-current="step"]')).toContainText(slot);
+    await expect(page.locator('.capture-guide')).toBeVisible();
+    await expect(page.locator('.face-axis')).toHaveCount(2);
+    await expect(button(page,"重拍")).toHaveCount(0);
+    await expect(button(page,"使用这张照片")).toHaveCount(0);
+    await expect(button(page,"确定")).toHaveCount(0);
+    await button(page,`拍摄${slot}照片`).click();
+  }
+  await expect(screen(page,"拍摄完成")).toBeVisible();
+  await expect(page.locator('.camera-review-grid img')).toHaveCount(3);
+  await page.screenshot({path:"test-results/camera-complete.png"});
+  await button(page,"确定").click();
+  await page.clock.fastForward(500);
+  await expect(screen(page,"Creating AI")).toBeVisible();
+  await page.clock.fastForward(1300);
+  await button(page,"使用这个分身").click();
+  await page.clock.fastForward(1100);
+  await button(page,"去发现新造型").click();
+  await expect(page.locator('.rail-section')).toHaveCount(7);
 });

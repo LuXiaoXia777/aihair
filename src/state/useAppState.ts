@@ -16,6 +16,7 @@ import type {
   PhotoSlot,
   RootTab,
   Screen,
+  SetupSource,
 } from "./types";
 
 export function useAppState() {
@@ -29,7 +30,7 @@ export function useAppState() {
   const currentAIProfile =
     aiProfiles.find((profile) => profile.id === currentAIProfileId) ?? null;
   const [draft, setDraft] = useState<PhotoDraft>(emptyDraft);
-  const [photoErrors, setPhotoErrors] = useState<PhotoSlot[]>([]);
+  const [uploadedPhotos, setUploadedPhotos] = useState<MockPhoto[]>([]);
   const [creations, setCreations] = useState<Creation[]>([]);
   const [toast, setToast] = useState("");
   const nextId = useRef(0);
@@ -60,7 +61,7 @@ export function useAppState() {
     if (screen.kind === "validating" || screen.kind === "creating-ai") {
       setStack((value) => [
         ...value.slice(0, -1),
-        { kind: "profile-photos", returnTo: screen.returnTo },
+        { kind: screen.source === "camera" ? "camera-review" : "photo-upload", returnTo: screen.returnTo },
       ]);
     } else if (screen.kind === "analyzing-ai") {
       setStack((value) => [
@@ -75,7 +76,7 @@ export function useAppState() {
   };
   // A template-led setup retains the exact browsing stack underneath it.
   const setupPrefix = () => {
-    const start = stack.findIndex((entry) => ["profile-photos", "validating", "creating-ai", "ai-ready", "analyzing-ai"].includes(entry.kind));
+    const start = stack.findIndex((entry) => ["photo-upload", "camera", "camera-review", "validating", "creating-ai", "ai-ready", "analyzing-ai"].includes(entry.kind));
     return start >= 0 ? stack.slice(0, start) : [{ kind: rootTab() } as Screen];
   };
   const setupTemplate = [...stack].reverse().find((entry) => entry.kind === "detail");
@@ -92,26 +93,31 @@ export function useAppState() {
     returnTo: RootTab = rootTab(),
     replaceCurrent = false,
   ) => {
+    closeTransient();
     setDraft(emptyDraft());
-    setPhotoErrors([]);
-    if (replaceCurrent) {
-      closeTransient();
-      setStack([...setupPrefix(), { kind: "profile-photos", returnTo }]);
-    } else push({ kind: "profile-photos", returnTo });
+    setUploadedPhotos([]);
+    if (replaceCurrent) setStack(setupPrefix());
+    setSheet({ kind: "create-source", returnTo });
   };
-  const pickPhoto = (slot: PhotoSlot, photo: MockPhoto) => {
-    setDraft((value) => ({ ...value, [slot]: photo }));
-    setPhotoErrors((value) => value.filter((error) => error !== slot));
-    setSheet(null);
+  const chooseSource = (source: SetupSource) => {
+    if (sheet?.kind !== "create-source") return;
+    if (source === "camera") push({kind: "camera", slot: "front", returnTo: sheet.returnTo});
+    else push({kind: "photo-upload", returnTo: sheet.returnTo});
   };
+  const capturePhoto = (photo: MockPhoto) => {
+    if (screen.kind !== "camera") return;
+    setDraft(value => ({...value, [screen.slot]: photo}));
+    const next = slots[slots.indexOf(screen.slot) + 1];
+    replace(next ? {...screen, slot: next} : {kind: "camera-review", returnTo: screen.returnTo});
+  };
+  const addUploads = (photos: MockPhoto[]) => setUploadedPhotos(value => [...new Map([...value, ...photos].map(photo => [photo.id, photo])).values()]);
+  const removeUpload = (id: string) => setUploadedPhotos(value => value.filter(photo => photo.id !== id));
   const validatePhotos = () => {
-    if (screen.kind !== "profile-photos" || !slots.every((slot) => draft[slot]))
-      return;
-    replace({
-      kind: "validating",
-      returnTo: screen.returnTo,
-      photos: draft as Record<PhotoSlot, MockPhoto>,
-    });
+    if (screen.kind !== "photo-upload" && screen.kind !== "camera-review") return;
+    const source: SetupSource = screen.kind === "camera-review" ? "camera" : "photos";
+    const photos = source === "camera" ? slots.map(slot => draft[slot]).filter((p): p is MockPhoto => p !== null) : uploadedPhotos;
+    if (photos.length < 3) return;
+    replace({kind: "validating", returnTo: screen.returnTo, source, photos});
   };
   const useProfile = (profile: AIProfile, returnTo: RootTab = rootTab()) => {
     setCurrentAIProfileId(profile.id);
@@ -179,14 +185,6 @@ export function useAppState() {
       );
     } else if (screen.kind === "validating") {
       operationTimer.current = setTimeout(() => {
-        const errors = slots.filter(
-          (slot) => screen.photos[slot].quality === "poor",
-        );
-        setPhotoErrors(errors);
-        if (errors.length) {
-          finish({ kind: "profile-photos", returnTo: screen.returnTo });
-          return;
-        }
         const index = nextProfileNumber.current++;
         const profile: AIProfile = {
           id: `ai-${++nextId.current}`,
@@ -195,12 +193,13 @@ export function useAppState() {
             (index >= profileNames.length
               ? ` ${Math.floor(index / profileNames.length) + 1}`
               : ""),
-          avatar: screen.photos.front.image,
-          photos: screen.photos,
+          avatar: screen.photos[0].image,
+          photos: { front: screen.photos[0], left: screen.photos[1], right: screen.photos[2] },
+          sourcePhotos: screen.photos,
           faceShape: null,
           recommendations: [],
         };
-        finish({ kind: "creating-ai", profile, returnTo: screen.returnTo });
+        finish({ kind: "creating-ai", profile, source: screen.source, returnTo: screen.returnTo });
       }, 450);
     } else if (screen.kind === "creating-ai") {
       operationTimer.current = setTimeout(() => {
@@ -244,7 +243,11 @@ export function useAppState() {
     aiProfiles,
     currentAIProfile,
     draft,
-    photoErrors,
+    uploadedPhotos,
+    chooseSource,
+    capturePhoto,
+    addUploads,
+    removeUpload,
     creations,
     toast,
     notify: setToast,
@@ -253,7 +256,6 @@ export function useAppState() {
     home,
     back,
     beginCreate,
-    pickPhoto,
     validatePhotos,
     useProfile,
     generate,

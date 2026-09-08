@@ -2,13 +2,14 @@ import { faceLabels } from "../state/faceData";
 import { useEffect, useRef, type ReactNode } from "react";
 import {
   Check,
+  Camera,
+  Images,
   ChevronRight,
   Plus,
   Trash2,
   X,
 } from "lucide-react";
-import { mockPhotos, poorPhoto } from "../state/faceData";
-import type { AIProfile, MockPhoto } from "../state/types";
+import type { AIProfile } from "../state/types";
 export function Sheet({
   children,
   onClose,
@@ -75,56 +76,18 @@ export function Sheet({
     </div>
   );
 }
-export function Picker({
-  onClose,
-  onPick,
-  selected,
-}: {
-  onClose: () => void;
-  onPick: (photo: MockPhoto) => void;
-  selected: MockPhoto | null;
+export function CreateSourceSheet({onClose, onCamera, onPhotos, templateName}: {
+  onClose: () => void; onCamera: () => void; onPhotos: () => void; templateName?: string;
 }) {
-  return (
-    <Sheet title="从相册选择" onClose={onClose}>
-      <div className="picker-head">
-        <h2>从相册选择</h2>
-        <button aria-label="关闭" onClick={onClose}>
-          <X />
-        </button>
-      </div>
-      <div className="photo-grid">
-        {mockPhotos.map((photo) => (
-          <button
-            className={selected?.id === photo.id ? "selected" : ""}
-            key={photo.id}
-            onClick={() => onPick(photo)}
-            aria-label={photo.name}
-            aria-pressed={selected?.id === photo.id}
-          >
-            <img src={photo.image} alt={photo.name} />
-            {selected?.id === photo.id && (
-              <span>
-                <Check size={14} />
-              </span>
-            )}
-          </button>
-        ))}
-      </div>
-      <div className="poor-example">
-        <button onClick={() => onPick(poorPhoto)} aria-label="模糊照片">
-          <img
-            src={poorPhoto.image}
-            className="blurred-sample"
-            alt="模糊照片"
-          />
-          <span>
-            模糊照片<small>低清晰度示例</small>
-          </span>
-          <ChevronRight size={16} />
-        </button>
-      </div>
-    </Sheet>
-  );
+  return <Sheet title="创建我的模特" onClose={onClose}>
+    <div className="picker-head"><h2>创建我的模特</h2><button aria-label="关闭" onClick={onClose}><X /></button></div>
+    <p>{templateName ? `创建后即可应用「${templateName}」，请选择照片来源。` : "选择一种方式，准备你的模特照片。"}</p>
+    <div className="source-options">
+      <button onClick={onCamera}><Camera /><span><strong>相机</strong><small>依次拍摄正脸、左侧脸、右侧脸</small></span><ChevronRight /></button>
+      <button onClick={onPhotos}><Images /><span><strong>照片</strong><small>从本地相册选择至少 3 张照片</small></span><ChevronRight /></button>
+    </div>
+    <button className="plain" onClick={onClose}>取消</button>
+  </Sheet>;
 }
 export function SwitchSheet({
   profiles,

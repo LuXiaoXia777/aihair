@@ -1,12 +1,12 @@
 import { useLayoutEffect, useRef } from "react";
 import { byId } from "./data";
 import { useAppState } from "./state/useAppState";
-import { mockPhotos, slots } from "./state/faceData";
+import { mockPhotos } from "./state/faceData";
 import { CapturePhoto } from "./screens/CapturePhoto";
 import { BottomNav } from "./components/ui";
 import {
   DeleteSheet,
-  Picker,
+  CreateSourceSheet,
   SwitchSheet,
 } from "./components/sheets";
 import { Explore } from "./screens/Explore";
@@ -22,8 +22,8 @@ import {
   AnalyzingAI,
   CreatingAI,
   Generating,
-  ProfilePhotos,
 } from "./screens/CreateAI";
+import { PhotoUpload, CameraReview } from "./screens/PhotoUpload";
 import { FaceResult } from "./screens/FaceResult";
 export function App() {
   const state = useAppState();
@@ -151,36 +151,14 @@ export function App() {
           }
         />
       )}
-      {(screen.kind === "profile-photos" || screen.kind === "validating") && (
-        <ProfilePhotos
-          templateName={state.setupTemplateId ? byId(state.setupTemplateId).name : undefined}
-          draft={state.draft}
-          errors={state.photoErrors}
-          validating={screen.kind === "validating"}
-          onBack={back}
-          onAdd={(slot) => setSheet({ kind: "picker", slot })}
-          onCamera={() => push({ kind: "camera", slot: "front" })}
-          onContinue={state.validatePhotos}
-        />
+      {(screen.kind === "photo-upload" || (screen.kind === "validating" && screen.source === "photos")) && (
+        <PhotoUpload photos={state.uploadedPhotos} onAdd={state.addUploads} onRemove={state.removeUpload} onBack={back} onGenerate={state.validatePhotos} validating={screen.kind === "validating"} />
+      )}
+      {(screen.kind === "camera-review" || (screen.kind === "validating" && screen.source === "camera")) && (
+        <CameraReview draft={state.draft} onBack={back} onGenerate={state.validatePhotos} validating={screen.kind === "validating"} />
       )}
       {screen.kind === "camera" && (
-        <CapturePhoto
-          key={screen.slot}
-          slot={screen.slot}
-          photo={
-            state.draft.front?.quality === "good"
-              ? state.draft.front
-              : mockPhotos[2]
-          }
-          onBack={back}
-          onCapture={(photo) => {
-            state.pickPhoto(screen.slot, photo);
-            const next = slots[slots.indexOf(screen.slot) + 1];
-            if (next)
-              replace({ ...screen, slot: next });
-            else back();
-          }}
-        />
+        <CapturePhoto key={screen.slot} slot={screen.slot} photo={mockPhotos[2]} onBack={back} onCapture={state.capturePhoto} />
       )}
       {screen.kind === "creating-ai" && (
         <CreatingAI avatar={screen.profile.avatar} onBack={back} />
@@ -224,12 +202,8 @@ export function App() {
           onClose={() => setSheet(null)}
         />
       )}
-      {sheet?.kind === "picker" && screen.kind === "profile-photos" && (
-        <Picker
-          selected={state.draft[sheet.slot]}
-          onPick={(photo) => state.pickPhoto(sheet.slot, photo)}
-          onClose={() => setSheet(null)}
-        />
+      {sheet?.kind === "create-source" && (
+        <CreateSourceSheet onClose={() => setSheet(null)} onCamera={() => state.chooseSource("camera")} onPhotos={() => state.chooseSource("photos")} templateName={state.setupTemplateId ? byId(state.setupTemplateId).name : undefined} />
       )}
       {sheet?.kind === "delete" && (
         <DeleteSheet

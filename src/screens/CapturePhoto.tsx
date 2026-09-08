@@ -51,7 +51,7 @@ export function CapturePhoto({ slot, photo, onBack, onCapture }: {
           onCapture(photo);
         }}><Camera size={20} />拍照</button>
       </div>
-      <p className="capture-footnote">第 {index + 1} / 3 张 · {index < 2 ? "拍完自动添加，继续下一角度" : "拍完自动添加，完成三图拍摄"}</p>
+      <p className="capture-footnote">第 {index + 1} / 3 张 · {index < 2 ? "拍完自动添加，继续下一角度" : "拍完查看三张照片，统一确认"}</p>
     </div>
   );
 }

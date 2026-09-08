@@ -20,7 +20,7 @@ export function ProfileGate({
       <div className="gate-copy">
         <span className="eyebrow">从你开始，发现新造型</span>
         <h1>创建专属分身</h1>
-        <p>一次创建，即可体验发型、发色和艺术照。<br />准备同一个人的三张清晰照片，支持拍摄或相册选择。</p>
+        <p>一次创建，即可体验发型、发色和艺术照。<br />选择相机拍摄三个角度，或从相册选择至少三张照片。</p>
         <div className="angle-guide">
           {slots.map((slot) => <div key={slot}><ScanFace /><span>{slotLabels[slot]}</span></div>)}
         </div>
