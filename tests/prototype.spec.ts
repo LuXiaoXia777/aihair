@@ -517,7 +517,7 @@ for (const width of [375, 390, 430]) {
   });
 }
 
-test("guided camera captures front, left and right with retake and confirmation", async ({
+test("guided camera auto-adds each angle without confirmation", async ({
   page,
 }) => {
   await startTemplateSetup(page);
@@ -530,12 +530,13 @@ test("guided camera captures front, left and right with retake and confirmation"
     await expect(
       page.locator('.capture-steps [aria-current="step"]'),
     ).toContainText(slot);
+    await expect(page.locator('.capture-guide')).toBeVisible();
+    await expect(page.locator('.face-axis')).toHaveCount(2);
+    await expect(page.locator('.capture-angle-prompt')).toBeVisible();
+    await expect(button(page, "重拍")).toHaveCount(0);
+    await expect(button(page, "使用这张照片")).toHaveCount(0);
+    await page.screenshot({path:`test-results/capture-guide-${slot}.png`});
     await button(page, `拍摄${slot}照片`).click();
-    await expect(page.getByAltText(`${slot}已拍照片`)).toBeVisible();
-    await button(page, "重拍").click();
-    await expect(button(page, `拍摄${slot}照片`)).toBeVisible();
-    await button(page, `拍摄${slot}照片`).click();
-    await button(page, "使用这张照片").click();
   }
   await expect(screen(page, "添加三张照片")).toBeVisible();
   for (const slot of ["正面", "左侧面", "右侧面"])
@@ -557,8 +558,7 @@ test("camera cancellation preserves confirmed photos and supports mixed sources"
 
   await button(page, "拍摄三张照片").click();
   await button(page, "拍摄正面照片").click();
-  await button(page, "使用这张照片").click();
-  await button(page, "拍摄左侧面照片").click();
+  await expect(page.getByRole("heading", {name: "拍摄左侧脸"})).toBeVisible();
   await button(page, "返回").click();
   await expect(page.getByAltText("正面照片")).toBeVisible();
   await expect(page.getByAltText("左侧面照片")).toHaveCount(0);

@@ -173,7 +173,7 @@ export function App() {
               : mockPhotos[2]
           }
           onBack={back}
-          onUse={(photo) => {
+          onCapture={(photo) => {
             state.pickPhoto(screen.slot, photo);
             const next = slots[slots.indexOf(screen.slot) + 1];
             if (next)

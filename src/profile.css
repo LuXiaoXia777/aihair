@@ -1089,3 +1089,10 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .discovery-banner-copy p { font-size: 12px; line-height: 1.7; color: #706982; margin: 0 0 18px; }
 .create-model-banner { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-height: 42px; padding: 0 13px; border-radius: 999px; background: var(--ink); color: white; white-space: nowrap; font-size: 12px; font-weight: 600; }
 @media (max-width: 374px) { .discovery-banner { margin-left: -15px; margin-right: -15px; } }
+.capture-angle-prompt { position: absolute; z-index: 2; top: 14px; left: 10px; right: 10px; display: flex; align-items: center; justify-content: center; gap: 6px; color: white; text-shadow: 0 1px 8px #171421; font-size: 14px; }
+.capture-guide { top: 18%; height: 64%; border-color: #ffffffdd; }
+.face-axis { position: absolute; display: block; opacity: .85; }
+.face-axis.vertical { height: 75%; left: 50%; top: 12%; border-left: 2px dashed white; }
+.face-axis.horizontal { width: 90%; left: 5%; top: 48%; border-top: 2px dashed white; }
+.capture-guide.left .vertical { left: 64%; transform: rotate(-10deg); }
+.capture-guide.right .vertical { left: 36%; transform: rotate(10deg); }
