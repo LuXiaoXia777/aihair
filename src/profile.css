@@ -1099,6 +1099,14 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .explore .section-head h2 { font-size: 15px; }
 .explore .section-head button { font-size: 11px; padding: 4px 0; }
 .explore .look-rail { grid-auto-columns: 28%; gap: 8px; }
-.explore .image-wrap { aspect-ratio: auto; height: clamp(54px, calc((var(--phone-height) - 390px) / 4), 114px); border-radius: 12px; }
+.explore .image-wrap { aspect-ratio: 3 / 4; height: auto; border-radius: 12px; }
 .explore .look-card img { object-position: center 32%; }
 .explore .look-card strong { font-size: 11px; line-height: 16px; margin-top: 4px; }
+
+.create-model-banner { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 60px; padding: 9px 12px; margin-bottom: 12px; border-radius: 14px; background: linear-gradient(110deg, #e9e2ff, #f0eaf7); text-align: left; border: 1px solid #ded5f3; }
+.banner-icon { display: grid; place-items: center; width: 36px; height: 36px; flex-shrink: 0; border-radius: 12px; color: var(--accent); background: #ffffffa8; }
+.banner-copy { flex: 1; display: grid; gap: 3px; }
+.banner-copy strong { font-size: 14px; }
+.banner-copy small { font-size: 11px; color: #797088; }
+.create-model-banner > svg { color: #77678e; flex-shrink: 0; }
+.creations .settings-button { top: 22px; }

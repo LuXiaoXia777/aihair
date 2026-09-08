@@ -63,6 +63,7 @@ export function App() {
       {screen.kind === "explore" && (
         <Explore
           profile={current}
+          onCreate={() => beginCreate("explore")}
           onSwitch={() => setSheet({ kind: "switch" })}
           onLook={openLook}
           onAll={(type, category) => push({ kind: "library", type, category })}

@@ -14,7 +14,6 @@ export function Creations({
   return (
     <div className="screen creations" data-screen-label="作品">
       <header className="page-title">
-        <span>收藏每一个心动造型</span>
         <h1>作品</h1>
         <button className="settings-button" aria-label="设置" onClick={onSettings}><Settings size={22} /></button>
       </header>

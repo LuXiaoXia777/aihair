@@ -730,7 +730,7 @@ test('creations use one list; settings agreements return to preserved creations'
 });
 
 for (const [width, height] of [[458,762],[390,844]]) {
-  test(`discovery shows four compact rows with three-plus cards ${width}`, async ({page}) => {
+  test(`discovery uses 3:4 portraits with three-plus cards ${width}`, async ({page}) => {
     await page.setViewportSize({width,height});
     await expect(page.locator('.explore .section-head span')).toHaveCount(0);
     await expect(page.locator('.look-card .image-wrap i')).toHaveCount(0);
@@ -742,9 +742,8 @@ for (const [width, height] of [[458,762],[390,844]]) {
     expect(third.x + third.width).toBeLessThan(rail.x + rail.width);
     expect(fourth.x).toBeLessThan(rail.x + rail.width);
     expect(fourth.x + fourth.width).toBeGreaterThan(rail.x + rail.width);
-    const fourthRow = (await page.locator('.explore .rail-section').nth(3).boundingBox())!;
-    const nav = (await page.getByRole('navigation').boundingBox())!;
-    expect(fourthRow.y + fourthRow.height).toBeLessThanOrEqual(nav.y);
+    const image = (await cards.first().locator('.image-wrap').boundingBox())!;
+    expect(image.width / image.height).toBeCloseTo(3 / 4, 2);
     await page.screenshot({path:`test-results/compact-discovery-${width}.png`});
     await tab(page,'作品').click();
     await page.screenshot({path:`test-results/simple-creations-${width}.png`});
@@ -752,3 +751,18 @@ for (const [width, height] of [[458,762],[390,844]]) {
     await page.screenshot({path:`test-results/settings-${width}.png`});
   });
 }
+
+test('optional create-model banner creates and returns to discovery', async ({page}) => {
+  await expect(page.locator('.rail-section')).toHaveCount(7);
+  await button(page,'创建我的模特').click();
+  await expect(screen(page,'Create AI')).toBeVisible();
+  await button(page,'返回').click();
+  await expect(page.locator('.rail-section')).toHaveCount(7);
+  await createAI(page,'创建我的模特');
+  await button(page,'去发现新造型').click();
+  await expect(button(page,'切换分身，当前小月')).toBeVisible();
+  await expect(button(page,'创建我的模特')).toBeVisible();
+  await tab(page,'作品').click();
+  await expect(page.getByText('收藏每一个心动造型')).toHaveCount(0);
+  await expect(button(page,'设置')).toBeVisible();
+});
