@@ -614,11 +614,25 @@ test("camera captures three guided angles then confirms once to generate", async
     await expect(button(page,"重拍")).toHaveCount(0);
     await expect(button(page,"使用这张照片")).toHaveCount(0);
     await expect(button(page,"确定")).toHaveCount(0);
+    await expect(page.locator(".capture-thumb")).toHaveCount(3);
     await button(page,`拍摄${slot}照片`).click();
+    await expect(page.locator(".capture-thumb img")).toHaveCount(["正面", "左侧面", "右侧面"].indexOf(slot) + 1);
   }
-  await expect(screen(page,"拍摄完成")).toBeVisible();
-  await expect(page.locator('.camera-review-grid img')).toHaveCount(3);
+  await expect(screen(page,"拍摄完成")).toHaveCount(0);
+  await expect(screen(page,"相机拍照")).toBeVisible();
+  await expect(page.locator('.capture-thumb img')).toHaveCount(3);
   await page.screenshot({path:"test-results/camera-complete.png"});
+  for (const [width, height] of [[375,667],[1280,620],[390,844]]) {
+    await page.setViewportSize({width,height});
+    await expect(button(page,"确定")).toBeInViewport();
+    await expect(page.locator(".capture-thumb").last()).toBeInViewport();
+    expect(await page.locator(".app-viewport").evaluate(el => el.scrollHeight <= el.clientHeight + 1)).toBe(true);
+  }
+  await button(page,"确定").click();
+  await button(page,"返回").click();
+  await page.clock.fastForward(2000);
+  await expect(screen(page,"相机拍照")).toBeVisible();
+  await expect(page.locator(".capture-thumb img")).toHaveCount(3);
   await button(page,"确定").click();
   await page.clock.fastForward(500);
   await expect(screen(page,"Creating AI")).toBeVisible();

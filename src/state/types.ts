@@ -41,8 +41,7 @@ export type Screen =
   | { kind: "result"; result: Creation }
   | { kind: "creation"; creationId: string }
   | { kind: "photo-upload"; returnTo: RootTab }
-  | { kind: "camera"; slot: PhotoSlot; returnTo: RootTab }
-  | { kind: "camera-review"; returnTo: RootTab }
+  | { kind: "camera"; slot: PhotoSlot | null; returnTo: RootTab }
   | { kind: "validating"; returnTo: RootTab; source: SetupSource; photos: MockPhoto[] }
   | { kind: "creating-ai"; returnTo: RootTab; source: SetupSource; profile: AIProfile }
   | { kind: "ai-ready"; returnTo: RootTab; profileId: string }

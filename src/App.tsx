@@ -23,7 +23,7 @@ import {
   CreatingAI,
   Generating,
 } from "./screens/CreateAI";
-import { PhotoUpload, CameraReview } from "./screens/PhotoUpload";
+import { PhotoUpload } from "./screens/PhotoUpload";
 import { FaceResult } from "./screens/FaceResult";
 export function App() {
   const state = useAppState();
@@ -154,11 +154,8 @@ export function App() {
       {(screen.kind === "photo-upload" || (screen.kind === "validating" && screen.source === "photos")) && (
         <PhotoUpload photos={state.uploadedPhotos} onAdd={state.addUploads} onRemove={state.removeUpload} onBack={back} onGenerate={state.validatePhotos} validating={screen.kind === "validating"} />
       )}
-      {(screen.kind === "camera-review" || (screen.kind === "validating" && screen.source === "camera")) && (
-        <CameraReview draft={state.draft} onBack={back} onGenerate={state.validatePhotos} validating={screen.kind === "validating"} />
-      )}
-      {screen.kind === "camera" && (
-        <CapturePhoto key={screen.slot} slot={screen.slot} photo={mockPhotos[2]} onBack={back} onCapture={state.capturePhoto} />
+      {(screen.kind === "camera" || (screen.kind === "validating" && screen.source === "camera")) && (
+        <CapturePhoto key={screen.kind === "camera" ? screen.slot ?? "complete" : "complete"} slot={screen.kind === "camera" ? screen.slot : null} draft={state.draft} photo={mockPhotos[2]} onBack={back} onCapture={state.capturePhoto} onGenerate={state.validatePhotos} validating={screen.kind === "validating"} />
       )}
       {screen.kind === "creating-ai" && (
         <CreatingAI avatar={screen.profile.avatar} onBack={back} />

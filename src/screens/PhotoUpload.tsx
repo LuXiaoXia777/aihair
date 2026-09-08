@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Check, Images, Plus, X } from "lucide-react";
+import { Images, Plus, X } from "lucide-react";
 import { Top } from "../components/ui";
-import { slots, slotLabels } from "../state/faceData";
-import type { MockPhoto, PhotoDraft } from "../state/types";
+import type { MockPhoto } from "../state/types";
 
 export function PhotoUpload({photos, onAdd, onRemove, onBack, onGenerate, validating}: {
   photos: MockPhoto[]; onAdd: (photos: MockPhoto[]) => void; onRemove: (id: string) => void;
@@ -57,16 +56,5 @@ export function PhotoUpload({photos, onAdd, onRemove, onBack, onGenerate, valida
     </div>
     <section className="quality-guide"><h2>照片上传说明</h2><p>• 至少 3 张不同照片，多角度更完整。<br />• 光线充足、面部无遮挡，避免滤镜和多人合照。<br />• 照片仅在当前页面内读取，生成流程为原型演示。</p></section>
     <div className="continue-dock"><button className="primary" onClick={onGenerate} disabled={photos.length < 3 || loading || validating}>{validating ? "正在检查照片…" : "生成我的模特"}</button></div>
-  </div>;
-}
-
-export function CameraReview({draft, onBack, onGenerate, validating}: {
-  draft: PhotoDraft; onBack: () => void; onGenerate: () => void; validating: boolean;
-}) {
-  return <div className="screen camera-review-screen" data-screen-label="拍摄完成">
-    <Top title="拍摄完成" onBack={onBack} />
-    <div className="setup-copy"><span className="camera-complete-icon"><Check /></span><h1>三个角度，已拍齐</h1><p>点击确定，开始生成你的专属模特。</p></div>
-    <div className="camera-review-grid">{slots.map(slot => <div key={slot}><img src={draft[slot]?.image} alt={`${slotLabels[slot]}照片`} /><strong>{slotLabels[slot]}</strong></div>)}</div>
-    <div className="continue-dock"><button className="primary" disabled={validating || slots.some(slot => !draft[slot])} onClick={onGenerate}>{validating ? "正在检查照片…" : "确定"}</button></div>
   </div>;
 }

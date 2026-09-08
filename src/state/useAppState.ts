@@ -61,7 +61,7 @@ export function useAppState() {
     if (screen.kind === "validating" || screen.kind === "creating-ai") {
       setStack((value) => [
         ...value.slice(0, -1),
-        { kind: screen.source === "camera" ? "camera-review" : "photo-upload", returnTo: screen.returnTo },
+        screen.source === "camera" ? { kind: "camera", slot: null, returnTo: screen.returnTo } : { kind: "photo-upload", returnTo: screen.returnTo },
       ]);
     } else if (screen.kind === "analyzing-ai") {
       setStack((value) => [
@@ -76,7 +76,7 @@ export function useAppState() {
   };
   // A template-led setup retains the exact browsing stack underneath it.
   const setupPrefix = () => {
-    const start = stack.findIndex((entry) => ["photo-upload", "camera", "camera-review", "validating", "creating-ai", "ai-ready", "analyzing-ai"].includes(entry.kind));
+    const start = stack.findIndex((entry) => ["photo-upload", "camera", "validating", "creating-ai", "ai-ready", "analyzing-ai"].includes(entry.kind));
     return start >= 0 ? stack.slice(0, start) : [{ kind: rootTab() } as Screen];
   };
   const setupTemplate = [...stack].reverse().find((entry) => entry.kind === "detail");
@@ -105,16 +105,17 @@ export function useAppState() {
     else push({kind: "photo-upload", returnTo: sheet.returnTo});
   };
   const capturePhoto = (photo: MockPhoto) => {
-    if (screen.kind !== "camera") return;
-    setDraft(value => ({...value, [screen.slot]: photo}));
-    const next = slots[slots.indexOf(screen.slot) + 1];
-    replace(next ? {...screen, slot: next} : {kind: "camera-review", returnTo: screen.returnTo});
+    if (screen.kind !== "camera" || !screen.slot) return;
+    const slot = screen.slot;
+    setDraft(value => ({...value, [slot]: photo}));
+    const next = slots[slots.indexOf(slot) + 1];
+    replace({...screen, slot: next ?? null});
   };
   const addUploads = (photos: MockPhoto[]) => setUploadedPhotos(value => [...new Map([...value, ...photos].map(photo => [photo.id, photo])).values()]);
   const removeUpload = (id: string) => setUploadedPhotos(value => value.filter(photo => photo.id !== id));
   const validatePhotos = () => {
-    if (screen.kind !== "photo-upload" && screen.kind !== "camera-review") return;
-    const source: SetupSource = screen.kind === "camera-review" ? "camera" : "photos";
+    if (screen.kind !== "photo-upload" && screen.kind !== "camera") return;
+    const source: SetupSource = screen.kind === "camera" ? "camera" : "photos";
     const photos = source === "camera" ? slots.map(slot => draft[slot]).filter((p): p is MockPhoto => p !== null) : uploadedPhotos;
     if (photos.length < 3) return;
     replace({kind: "validating", returnTo: screen.returnTo, source, photos});

@@ -1,57 +1,53 @@
 import { useRef } from "react";
-import { Camera, Check, MoveLeft, MoveRight } from "lucide-react";
+import { MoveLeft, MoveRight } from "lucide-react";
 import { Top } from "../components/ui";
 import { slots, slotLabels } from "../state/faceData";
-import type { MockPhoto, PhotoSlot } from "../state/types";
-const guidance = {
-  front: ["正脸", "平视镜头，将面部对齐虚线。"],
-  left: ["左侧脸", "轻轻向右转头，露出左侧脸部轮廓。"],
-  right: ["右侧脸", "轻轻向左转头，露出右侧脸部轮廓。"],
-};
-export function CapturePhoto({ slot, photo, onBack, onCapture }: {
-  slot: PhotoSlot;
+import type { MockPhoto, PhotoSlot, PhotoDraft } from "../state/types";
+
+export function CapturePhoto({ slot, draft, photo, onBack, onCapture, onGenerate, validating }: {
+  slot: PhotoSlot | null;
+  draft: PhotoDraft;
   photo: MockPhoto;
   onBack: () => void;
   onCapture: (photo: MockPhoto) => void;
+  onGenerate: () => void;
+  validating: boolean;
 }) {
   const submitted = useRef(false);
-  const index = slots.indexOf(slot);
+  const complete = slots.every(item => draft[item]);
+  const angle = slot ?? "right";
   return (
     <div className="screen capture-screen" data-screen-label="相机拍照">
       <Top title="拍摄三张照片" onBack={onBack} />
+      <div className="capture-preview">
+        <img src={photo.image} alt={`${slotLabels[angle]}取景预览`} />
+        <div className="capture-angle-prompt" aria-live="polite">
+          {!complete && slot === "right" && <MoveLeft size={18} />}
+          <strong>{complete ? "三张已拍齐，点击确定生成" : slot === "front" ? "保持正脸，对齐虚线" : slot === "left" ? "向右转头，拍左侧脸" : "向左转头，拍右侧脸"}</strong>
+          {!complete && slot === "left" && <MoveRight size={18} />}
+        </div>
+        {!complete && <div className={`capture-guide ${angle}`} aria-hidden="true">
+          <i className="face-axis vertical" />
+          <i className="face-axis horizontal" />
+        </div>}
+        <span>模拟取景 · 演示照片</span>
+      </div>
       <div className="capture-steps" aria-label="拍摄进度">
         {slots.map((item, i) => (
           <span key={item} className={item === slot ? "active" : ""} aria-current={item === slot ? "step" : undefined}>
-            {i < index ? <Check size={13} /> : <i>{i + 1}</i>}
-            {slotLabels[item]}
+            <span className="capture-thumb">{draft[item] ? <img src={draft[item]!.image} alt={`已拍${slotLabels[item]}照片`} /> : <i>{i + 1}</i>}</span>
+            <small>{slotLabels[item]}</small>
           </span>
         ))}
       </div>
-      <div className="capture-instructions" aria-live="polite">
-        <h1>拍摄{guidance[slot][0]}</h1>
-        <p>{guidance[slot][1]}</p>
-      </div>
-      <div className="capture-preview">
-        <img src={photo.image} alt={`${slotLabels[slot]}取景预览`} />
-        <div className="capture-angle-prompt">
-          {slot === "right" && <MoveLeft size={18} />}
-          <strong>{slot === "front" ? "保持正脸，对齐虚线" : slot === "left" ? "向右转头，拍左侧脸" : "向左转头，拍右侧脸"}</strong>
-          {slot === "left" && <MoveRight size={18} />}
-        </div>
-        <div className={`capture-guide ${slot}`} aria-hidden="true">
-          <i className="face-axis vertical" />
-          <i className="face-axis horizontal" />
-        </div>
-        <span>模拟取景 · 演示照片</span>
-      </div>
       <div className="capture-controls">
-        <button className="primary" aria-label={`拍摄${slotLabels[slot]}照片`} onClick={() => {
+        {complete ? <button className="primary capture-confirm" disabled={validating} onClick={onGenerate}>{validating ? "正在检查照片…" : "确定"}</button> : <button className="capture-shutter" aria-label={`拍摄${slotLabels[angle]}照片`} onClick={() => {
           if (submitted.current) return;
           submitted.current = true;
           onCapture(photo);
-        }}><Camera size={20} />拍照</button>
+        }}><span /></button>}
       </div>
-      <p className="capture-footnote">第 {index + 1} / 3 张 · {index < 2 ? "拍完自动添加，继续下一角度" : "拍完查看三张照片，统一确认"}</p>
+      <p className="capture-footnote" role="status">已拍 {slots.filter(item => draft[item]).length} / 3 张{complete ? "" : " · 拍完自动添加"}</p>
     </div>
   );
 }
