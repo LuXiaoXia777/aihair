@@ -1,4 +1,4 @@
-export type LookType = "hairstyle" | "color";
+export type LookType = "hairstyle" | "color" | "portrait";
 export type Look = {
   id: string;
   name: string;
@@ -167,3 +167,86 @@ export const exploreSections = [
     ],
   },
 ];
+
+// Existing local hair imagery is reused for these recommendation aliases.
+looks.push(
+  {
+    ...hair("long-layers", "Long Layers", ["Face-Framing", "Sleek & Straight"]),
+    image: img("layered-straight"),
+  },
+  {
+    ...hair("chin-length-bob", "Chin-Length Bob", ["Chic Short"]),
+    image: img("classic-bob"),
+  },
+  ...[
+    [
+      "classic",
+      "Classic",
+      "Timeless studio light and an effortlessly elegant finish.",
+    ],
+    ["dreamy", "Dreamy", "Soft light and an airy, romantic atmosphere."],
+    ["vintage", "Vintage", "Warm film tones with a little nostalgia."],
+    [
+      "editorial",
+      "Editorial",
+      "Bold black-and-white light, made for the spotlight.",
+    ],
+  ].map(([id, name, description]): Look => ({
+    id: `portrait-${id}`,
+    name,
+    description,
+    type: "portrait",
+    image: `${import.meta.env.BASE_URL}assets/portraits/${id}.png`,
+    tags: ["Portrait", name],
+    categories: ["All", name],
+  })),
+);
+export const portraitCategories = [
+  "All",
+  "Classic",
+  "Dreamy",
+  "Vintage",
+  "Editorial",
+];
+export const typeLabel = (type: LookType) =>
+  type === "color"
+    ? "Hair Color"
+    : type === "portrait"
+      ? "Portrait"
+      : "Hairstyle";
+export const libraryTitle = (type: LookType) =>
+  type === "color"
+    ? "Hair Colors"
+    : type === "portrait"
+      ? "AI Portraits"
+      : "Hairstyles";
+export const similarTitle = (type: LookType) =>
+  type === "color"
+    ? "Similar Colors"
+    : type === "portrait"
+      ? "Similar Portraits"
+      : "Similar Looks";
+export const similarLooks = (look: Look) =>
+  looks
+    .filter((item) => item.type === look.type && item.id !== look.id)
+    .sort(
+      (a, b) =>
+        Number(
+          b.categories.some((category) => look.categories.includes(category)),
+        ) -
+        Number(
+          a.categories.some((category) => look.categories.includes(category)),
+        ),
+    )
+    .slice(0, 4);
+exploreSections.push({
+  title: "AI Portraits",
+  category: "All",
+  type: "portrait",
+  ids: [
+    "portrait-classic",
+    "portrait-dreamy",
+    "portrait-vintage",
+    "portrait-editorial",
+  ],
+});

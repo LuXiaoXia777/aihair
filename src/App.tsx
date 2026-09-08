@@ -1,170 +1,234 @@
+import { useEffect } from "react";
 import { byId } from "./data";
-import { photos, faceRecommendations } from "./state/faceData";
 import { useAppState } from "./state/useAppState";
+import { mockPhotos } from "./state/faceData";
 import { BottomNav } from "./components/ui";
-import { PhotoActionSheet, Picker, DeleteSheet } from "./components/sheets";
+import {
+  DeleteSheet,
+  PhotoActionSheet,
+  Picker,
+  SwitchSheet,
+} from "./components/sheets";
 import { Explore } from "./screens/Explore";
-import { FaceAnalysis } from "./screens/FaceAnalysis";
-import { PhotoSelection } from "./screens/PhotoSelection";
+import { MyAI } from "./screens/MyAI";
 import { Library } from "./screens/Library";
 import { Detail } from "./screens/Detail";
 import { Result } from "./screens/Result";
-import { Me } from "./screens/Me";
+import { Creations } from "./screens/Creations";
 import { CreationDetail } from "./screens/CreationDetail";
-
+import {
+  AIReady,
+  AnalyzingAI,
+  CreateIntro,
+  CreatingAI,
+  Generating,
+  ProfilePhotos,
+} from "./screens/CreateAI";
+import { FaceResult } from "./screens/FaceResult";
 export function App() {
+  const state = useAppState();
   const {
     screen,
     sheet,
-    setSheet,
-    selectedPhoto,
-    setSelectedPhoto,
-    generating,
-    toast,
-    creations,
-    meFilter,
-    setMeFilter,
-    faceAnalysisPhoto,
-    setFaceAnalysisPhoto,
-    faceShape,
-    setFaceShape,
-    faceAnalysisStatus,
-    setFaceAnalysisStatus,
+    currentAIProfile: current,
+    aiProfiles,
     push,
     replace,
-    back,
     home,
-    notify,
-    start,
-    continuePhoto,
-    save,
-    remove,
-  } = useAppState();
-  const shellClass =
-    screen.kind === "explore" || screen.kind === "me" ? "with-nav" : "";
+    back,
+    beginCreate,
+    setSheet,
+    useProfile,
+  } = state;
+  const root =
+    screen.kind === "explore" ||
+    screen.kind === "my-ai" ||
+    screen.kind === "creations";
+  const openLook = (id: string) => push({ kind: "detail", id });
+  const findProfile = (id: string) =>
+    aiProfiles.find((profile) => profile.id === id)!;
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [screen]);
   return (
-    <main className={`app-shell ${shellClass}`}>
-      <div className="noise"></div>
+    <main className={`app-shell ${root ? "with-nav" : ""}`}>
+      <div className="noise" />
       {screen.kind === "explore" && (
         <Explore
-          onAnalyze={() => {
-            setFaceAnalysisStatus("idle");
-            setFaceAnalysisPhoto(null);
-            setFaceShape(null);
-            push({ kind: "face-analysis" });
-          }}
-          onLook={(id) => push({ kind: "detail", id })}
+          profile={current}
+          hasProfiles={aiProfiles.length > 0}
+          onCreate={() => beginCreate("explore")}
+          onSwitch={() => setSheet({ kind: "switch" })}
+          onLook={openLook}
           onAll={(type, category) => push({ kind: "library", type, category })}
         />
       )}
-      {screen.kind === "face-analysis" && (
-        <FaceAnalysis
-          status={faceAnalysisStatus}
-          photo={faceAnalysisPhoto}
-          shape={faceShape}
-          recommendations={faceShape ? faceRecommendations[faceShape] : []}
-          onBack={back}
-          onChoose={() => push({ kind: "photo-selection", source: "face" })}
-          onLook={(id) => push({ kind: "detail", id, fromAnalysis: true })}
+      {screen.kind === "my-ai" && (
+        <MyAI
+          profile={current}
+          profiles={aiProfiles}
+          onCreate={() => beginCreate("my-ai")}
+          onSwitch={() => setSheet({ kind: "switch" })}
+          onSelect={(profile) => useProfile(profile, "my-ai")}
+          onLook={openLook}
+          onRecommendations={() =>
+            current &&
+            push({
+              kind: "face-result",
+              profileId: current.id,
+              returnTo: "my-ai",
+            })
+          }
         />
       )}
-      {screen.kind === "photo-selection" && (
-        <PhotoSelection
-          selected={selectedPhoto}
-          onBack={back}
-          onAdd={() => setSheet("photo-action")}
-          onContinue={() => continuePhoto(screen)}
+      {screen.kind === "creations" && (
+        <Creations
+          creations={state.creations}
+          filter={state.filter}
+          onFilter={state.setFilter}
+          onExplore={() => home("explore")}
+          onOpen={(creationId) => push({ kind: "creation", creationId })}
         />
       )}
       {screen.kind === "library" && (
         <Library
-          onCategory={(category) => replace({ ...screen, category })}
           screen={screen}
           onBack={back}
-          onLook={(id) => push({ kind: "detail", id })}
+          onLook={openLook}
+          onCategory={(category) => replace({ ...screen, category })}
         />
       )}
       {screen.kind === "detail" && (
         <Detail
           look={byId(screen.id)}
-          generating={generating}
+          profile={current}
           onBack={back}
-          onTry={() =>
-            screen.fromAnalysis && faceAnalysisPhoto
-              ? start(screen.id, faceAnalysisPhoto)
-              : push({
-                  kind: "photo-selection",
-                  source: "look",
-                  lookId: screen.id,
-                })
-          }
-          onSimilar={(id) =>
-            replace({ kind: "detail", id, fromAnalysis: screen.fromAnalysis })
-          }
+          onGenerate={() => state.generate(screen.id)}
+          onSimilar={(id) => replace({ kind: "detail", id })}
         />
+      )}
+      {screen.kind === "generating" && (
+        <Generating result={screen.result} onBack={back} />
       )}
       {screen.kind === "result" && (
         <Result
-          look={byId(screen.result.lookId)}
-          before={screen.result.photo}
-          saved={creations.some((c) => c.id === screen.result.id)}
+          result={screen.result}
+          saved={state.creations.some(
+            (creation) => creation.id === screen.result.id,
+          )}
           onBack={back}
-          onSave={() => save(screen.result)}
-          onAnother={() => home("explore")}
-          onMore={(id) => push({ kind: "detail", id })}
-          onDownload={() => notify("Download started")}
-        />
-      )}
-      {screen.kind === "me" && (
-        <Me
-          creations={creations}
-          filter={meFilter}
-          onFilter={setMeFilter}
-          onExplore={() => home("explore")}
-          onOpen={(creationId) => push({ kind: "creation", creationId })}
+          onSave={() => state.save(screen.result)}
+          onRegenerate={() => state.generate(screen.result.templateId, true)}
+          onMore={openLook}
         />
       )}
       {screen.kind === "creation" && (
         <CreationDetail
-          creation={creations.find((c) => c.id === screen.creationId)!}
+          creation={state.creations.find(
+            (creation) => creation.id === screen.creationId,
+          )!}
           onBack={back}
-          onDownload={() => notify("Download started")}
-          onTry={(id) => push({ kind: "detail", id })}
-          onDelete={() => setSheet("delete")}
+          onDownload={() => state.notify("Download started")}
+          onRegenerate={() =>
+            openLook(
+              state.creations.find(
+                (creation) => creation.id === screen.creationId,
+              )!.templateId,
+            )
+          }
+          onDelete={() =>
+            setSheet({ kind: "delete", creationId: screen.creationId })
+          }
         />
       )}
-      {(screen.kind === "explore" || screen.kind === "me") && (
-        <BottomNav active={screen.kind} onGo={home} />
+      {screen.kind === "create-intro" && (
+        <CreateIntro
+          onBack={back}
+          onStart={() =>
+            push({ kind: "profile-photos", returnTo: screen.returnTo })
+          }
+        />
       )}
-      {sheet === "photo-action" && screen.kind === "photo-selection" && (
+      {(screen.kind === "profile-photos" || screen.kind === "validating") && (
+        <ProfilePhotos
+          draft={state.draft}
+          errors={state.photoErrors}
+          validating={screen.kind === "validating"}
+          onBack={back}
+          onAdd={(slot) => setSheet({ kind: "photo-action", slot })}
+          onContinue={state.validatePhotos}
+        />
+      )}
+      {screen.kind === "creating-ai" && (
+        <CreatingAI avatar={screen.profile.avatar} onBack={back} />
+      )}
+      {screen.kind === "ai-ready" && (
+        <AIReady
+          profile={findProfile(screen.profileId)}
+          onBack={back}
+          onUse={() =>
+            useProfile(findProfile(screen.profileId), screen.returnTo)
+          }
+          onAnother={() => beginCreate(screen.returnTo, true)}
+        />
+      )}
+      {screen.kind === "analyzing-ai" && (
+        <AnalyzingAI profile={findProfile(screen.profileId)} onBack={back} />
+      )}
+      {screen.kind === "face-result" && (
+        <FaceResult
+          profile={findProfile(screen.profileId)}
+          returnTo={screen.returnTo}
+          onBack={back}
+          onDone={() => home(screen.returnTo)}
+          onLook={openLook}
+        />
+      )}
+      {root && (
+        <BottomNav
+          active={screen.kind as "explore" | "my-ai" | "creations"}
+          onGo={home}
+        />
+      )}
+      {sheet?.kind === "switch" && (
+        <SwitchSheet
+          profiles={aiProfiles}
+          selectedId={current?.id}
+          onSelect={(profile) => useProfile(profile)}
+          onNew={() => beginCreate()}
+          onClose={() => setSheet(null)}
+        />
+      )}
+      {sheet?.kind === "photo-action" && screen.kind === "profile-photos" && (
         <PhotoActionSheet
           onClose={() => setSheet(null)}
-          onLibrary={() => setSheet("picker")}
-          onCamera={() => {
-            setSelectedPhoto(photos[2]);
-            setSheet(null);
-          }}
+          onLibrary={() => setSheet({ kind: "picker", slot: sheet.slot })}
+          onCamera={() =>
+            state.pickPhoto(
+              sheet.slot,
+              state.draft.front?.quality === "good"
+                ? state.draft.front
+                : mockPhotos[2],
+            )
+          }
         />
       )}
-      {sheet === "picker" && screen.kind === "photo-selection" && (
+      {sheet?.kind === "picker" && screen.kind === "profile-photos" && (
         <Picker
-          onClose={() => setSheet("photo-action")}
-          onPick={(p) => {
-            setSelectedPhoto(p);
-            setSheet(null);
-          }}
-          selected={selectedPhoto}
+          selected={state.draft[sheet.slot]}
+          onPick={(photo) => state.pickPhoto(sheet.slot, photo)}
+          onClose={() => setSheet({ kind: "photo-action", slot: sheet.slot })}
         />
       )}
-      {sheet === "delete" && screen.kind === "creation" && (
+      {sheet?.kind === "delete" && (
         <DeleteSheet
           onClose={() => setSheet(null)}
-          onDelete={() => remove(screen.creationId)}
+          onDelete={() => state.remove(sheet.creationId)}
         />
       )}
-      {toast && (
+      {state.toast && (
         <div className="toast" role="status">
-          {toast}
+          {state.toast}
         </div>
       )}
     </main>

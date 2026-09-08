@@ -1,38 +1,43 @@
 import { Download, Trash2 } from "lucide-react";
-import { byId } from "../data";
+import { typeLabel } from "../data";
 import type { Creation } from "../state/types";
 import { Top } from "../components/ui";
-
 export function CreationDetail({
   creation,
   onBack,
   onDownload,
-  onTry,
+  onRegenerate,
   onDelete,
 }: {
   creation: Creation;
   onBack: () => void;
   onDownload: () => void;
-  onTry: (id: string) => void;
+  onRegenerate: () => void;
   onDelete: () => void;
 }) {
-  const look = byId(creation.lookId);
   return (
     <div className="screen creation-detail" data-screen-label="Creation Detail">
       <Top onBack={onBack} />
-      <img className="creation-hero" src={look.image} alt={look.name} />
+      <img
+        className="creation-hero"
+        src={creation.image}
+        alt={creation.templateName}
+      />
       <div className="creation-copy">
-        <span>{look.type === "color" ? "Hair Color" : "Hairstyle"}</span>
-        <h1>{look.name}</h1>
+        <span>{typeLabel(creation.type)}</span>
+        <h1>{creation.templateName}</h1>
+        <p className="creation-owner">{creation.aiProfileName}</p>
         <div className="creation-actions">
           <button className="primary" onClick={onDownload}>
-            <Download size={18} /> Download
+            <Download size={18} />
+            Download
           </button>
-          <button className="secondary" onClick={() => onTry(look.id)}>
-            Try Again
+          <button className="secondary" onClick={onRegenerate}>
+            Regenerate
           </button>
           <button className="danger" onClick={onDelete}>
-            <Trash2 size={18} /> Delete
+            <Trash2 size={18} />
+            Delete
           </button>
         </div>
       </div>

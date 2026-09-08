@@ -1,4 +1,10 @@
-import { colorCategories, hairstyleCategories, looks } from "../data";
+import {
+  colorCategories,
+  hairstyleCategories,
+  portraitCategories,
+  libraryTitle,
+  looks,
+} from "../data";
 import type { Screen } from "../state/types";
 import { LookCard, Top } from "../components/ui";
 
@@ -14,21 +20,23 @@ export function Library({
   onCategory: (category: string) => void;
 }) {
   const cats =
-    screen.type === "hairstyle" ? hairstyleCategories : colorCategories;
+    screen.type === "hairstyle"
+      ? hairstyleCategories
+      : screen.type === "portrait"
+        ? portraitCategories
+        : colorCategories;
   const cat = screen.category;
   const items = looks.filter(
     (l) => l.type === screen.type && l.categories.includes(cat),
   );
   return (
     <div className="screen" data-screen-label="Library">
-      <Top
-        title={screen.type === "hairstyle" ? "Hairstyles" : "Hair Colors"}
-        onBack={onBack}
-      />
+      <Top title={libraryTitle(screen.type)} onBack={onBack} />
       <div className="category-tabs">
         {cats.map((c) => (
           <button
             className={c === cat ? "active" : ""}
+            aria-pressed={c === cat}
             onClick={() => onCategory(c)}
             key={c}
           >

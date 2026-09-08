@@ -1,48 +1,39 @@
-import { Download } from "lucide-react";
-import { Look, looks } from "../data";
-import { LookCard, Top } from "../components/ui";
-import { ResultPhoto } from "../components/ResultPhoto";
-
+import { byId, similarLooks } from "../data";
+import type { Creation } from "../state/types";
+import { LookCard, Top, UsingAI } from "../components/ui";
 export function Result({
-  look,
-  before,
+  result,
   saved,
   onBack,
   onSave,
-  onAnother,
+  onRegenerate,
   onMore,
-  onDownload,
 }: {
-  look: Look;
-  before: string;
+  result: Creation;
   saved: boolean;
   onBack: () => void;
   onSave: () => void;
-  onAnother: () => void;
+  onRegenerate: () => void;
   onMore: (id: string) => void;
-  onDownload: () => void;
 }) {
-  const similar = looks
-    .filter((l) => l.type === look.type && l.id !== look.id)
-    .slice(4, 8);
+  const look = byId(result.templateId);
   return (
     <div className="screen result" data-screen-label="Result">
-      <Top
-        onBack={onBack}
-        action={
-          <button aria-label="Download" onClick={onDownload}>
-            <Download />
-          </button>
-        }
-      />
-      <ResultPhoto
-        key={`${look.id}:${before}`}
-        original={before}
-        result={look.image}
+      <Top onBack={onBack} />
+      <img
+        className="result-image"
+        src={result.image}
+        alt={`${result.templateName} result`}
       />
       <div className="result-copy">
         <span>Your new look</span>
-        <h1>{look.name}</h1>
+        <h1>{result.templateName}</h1>
+        <UsingAI
+          profile={{
+            name: result.aiProfileName,
+            avatar: result.aiProfileAvatar,
+          }}
+        />
         <div className="result-actions">
           <button
             className={`primary ${saved ? "saved" : ""}`}
@@ -50,16 +41,20 @@ export function Result({
           >
             {saved ? "Saved ✓" : "Save"}
           </button>
-          <button className="secondary" onClick={onAnother}>
-            {look.type === "color" ? "Try Another Color" : "Try Another Look"}
+          <button className="secondary" onClick={onRegenerate}>
+            Regenerate
           </button>
         </div>
       </div>
       <section className="similar">
         <h2>More Like This</h2>
         <div className="look-rail">
-          {similar.map((l) => (
-            <LookCard look={l} key={l.id} onClick={() => onMore(l.id)} />
+          {similarLooks(look).map((item) => (
+            <LookCard
+              key={item.id}
+              look={item}
+              onClick={() => onMore(item.id)}
+            />
           ))}
         </div>
       </section>

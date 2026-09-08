@@ -1,61 +1,49 @@
-import { Scissors, Sparkles } from "lucide-react";
-import { Look, looks } from "../data";
-import { LookCard, Top } from "../components/ui";
-
+import { Sparkles } from "lucide-react";
+import { similarLooks, similarTitle, typeLabel, type Look } from "../data";
+import type { AIProfile } from "../state/types";
+import { LookCard, Top, UsingAI } from "../components/ui";
 export function Detail({
   look,
-  generating,
+  profile,
   onBack,
-  onTry,
+  onGenerate,
   onSimilar,
 }: {
   look: Look;
-  generating: boolean;
+  profile: AIProfile | null;
   onBack: () => void;
-  onTry: () => void;
+  onGenerate: () => void;
   onSimilar: (id: string) => void;
 }) {
-  const similar = looks
-    .filter((l) => l.type === look.type && l.id !== look.id)
-    .slice(0, 4);
-  if (generating)
-    return (
-      <div className="screen generating" data-screen-label="Generating">
-        <div className="loader">
-          <span></span>
-          <Scissors size={29} />
-        </div>
-        <h1>Creating your new look...</h1>
-        <p>This may take a few seconds.</p>
-      </div>
-    );
   return (
-    <div className="screen detail" data-screen-label="Look Detail">
+    <div className="screen detail" data-screen-label="Template Detail">
       <Top onBack={onBack} />
       <div className="hero-photo">
         <img src={look.image} alt={look.name} />
-        <span className="look-kind">
-          {look.type === "color" ? "HAIR COLOR" : "HAIRSTYLE"}
-        </span>
+        <span className="look-kind">{typeLabel(look.type).toUpperCase()}</span>
       </div>
       <div className="detail-copy">
         <h1>{look.name}</h1>
         <div className="tags">
-          {look.tags.map((t) => (
-            <span key={t}>{t}</span>
+          {look.tags.map((tag) => (
+            <span key={tag}>{tag}</span>
           ))}
         </div>
         <p>{look.description}</p>
-        <button className="primary" onClick={onTry}>
-          {look.type === "color" ? "Try This Color" : "Try This Look"}{" "}
-          <Sparkles size={18} />
+        {profile && <UsingAI profile={profile} />}
+        <button className="primary" onClick={onGenerate}>
+          Generate <Sparkles size={18} />
         </button>
       </div>
       <section className="similar">
-        <h2>{look.type === "color" ? "Similar Colors" : "Similar Looks"}</h2>
+        <h2>{similarTitle(look.type)}</h2>
         <div className="look-rail">
-          {similar.map((l) => (
-            <LookCard look={l} key={l.id} onClick={() => onSimilar(l.id)} />
+          {similarLooks(look).map((item) => (
+            <LookCard
+              key={item.id}
+              look={item}
+              onClick={() => onSimilar(item.id)}
+            />
           ))}
         </div>
       </section>

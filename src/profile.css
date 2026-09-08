@@ -1,0 +1,912 @@
+/* AI Profile MVP: extends the original typography, ivory surfaces and lavender accent. */
+.brand-head {
+  justify-content: space-between;
+  padding-bottom: 26px;
+}
+.brand-head h1 {
+  font-size: 28px;
+}
+.profile-chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 42px;
+  padding: 4px 9px 4px 4px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  background: #fff9;
+}
+.profile-chip img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.eyebrow {
+  font:
+    700 10px "Manrope",
+    sans-serif;
+  letter-spacing: 0.13em;
+  color: var(--accent);
+}
+.profile-gate {
+  padding-bottom: 12px;
+}
+.gate-photo {
+  height: 350px;
+  border-radius: 25px;
+  overflow: hidden;
+  position: relative;
+  background: #e5dfe9;
+}
+.gate-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+}
+.gate-photo:after {
+  content: "";
+  position: absolute;
+  inset: 55% 0 0;
+  background: linear-gradient(transparent, #17142190);
+}
+.gate-photo > span {
+  position: absolute;
+  z-index: 1;
+  bottom: 22px;
+  left: 22px;
+  color: #fff;
+  font: 700 10px "Manrope";
+  letter-spacing: 0.16em;
+}
+.gate-copy {
+  padding: 26px 2px 0;
+  text-align: center;
+}
+.gate-copy h1 {
+  font: 700 32px "Manrope";
+  letter-spacing: -0.045em;
+  margin: 9px 0 12px;
+}
+.gate-copy p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 330px;
+  margin: 0 auto 24px;
+}
+.gate-copy .primary {
+  font-size: 15px;
+}
+.bottom-nav {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.bottom-nav button {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  gap: 5px;
+}
+.bottom-nav button.active:before {
+  content: "";
+  width: 20px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--accent);
+  position: absolute;
+  top: 0;
+}
+.using-ai {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 20px;
+  color: #6b6372;
+  font-size: 14px;
+}
+.using-ai img {
+  width: 31px;
+  height: 31px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+.result-image {
+  width: 100%;
+  height: 470px;
+  object-fit: cover;
+  display: block;
+  border-radius: 24px;
+}
+.result-actions {
+  grid-template-columns: 1fr 1fr;
+}
+.creation-owner {
+  color: var(--muted);
+  font-size: 16px;
+  margin: 0 0 24px;
+}
+.filter-tabs {
+  gap: 6px;
+}
+.filter-tabs button {
+  font-size: 12px;
+  padding: 0 9px;
+  min-width: 0;
+}
+.creation-grid {
+  gap: 18px 12px;
+}
+.creation-grid button {
+  aspect-ratio: auto;
+  border-radius: 0;
+  text-align: left;
+  overflow: visible;
+}
+.creation-grid img {
+  aspect-ratio: 0.8;
+  height: auto;
+  display: block;
+  border-radius: 17px;
+}
+.creation-grid button > span {
+  display: block;
+  padding-top: 9px;
+}
+.creation-grid strong {
+  display: block;
+  font-size: 13px;
+}
+.creation-grid small {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.ai-profile-hero {
+  height: 375px;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  background: #e5dfe9;
+}
+.ai-profile-hero > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+}
+.ai-profile-hero:after {
+  content: "";
+  position: absolute;
+  inset: 50% 0 0;
+  background: linear-gradient(transparent, #171421b0);
+}
+.ai-profile-hero > div {
+  position: absolute;
+  left: 22px;
+  bottom: 23px;
+  color: #fff;
+  z-index: 1;
+}
+.ai-profile-hero span {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+.ai-profile-hero h2 {
+  font: 700 32px "Manrope";
+  margin: 4px 0 11px;
+  letter-spacing: -0.04em;
+}
+.ai-profile-hero button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  background: #ffffff24;
+  border: 1px solid #ffffff55;
+  border-radius: 999px;
+  padding: 9px 13px;
+  min-height: 40px;
+  backdrop-filter: blur(12px);
+}
+.my-face-shape {
+  padding: 26px 2px;
+  margin-bottom: 27px;
+  border-bottom: 1px solid var(--line);
+}
+.my-face-shape h2 {
+  font: 700 29px "Manrope";
+  letter-spacing: -0.04em;
+  margin: 6px 0 8px;
+}
+.my-face-shape p {
+  color: var(--muted);
+  line-height: 1.5;
+  font-size: 14px;
+  margin: 0;
+}
+.profiles-section {
+  border-top: 1px solid var(--line);
+  padding-top: 25px;
+}
+.profiles-section h2 {
+  font: 700 18px "Manrope";
+  letter-spacing: -0.03em;
+  margin: 0 0 18px;
+}
+.profile-rail {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 3px 3px 8px;
+  scrollbar-width: none;
+}
+.profile-choice,
+.new-profile {
+  flex-shrink: 0;
+  width: 76px;
+  padding: 0;
+  text-align: center;
+}
+.profile-choice > span,
+.new-profile > span {
+  width: 70px;
+  height: 70px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  margin: auto;
+}
+.profile-choice img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.profile-choice.selected > span {
+  border-color: var(--accent);
+  padding: 3px;
+}
+.profile-choice i {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background: var(--accent);
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+  color: #fff;
+  display: grid;
+  place-items: center;
+}
+.profile-choice strong,
+.new-profile strong {
+  font-size: 12px;
+  margin-top: 9px;
+  display: block;
+}
+.new-profile > span {
+  border: 1.5px dashed #b7accc;
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.switch-profiles {
+  display: grid;
+  gap: 4px;
+  max-height: 50dvh;
+  overflow-y: auto;
+  padding-bottom: 16px;
+}
+.switch-profiles button {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  text-align: left;
+  padding: 12px;
+  border-radius: 15px;
+}
+.switch-profiles button[aria-pressed="true"] {
+  background: var(--accent-soft);
+}
+.switch-profiles img {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.switch-profiles button > span {
+  flex: 1;
+  display: grid;
+  gap: 5px;
+}
+.switch-profiles small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.switch-profiles svg {
+  color: var(--accent);
+}
+.create-intro-hero {
+  height: 330px;
+  overflow: hidden;
+  border-radius: 24px;
+  position: relative;
+}
+.create-intro-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+.create-intro-hero:after {
+  content: "";
+  position: absolute;
+  inset: 50% 0 0;
+  background: linear-gradient(transparent, #17142199);
+}
+.create-intro-hero > span {
+  position: absolute;
+  left: 22px;
+  bottom: 22px;
+  z-index: 1;
+  color: #fff;
+  font: 700 13px "Manrope";
+  line-height: 1.6;
+  letter-spacing: 0.09em;
+}
+.setup-copy {
+  padding: 27px 5px 18px;
+  text-align: center;
+}
+.setup-copy h1 {
+  font: 700 31px "Manrope";
+  letter-spacing: -0.05em;
+  line-height: 1.13;
+  margin: 9px 0 14px;
+}
+.setup-copy p {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 310px;
+}
+.angle-guide {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0 10px 26px;
+  gap: 13px;
+}
+.angle-guide > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.angle-guide svg {
+  width: 28px;
+  height: 28px;
+  color: var(--accent);
+}
+.profile-photos {
+  padding-bottom: 116px;
+}
+.profile-photos .setup-copy {
+  padding-top: 27px;
+  padding-bottom: 30px;
+}
+.profile-photos .setup-copy h1 {
+  font-size: 36px;
+}
+.upload-slots {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.upload-slot {
+  text-align: center;
+  min-width: 0;
+}
+.upload-slot > button {
+  width: 100%;
+  aspect-ratio: 0.69;
+  border: 1.5px dashed #b4abbf;
+  background: #ede8f1;
+  border-radius: 19px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: var(--accent);
+  overflow: hidden;
+  position: relative;
+}
+.upload-slot > button small {
+  font-size: 12px;
+}
+.upload-slot > button.has-photo {
+  border: 2px solid var(--accent);
+}
+.upload-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.upload-slot button > span {
+  position: absolute;
+  bottom: 8px;
+  right: 7px;
+  background: var(--accent);
+  color: white;
+  display: grid;
+  place-items: center;
+  border: 2px solid white;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+.upload-slot > strong {
+  font-size: 14px;
+  margin-top: 11px;
+  display: block;
+}
+.upload-slot > button.photo-error {
+  border: 2px solid #b63f4c;
+}
+.upload-slot .photo-error > span {
+  background: #b63f4c;
+}
+.upload-slot p {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #ad3442;
+  margin: 10px 0 0;
+}
+.photo-counter {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  margin: 21px 0 30px;
+}
+.quality-guide {
+  border-top: 1px solid var(--line);
+  padding: 25px 5px;
+}
+.quality-guide h2 {
+  font: 600 17px "Manrope";
+  letter-spacing: -0.025em;
+  margin: 0 0 16px;
+}
+.quality-guide > div {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  color: var(--accent);
+}
+.quality-guide p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0;
+}
+.quality-guide .avoid-copy {
+  margin-top: 13px;
+  color: #8e818c;
+}
+.quality-guide svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.continue-dock {
+  position: fixed;
+  z-index: 15;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: min(430px, 100%);
+  padding: 13px 18px calc(14px + env(safe-area-inset-bottom));
+  background: #f8f6f4ed;
+  backdrop-filter: blur(18px);
+  border-top: 1px solid var(--line);
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+button:disabled:active {
+  transform: none;
+}
+.continue-dock button:disabled {
+  background: #ded9e1;
+  color: #8b8491;
+  opacity: 1;
+}
+.action-sheet-title {
+  text-align: left;
+  padding: 0 3px 17px;
+}
+.system-actions {
+  display: grid;
+  border-radius: 17px;
+  background: #ebe7ed;
+  overflow: hidden;
+}
+.system-actions button {
+  min-height: 60px;
+  display: grid;
+  grid-template-columns: 38px 1fr 24px;
+  align-items: center;
+  text-align: left;
+  gap: 8px;
+  padding: 8px 13px;
+  border-bottom: 1px solid #dcd6df;
+}
+.system-actions button:last-child {
+  border-bottom: 0;
+}
+.system-actions button > span {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: #fff;
+  color: var(--accent);
+}
+.system-actions button > span svg {
+  width: 18px;
+}
+.system-actions button > strong {
+  font-size: 14px;
+}
+.system-actions button > svg {
+  width: 16px;
+  color: #928b96;
+}
+.action-cancel {
+  margin-top: 8px;
+}
+.photo-grid button {
+  position: relative;
+}
+.photo-grid button.selected {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.photo-grid button > span {
+  position: absolute;
+  right: 7px;
+  bottom: 7px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  display: grid;
+  place-items: center;
+}
+.blurred-sample {
+  filter: blur(4px);
+}
+.poor-example {
+  margin-top: 20px;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+}
+.poor-example button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 2px;
+}
+.poor-example img {
+  width: 42px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.poor-example span {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+}
+.poor-example small {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+  margin-top: 4px;
+}
+.sheet {
+  max-height: 90dvh;
+  overflow-y: auto;
+}
+.ready-hero {
+  width: 245px;
+  height: 325px;
+  position: relative;
+  margin: 18px auto 0;
+}
+.ready-hero > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 120px 120px 27px 27px;
+}
+.ready-hero > span {
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 4px solid var(--paper);
+  color: #fff;
+  display: grid;
+  place-items: center;
+}
+.ai-ready .setup-copy {
+  padding-top: 40px;
+  padding-bottom: 28px;
+}
+.setup-copy .ready-name {
+  font: 600 22px "Manrope";
+  color: var(--ink);
+}
+.progress-content {
+  min-height: calc(100dvh - 150px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.profile-progress-photo {
+  width: 160px;
+  height: 160px;
+  position: relative;
+  margin-bottom: 34px;
+}
+.profile-progress-photo img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  padding: 8px;
+}
+.progress-ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--accent-soft);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+.progress-content h1 {
+  font: 700 26px "Manrope";
+  letter-spacing: -0.04em;
+  margin: 0 0 12px;
+}
+.progress-content > p {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+}
+.progress-steps {
+  list-style: none;
+  display: grid;
+  gap: 15px;
+  padding: 0;
+  margin: 34px 0 0;
+  text-align: left;
+}
+.progress-steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #b0a9b7;
+}
+.progress-steps li.active {
+  color: var(--accent);
+}
+.progress-steps i {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+.analysis-photo {
+  height: 450px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+}
+.analysis-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.scan-line {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  height: 2px;
+  background: #eeeaff;
+  box-shadow: 0 0 13px white;
+  animation: scan 1.3s ease-in-out infinite;
+}
+.analysis-progress {
+  text-align: center;
+  padding: 25px 0;
+}
+.loader.small {
+  width: 55px;
+  height: 55px;
+  margin: auto;
+}
+.analysis-progress h1 {
+  font: 700 23px "Manrope";
+  letter-spacing: -0.04em;
+  margin: 17px 0 10px;
+}
+.analysis-progress p {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+}
+.generation-screen {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.generation-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(16px);
+  opacity: 0.2;
+  z-index: -1;
+  transform: scale(1.08);
+}
+.generation-content {
+  min-height: calc(100dvh - 150px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.generation-content h1 {
+  font: 700 26px "Manrope";
+  letter-spacing: -0.04em;
+  margin: 28px 0 9px;
+}
+.generation-content .using-ai {
+  margin-top: 6px;
+}
+.face-result-hero {
+  height: 325px;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+}
+.face-result-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.face-result-hero > span {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background: #ffffffde;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.shape-copy {
+  text-align: center;
+  padding: 24px 8px 27px;
+  border-bottom: 1px solid var(--line);
+}
+.shape-copy small {
+  font: 700 10px "Manrope";
+  letter-spacing: 0.13em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.shape-copy h1 {
+  font: 700 37px "Manrope";
+  letter-spacing: -0.05em;
+  margin: 6px 0 9px;
+}
+.shape-copy p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0;
+}
+.recommendations {
+  padding-top: 25px;
+}
+.recommendation-head {
+  margin-bottom: 19px;
+}
+.recommendation-head > span {
+  font: 700 10px "Manrope";
+  letter-spacing: 0.13em;
+  color: var(--accent);
+}
+.recommendation-head h2 {
+  font: 700 21px "Manrope";
+  letter-spacing: -0.035em;
+  margin: 7px 0 0;
+}
+.finish-setup {
+  margin-top: 30px;
+}
+button:focus-visible {
+  outline: 3px solid #9785ed;
+  outline-offset: 3px;
+}
+@keyframes scan {
+  0%,
+  100% {
+    top: 20%;
+  }
+  50% {
+    top: 78%;
+  }
+}
+@media (min-width: 431px) {
+  .continue-dock {
+    bottom: 18px;
+    border-radius: 0 0 28px 28px;
+  }
+  .progress-content,
+  .generation-content {
+    min-height: calc(100dvh - 186px);
+  }
+}
+@media (max-width: 374px) {
+  .gate-photo {
+    height: 300px;
+  }
+  .upload-slots {
+    gap: 7px;
+  }
+  .filter-tabs button {
+    font-size: 11px;
+    padding: 0 7px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *:before,
+  *:after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}

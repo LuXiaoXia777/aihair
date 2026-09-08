@@ -1,20 +1,55 @@
 import type { LookType } from "../data";
-export type Screen =
-  | { kind: "explore" }
-  | { kind: "face-analysis" }
-  | { kind: "photo-selection"; source: "look" | "face"; lookId?: string }
-  | { kind: "library"; type: LookType; category: string }
-  | { kind: "detail"; id: string; fromAnalysis?: boolean }
-  | { kind: "result"; result: Creation }
-  | { kind: "me" }
-  | { kind: "creation"; creationId: number };
-export type Creation = {
-  id: number;
-  lookId: string;
-  photo: string;
-  createdAt: number;
-};
+export type RootTab = "explore" | "my-ai" | "creations";
 export type FaceShape =
   "Oval" | "Round" | "Square" | "Heart" | "Diamond" | "Oblong";
-export type FaceAnalysisStatus = "idle" | "analyzing" | "result";
-export type MeFilter = "All" | "Hairstyles" | "Hair Colors";
+export type PhotoSlot = "front" | "left" | "right";
+export type MockPhoto = {
+  id: string;
+  image: string;
+  name: string;
+  quality: "good" | "poor";
+};
+export type PhotoDraft = Record<PhotoSlot, MockPhoto | null>;
+export type AIProfile = {
+  id: string;
+  name: string;
+  avatar: string;
+  photos: Record<PhotoSlot, MockPhoto>;
+  faceShape: FaceShape | null;
+  recommendations: string[];
+};
+export type Creation = {
+  id: string;
+  type: LookType;
+  templateId: string;
+  templateName: string;
+  aiProfileId: string;
+  aiProfileName: string;
+  aiProfileAvatar: string;
+  image: string;
+  createdAt: number;
+};
+export type CreationFilter = "All" | "Hairstyles" | "Hair Colors" | "Portraits";
+export type Screen =
+  | { kind: RootTab }
+  | { kind: "library"; type: LookType; category: string }
+  | { kind: "detail"; id: string }
+  | { kind: "generating"; result: Creation }
+  | { kind: "result"; result: Creation }
+  | { kind: "creation"; creationId: string }
+  | { kind: "create-intro"; returnTo: RootTab }
+  | { kind: "profile-photos"; returnTo: RootTab }
+  | {
+      kind: "validating";
+      returnTo: RootTab;
+      photos: Record<PhotoSlot, MockPhoto>;
+    }
+  | { kind: "creating-ai"; returnTo: RootTab; profile: AIProfile }
+  | { kind: "ai-ready"; returnTo: RootTab; profileId: string }
+  | { kind: "analyzing-ai"; returnTo: RootTab; profileId: string }
+  | { kind: "face-result"; profileId: string; returnTo: RootTab };
+export type ActiveSheet =
+  | null
+  | { kind: "photo-action" | "picker"; slot: PhotoSlot }
+  | { kind: "switch" }
+  | { kind: "delete"; creationId: string };
