@@ -16,13 +16,11 @@ const guidance = {
 };
 export function CapturePhoto({
   slot,
-  mode,
   photo,
   onBack,
   onUse,
 }: {
   slot: PhotoSlot;
-  mode: "all" | "single";
   photo: MockPhoto;
   onBack: () => void;
   onUse: (photo: MockPhoto) => void;
@@ -39,7 +37,7 @@ export function CapturePhoto({
             className={item === slot ? "active" : ""}
             aria-current={item === slot ? "step" : undefined}
           >
-            {mode === "all" && i < index ? <Check size={13} /> : <i>{i + 1}</i>}
+            {i < index ? <Check size={13} /> : <i>{i + 1}</i>}
             {slotLabels[item]}
           </span>
         ))}
@@ -88,9 +86,7 @@ export function CapturePhoto({
         )}
       </div>
       <p className="capture-footnote">
-        {mode === "all"
-          ? `第 ${index + 1} / 3 张`
-          : `补拍${slotLabels[slot]}照片`}
+        {`第 ${index + 1} / 3 张`}
       </p>
     </div>
   );

@@ -39,7 +39,7 @@ export type Screen =
   | { kind: "creation"; creationId: string }
   | { kind: "create-intro"; returnTo: RootTab }
   | { kind: "profile-photos"; returnTo: RootTab }
-  | { kind: "camera"; slot: PhotoSlot; mode: "all" | "single" }
+  | { kind: "camera"; slot: PhotoSlot }
   | {
       kind: "validating";
       returnTo: RootTab;
@@ -51,6 +51,6 @@ export type Screen =
   | { kind: "face-result"; profileId: string; returnTo: RootTab };
 export type ActiveSheet =
   | null
-  | { kind: "photo-action" | "picker"; slot: PhotoSlot }
+  | { kind: "picker"; slot: PhotoSlot }
   | { kind: "switch" }
   | { kind: "delete"; creationId: string };

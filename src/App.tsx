@@ -6,7 +6,6 @@ import { CapturePhoto } from "./screens/CapturePhoto";
 import { BottomNav } from "./components/ui";
 import {
   DeleteSheet,
-  PhotoActionSheet,
   Picker,
   SwitchSheet,
 } from "./components/sheets";
@@ -161,16 +160,15 @@ export function App() {
           errors={state.photoErrors}
           validating={screen.kind === "validating"}
           onBack={back}
-          onAdd={(slot) => setSheet({ kind: "photo-action", slot })}
-          onCamera={() => push({ kind: "camera", slot: "front", mode: "all" })}
+          onAdd={(slot) => setSheet({ kind: "picker", slot })}
+          onCamera={() => push({ kind: "camera", slot: "front" })}
           onContinue={state.validatePhotos}
         />
       )}
       {screen.kind === "camera" && (
         <CapturePhoto
-          key={`${screen.mode}-${screen.slot}`}
+          key={screen.slot}
           slot={screen.slot}
-          mode={screen.mode}
           photo={
             state.draft.front?.quality === "good"
               ? state.draft.front
@@ -180,7 +178,7 @@ export function App() {
           onUse={(photo) => {
             state.pickPhoto(screen.slot, photo);
             const next = slots[slots.indexOf(screen.slot) + 1];
-            if (screen.mode === "all" && next)
+            if (next)
               replace({ ...screen, slot: next });
             else back();
           }}
@@ -228,20 +226,11 @@ export function App() {
           onClose={() => setSheet(null)}
         />
       )}
-      {sheet?.kind === "photo-action" && screen.kind === "profile-photos" && (
-        <PhotoActionSheet
-          onClose={() => setSheet(null)}
-          onLibrary={() => setSheet({ kind: "picker", slot: sheet.slot })}
-          onCamera={() =>
-            push({ kind: "camera", slot: sheet.slot, mode: "single" })
-          }
-        />
-      )}
       {sheet?.kind === "picker" && screen.kind === "profile-photos" && (
         <Picker
           selected={state.draft[sheet.slot]}
           onPick={(photo) => state.pickPhoto(sheet.slot, photo)}
-          onClose={() => setSheet({ kind: "photo-action", slot: sheet.slot })}
+          onClose={() => setSheet(null)}
         />
       )}
       {sheet?.kind === "delete" && (

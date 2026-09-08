@@ -9,7 +9,6 @@ async function addPhoto(page: Page, slot: string, photo = "示例照片 1") {
   await page
     .getByRole("button", { name: new RegExp(`^(添加|更换)${slot}照片$`) })
     .click();
-  await button(page, "从相册选择").click();
   await button(page, photo).click();
 }
 async function startTemplateSetup(page: Page) {
@@ -94,22 +93,21 @@ test("A: first-use gate, three photos, identity, automatic face analysis and 发
   await expect(tab(page, "发现")).toHaveAttribute("aria-current", "page");
 });
 
-test("three-photo validation, per-slot replacement, library cancel and 相机拍照 mock", async ({
+test("three-photo validation, direct library and per-slot replacement", async ({
   page,
 }) => {
   await startTemplateSetup(page);
   await button(page, "开始创建").click();
   await expect(button(page, "下一步")).toBeDisabled();
   await button(page, "添加正面照片").click();
-  await button(page, "取消").click();
+  await expect(page.getByRole("dialog", {name: "从相册选择"})).toBeVisible();
+  await expect(button(page, "相机拍照")).toHaveCount(0);
+  await button(page, "关闭").click();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await addPhoto(page, "正面", "模糊照片");
   await addPhoto(page, "左侧面");
   await expect(button(page, "下一步")).toBeDisabled();
-  await button(page, "添加右侧面照片").click();
-  await button(page, "相机拍照").click();
-  await button(page, "拍摄右侧面照片").click();
-  await button(page, "使用这张照片").click();
+  await addPhoto(page, "右侧面", "示例照片 3");
   await expect(page.getByAltText("右侧面照片")).toHaveAttribute(
     "src",
     /lina.webp$/,
@@ -127,10 +125,11 @@ test("three-photo validation, per-slot replacement, library cancel and 相机拍
     "false",
   );
   await button(page, "更换正面照片").click();
-  await button(page, "从相册选择").click();
   await button(page, "关闭").click();
-  await expect(page.getByRole("dialog", { name: "添加照片" })).toBeVisible();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await button(page, "更换正面照片").click();
   await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toHaveCount(0);
   await addPhoto(page, "正面", "示例照片 2");
   await expect(page.getByRole("alert")).toHaveCount(0);
   await expect(page.getByAltText("左侧面照片")).toHaveAttribute(
@@ -565,19 +564,16 @@ test("camera cancellation preserves confirmed photos and supports mixed sources"
   await expect(page.getByAltText("左侧面照片")).toHaveCount(0);
   await expect(button(page, "下一步")).toBeDisabled();
   await addPhoto(page, "左侧面", "示例照片 2");
-  await button(page, "添加右侧面照片").click();
-  await button(page, "相机拍照").click();
-  await button(page, "拍摄右侧面照片").click();
-  await button(page, "使用这张照片").click();
+  await addPhoto(page, "右侧面", "示例照片 3");
   await expect(page.getByAltText("左侧面照片")).toHaveAttribute(
     "src",
     /theo.webp$/,
   );
   await expect(button(page, "下一步")).toBeEnabled();
   await button(page, "更换左侧面照片").click();
-  await button(page, "相机拍照").click();
-  await button(page, "拍摄左侧面照片").click();
-  await button(page, "返回").click();
+  await expect(page.getByRole("dialog", { name: "从相册选择" })).toBeVisible();
+  await expect(button(page, "相机拍照")).toHaveCount(0);
+  await button(page, "关闭").click();
   await expect(page.getByAltText("左侧面照片")).toHaveAttribute(
     "src",
     /theo.webp$/,

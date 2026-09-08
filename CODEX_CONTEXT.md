@@ -57,9 +57,9 @@ Detail：大图、名称、轻量标签、简短描述、Using 分身名与头�
 ## 5. 创建 AI 流程与回流
 
 1. Create Your AI：说明和 Front / Left / Right 指引，Start。
-2. Add 3 Photos：三个独立上传位；每个位打开 Add Photo 二级 Action Sheet（Photo Library / Camera / Cancel）。
+2. 添加三张照片：点击任何添加或更换照片位，直接打开相册；不再提供照片来源选择弹层。
 3. Add 3 Photos 顶部直接显示 Take Photos，依次引导 Front / Left / Right 拍照。每一步有取景预览、角度文案、Take Photo、Retake、Use Photo。确认一张才写入对应槽位，取消保留此前已确认照片。
-4. 每个槽位的 Camera 进入该角度的单张拍摄，确认后返回三图页，不自动补齐其他位置。Photo Library 仍保留六张本地人物与 Blurry photo 校验样例。相机继续 Mock，以 Front 合格照片为示例人物，无 Front 时使用 Photo 3；不请求摄像头权限。
+4. 拍照仅从「拍摄三张照片」进入，依次完成正面、左侧面、右侧面。单个照片位只能从相册选择。相册保留六张人物与模糊照片校验样例；拍照继续使用模拟素材，不请求摄像头权限。
 5. 三张完整时 Continue Enabled；缺任一张 Disabled。校验 450ms，期间防止重复操作。
 6. 低质量样例按上传位显示 `This photo may not work well. Please replace it.`。仅替换对应位，其他照片保留。
 7. 合格后 Creating your AI...，约 1.25 秒；依次显示 Analyzing photos / Creating identity / Preparing your model。
@@ -182,3 +182,12 @@ Creation Detail：图片、模板名、AI 名、类型；Download / Regenerate /
 - 创建中取消回原详情；再创建一个仍保留模板来源；完成后详情可返回原列表。我的分身页仍可主动创建，完成后返回我的分身。
 - 否决：无分身时隐藏发现页模板、首屏强制创建、刷新后只能看创建入口。
 - 回归新增发型、发色、艺术照三种入口的浏览、应用、创建、取消、恢复原模板、生成、刷新后列表可见检查。
+
+
+## 16. 照片入口简化（最新最高优先级）
+
+- 用户明确：添加照片直接从相册选择，不能再出现拍照选项；拍照只用于三个角度的连续拍摄。
+- 添加和更换任一照片位直接打开相册。关闭、按 Escape 或点击背景返回三图页，原有照片保持不变，不回到来源选择弹层。
+- 删除 PhotoActionSheet、photo-action 状态、相机 single 模式和相关废弃样式，禁止恢复单个照片位拍照入口。
+- 「拍摄三张照片」继续从正面开始，依次左侧面、右侧面，各步支持重拍和确认；中途取消保留已确认照片，未填照片仍可从相册补齐。
+- 第 13 节记录的单角度补拍及来源 Sheet 方案已被本节否决。

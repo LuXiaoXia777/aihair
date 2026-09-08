@@ -98,7 +98,7 @@ export function ProfilePhotos({
       <p className="photo-source-hint">
         跟随引导，依次拍摄三个角度。
         <br />
-        也可以点击下方位置，分别拍照或选图。
+        也可以点击下方位置，直接从相册选图。
       </p>
       <div className="upload-slots">
         {slots.map((slot) => (

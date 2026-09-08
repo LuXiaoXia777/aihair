@@ -1,10 +1,8 @@
 import { faceLabels } from "../state/faceData";
 import { useEffect, useRef, type ReactNode } from "react";
 import {
-  Camera,
   Check,
   ChevronRight,
-  Images,
   Plus,
   Trash2,
   X,
@@ -75,42 +73,6 @@ export function Sheet({
         {children}
       </div>
     </div>
-  );
-}
-export function PhotoActionSheet({
-  onClose,
-  onLibrary,
-  onCamera,
-}: {
-  onClose: () => void;
-  onLibrary: () => void;
-  onCamera: () => void;
-}) {
-  return (
-    <Sheet title="添加照片" onClose={onClose}>
-      <div className="action-sheet-title">
-        <h2>添加照片</h2>
-      </div>
-      <div className="system-actions">
-        <button onClick={onLibrary}>
-          <span>
-            <Images />
-          </span>
-          <strong>从相册选择</strong>
-          <ChevronRight />
-        </button>
-        <button onClick={onCamera}>
-          <span>
-            <Camera />
-          </span>
-          <strong>相机拍照</strong>
-          <ChevronRight />
-        </button>
-      </div>
-      <button className="plain action-cancel" onClick={onClose}>
-        取消
-      </button>
-    </Sheet>
   );
 }
 export function Picker({

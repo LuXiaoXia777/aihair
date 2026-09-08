@@ -533,51 +533,6 @@ button:disabled:active {
   color: #8b8491;
   opacity: 1;
 }
-.action-sheet-title {
-  text-align: left;
-  padding: 0 3px 17px;
-}
-.system-actions {
-  display: grid;
-  border-radius: 17px;
-  background: #ebe7ed;
-  overflow: hidden;
-}
-.system-actions button {
-  min-height: 60px;
-  display: grid;
-  grid-template-columns: 38px 1fr 24px;
-  align-items: center;
-  text-align: left;
-  gap: 8px;
-  padding: 8px 13px;
-  border-bottom: 1px solid #dcd6df;
-}
-.system-actions button:last-child {
-  border-bottom: 0;
-}
-.system-actions button > span {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  border-radius: 11px;
-  background: #fff;
-  color: var(--accent);
-}
-.system-actions button > span svg {
-  width: 18px;
-}
-.system-actions button > strong {
-  font-size: 14px;
-}
-.system-actions button > svg {
-  width: 16px;
-  color: #928b96;
-}
-.action-cancel {
-  margin-top: 8px;
-}
 .photo-grid button {
   position: relative;
 }
