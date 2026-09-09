@@ -1024,7 +1024,6 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .creations .settings-button { top: 22px; }
 
 .profile-gate .gate-copy p { margin-bottom: 16px; }
-.profile-gate 
 .discovery-banner { position: relative; isolation: isolate; height: 280px; margin: 0 -18px 20px; overflow: hidden; border-radius: 0 0 28px 28px; background: #e9e5f3; }
 .banner-portrait { position: absolute; z-index: -2; right: -20px; top: 0; width: 72%; height: 100%; object-fit: cover; object-position: center 30%; }
 .banner-shade { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, #e8e8f7 10%, #e8e8f7f5 35%, #e8e8f766 57%, transparent 75%); }
