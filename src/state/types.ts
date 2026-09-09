@@ -43,8 +43,7 @@ export type Screen =
   | { kind: "photo-upload"; returnTo: RootTab }
   | { kind: "camera"; slot: PhotoSlot | null; returnTo: RootTab }
   | { kind: "validating"; returnTo: RootTab; source: SetupSource; photos: MockPhoto[] }
-  | { kind: "creating-ai"; returnTo: RootTab; source: SetupSource; profile: AIProfile }
-  | { kind: "face-result"; profileId: string; returnTo: RootTab };
+  | { kind: "creating-ai"; returnTo: RootTab; source: SetupSource; profile: AIProfile };
 export type ActiveSheet =
   | null
   | { kind: "create-source"; returnTo: RootTab }

@@ -40,7 +40,6 @@ export function MyAI({
   onSwitch,
   onSelect,
   onLook,
-  onRecommendations,
 }: {
   profile: AIProfile | null;
   profiles: AIProfile[];
@@ -48,7 +47,6 @@ export function MyAI({
   onSwitch: () => void;
   onSelect: (profile: AIProfile) => void;
   onLook: (id: string) => void;
-  onRecommendations: () => void;
 }) {
   return (
     <div className="screen my-ai" data-screen-label="我的分身">
@@ -83,12 +81,9 @@ export function MyAI({
               <section className="rail-section">
                 <div className="section-head">
                   <h2>适合你的发型</h2>
-                  <button onClick={onRecommendations}>
-                    查看全部 <ChevronRight size={15} />
-                  </button>
                 </div>
                 <div className="look-rail">
-                  {profile.recommendations.slice(0, 3).map((id) => (
+                  {profile.recommendations.map((id) => (
                     <LookCard
                       key={id}
                       look={byId(id)}

@@ -677,68 +677,6 @@ button:disabled:active {
 .generation-content .using-ai {
   margin-top: 6px;
 }
-.face-result-hero {
-  height: 325px;
-  border-radius: 24px;
-  overflow: hidden;
-  position: relative;
-}
-.face-result-hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.face-result-hero > span {
-  position: absolute;
-  bottom: 16px;
-  left: 16px;
-  background: #ffffffde;
-  padding: 7px 14px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 600;
-}
-.shape-copy {
-  text-align: center;
-  padding: 24px 8px 27px;
-  border-bottom: 1px solid var(--line);
-}
-.shape-copy small {
-  font: 700 10px "Manrope";
-  letter-spacing: 0.13em;
-  color: var(--accent);
-  text-transform: uppercase;
-}
-.shape-copy h1 {
-  font: 700 37px "Manrope";
-  letter-spacing: -0.05em;
-  margin: 6px 0 9px;
-}
-.shape-copy p {
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--muted);
-  margin: 0;
-}
-.recommendations {
-  padding-top: 25px;
-}
-.recommendation-head {
-  margin-bottom: 19px;
-}
-.recommendation-head > span {
-  font: 700 10px "Manrope";
-  letter-spacing: 0.13em;
-  color: var(--accent);
-}
-.recommendation-head h2 {
-  font: 700 21px "Manrope";
-  letter-spacing: -0.035em;
-  margin: 7px 0 0;
-}
-.finish-setup {
-  margin-top: 30px;
-}
 button:focus-visible {
   outline: 3px solid #9785ed;
   outline-offset: 3px;
@@ -970,8 +908,6 @@ body { min-width: 0; }
 .capture-footnote { margin: 10px 0 0; }
 .hero-photo, .result-image, .creation-hero { height: clamp(210px, calc(var(--phone-height) * .47), 390px); }
 .ai-profile-hero { height: clamp(210px, calc(var(--phone-height) * .40), 330px); }
-.face-result-hero, .analysis-photo { height: clamp(180px, calc(var(--phone-height) * .38), 310px); }
-.ready-hero { height: clamp(170px, calc(var(--phone-height) * .36), 290px); width: 220px; }
 .progress-content, .generation-content { min-height: calc(var(--phone-height) - 100px); }
 .empty { min-height: clamp(230px, calc(var(--phone-height) - 250px), 500px); }
 .detail-copy h1, .result-copy h1, .creation-copy h1 { font-size: 27px; line-height: 1.4; }
@@ -1073,10 +1009,10 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .capture-screen .capture-step { display: flex; flex-direction: column; align-items: center; gap: 5px; color: #9da6aa; background: transparent; padding: 0; }
 .capture-screen .capture-step:disabled { opacity: 1; }
 .capture-screen .capture-steps .active { color: white; }
-.capture-thumb { display: grid; place-items: center; width: 52px; height: 58px; overflow: hidden; border-radius: 12px; background: #20292d; border: 2px solid transparent; }
+.capture-thumb { position: relative; display: grid; place-items: center; width: 52px; height: 58px; overflow: hidden; border-radius: 12px; background: #20292d; border: 2px solid transparent; }
 .capture-steps .active .capture-thumb { border-color: #fff; }
 .capture-thumb img { width: 100%; height: 100%; object-fit: cover; }
-.capture-step.filled:not(.active) .capture-thumb img { filter: grayscale(1); opacity: .42; }
+.capture-step.filled:not(.active) .capture-thumb::after { content: ""; position: absolute; inset: 0; background: rgb(0 0 0 / 52%); pointer-events: none; }
 .capture-screen .capture-steps i { width: auto; height: auto; background: transparent; border-radius: 0; color: #657176; font-size: 24px; font-weight: 700; }
 .capture-screen .capture-steps .active i { background: transparent; color: white; }
 .capture-steps small { font-size: 11px; font-weight: 500; }

@@ -66,11 +66,6 @@ export function useAppState() {
     } else setStack((value) => (value.length > 1 ? value.slice(0, -1) : value));
   };
   const setupTemplate = [...stack].reverse().find((entry) => entry.kind === "detail");
-  const finishSetup = () => {
-    if (screen.kind !== "face-result") return;
-    if (stack[stack.length - 2]?.kind === "detail") back();
-    else home(screen.returnTo);
-  };
   const rootTab = (): RootTab => {
     const kind = stack[0].kind;
     return kind === "my-ai" || kind === "creations" ? kind : "explore";
@@ -189,7 +184,7 @@ export function useAppState() {
         const profile = {...screen.profile, faceShape, recommendations: faceRecommendations[faceShape]};
         setAIProfiles(value => value.some(item => item.id === profile.id) ? value : [...value, profile]);
         setCurrentAIProfileId(profile.id);
-        finish({kind: "face-result", profileId: profile.id, returnTo: screen.returnTo});
+        setStack(value => value[value.length - 1] === screen ? [{kind: "my-ai"}] : value);
       }, 1250);
     }
     return cancelOperation;
@@ -219,7 +214,6 @@ export function useAppState() {
     useProfile,
     generate,
     setupTemplateId: setupTemplate?.id,
-    finishSetup,
     save,
     remove,
   };

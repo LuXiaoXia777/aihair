@@ -22,7 +22,6 @@ import {
   Generating,
 } from "./screens/CreateAI";
 import { PhotoUpload } from "./screens/PhotoUpload";
-import { FaceResult } from "./screens/FaceResult";
 export function App() {
   const state = useAppState();
   const {
@@ -74,14 +73,6 @@ export function App() {
           onSwitch={() => setSheet({ kind: "switch" })}
           onSelect={(profile) => useProfile(profile)}
           onLook={openLook}
-          onRecommendations={() =>
-            current &&
-            push({
-              kind: "face-result",
-              profileId: current.id,
-              returnTo: "my-ai",
-            })
-          }
         />
       )}
       {screen.kind === "creations" && (
@@ -157,16 +148,6 @@ export function App() {
       )}
       {screen.kind === "creating-ai" && (
         <CreatingAI avatar={screen.profile.avatar} onBack={back} />
-      )}
-      {screen.kind === "face-result" && (
-        <FaceResult
-          profile={findProfile(screen.profileId)}
-          returnTo={screen.returnTo}
-          onBack={back}
-          templateName={state.setupTemplateId ? byId(state.setupTemplateId).name : undefined}
-          onDone={state.finishSetup}
-          onLook={openLook}
-        />
       )}
       </div>
       {root && (
