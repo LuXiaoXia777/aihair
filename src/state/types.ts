@@ -14,6 +14,7 @@ export type SetupSource = "photos" | "camera";
 export type AIProfile = {
   id: string;
   name: string;
+  createdAt: number;
   avatar: string;
   photos: Record<PhotoSlot, MockPhoto>;
   sourcePhotos: MockPhoto[];
@@ -48,5 +49,6 @@ export type ActiveSheet =
   | null
   | { kind: "create-source"; returnTo: RootTab }
   | { kind: "switch" }
+  | { kind: "profile-detail"; profileId: string }
   | { kind: "delete"; creationId: string }
   | { kind: "delete-profile"; profileId: string };

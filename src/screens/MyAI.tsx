@@ -1,5 +1,5 @@
 import { faceLabels } from "../state/faceData";
-import { ArrowUpRight, Check, Plus, Trash2 } from "lucide-react";
+import { ArrowUpRight, Check, Plus } from "lucide-react";
 import { byId } from "../data";
 import { mockPhotos, faceDescriptions } from "../state/faceData";
 import type { AIProfile } from "../state/types";
@@ -38,17 +38,15 @@ export function MyAI({
   profiles,
   onCreate,
   onSwitch,
-  onSelect,
+  onProfile,
   onLook,
-  onDelete,
 }: {
   profile: AIProfile | null;
   profiles: AIProfile[];
   onCreate: () => void;
   onSwitch: () => void;
-  onSelect: (profile: AIProfile) => void;
+  onProfile: (profile: AIProfile) => void;
   onLook: (id: string) => void;
-  onDelete: () => void;
 }) {
   return (
     <div className="screen my-ai" data-screen-label="我的分身">
@@ -67,25 +65,13 @@ export function MyAI({
         <>
           <div className="ai-profile-hero">
             <img src={profile.avatar} alt={profile.name} />
-            <div>
-              <h2>当前分身</h2>
-            </div>
-            <button
-              className="profile-delete-button"
-              aria-label={`删除分身${profile.name}`}
-              onClick={onDelete}
-            >
-              <Trash2 size={21} />
-            </button>
-          </div>
-          {profile.faceShape && (
-            <>
-              <section className="my-face-shape">
+            {profile.faceShape && (
+              <div className="profile-face-summary">
                 <h2>{faceLabels[profile.faceShape]}</h2>
                 <p>{faceDescriptions[profile.faceShape]}</p>
-              </section>
-            </>
-          )}
+              </div>
+            )}
+          </div>
           <section className="profiles-section">
             <h2>我的分身库</h2>
             <div className="profile-rail">
@@ -94,7 +80,7 @@ export function MyAI({
                   key={item.id}
                   className={`profile-choice ${profile.id === item.id ? "selected" : ""}`}
                   aria-pressed={profile.id === item.id}
-                  onClick={() => onSelect(item)}
+                  onClick={() => onProfile(item)}
                 >
                   <span>
                     <img src={item.avatar} alt="" />

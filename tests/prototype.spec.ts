@@ -127,6 +127,9 @@ test("C: 我的分身 directly shows face shape and recommendation details retur
   await expect(
     page.getByRole("heading", { name: "椭圆脸", exact: true }),
   ).toBeVisible();
+  await expect(page.locator(".ai-profile-hero")).toContainText("脸部比例均衡");
+  await expect(page.getByText("当前分身", { exact: true })).toHaveCount(0);
+  await expect(page.locator(".my-face-shape")).toHaveCount(0);
   await button(page, "自然微卷").click();
   await button(page, "返回").click();
   await expect(screen(page, "我的分身")).toBeVisible();
@@ -178,8 +181,12 @@ test("F/G: second AI, origin return, switching everywhere and immutable creation
   await expect(selectedProfile(page, "小夏")).toBeVisible();
   await expect(button(page, "切换分身")).toHaveCount(0);
   await button(page, "小月").click();
+  await expect(page.getByRole("dialog", { name: "分身详情" })).toContainText("创建于");
+  await expect(button(page, "设为当前分身")).toBeEnabled();
+  await button(page, "设为当前分身").click();
   await expect(selectedProfile(page, "小月")).toBeVisible();
   await button(page, "小夏").click();
+  await button(page, "设为当前分身").click();
   await expect(selectedProfile(page, "小夏")).toBeVisible();
   await tab(page, "发现").click();
   await expect(button(page, "切换分身，当前小夏")).toHaveCount(0);
@@ -190,6 +197,7 @@ test("F/G: second AI, origin return, switching everywhere and immutable creation
   await backExplore(page);
   await tab(page, "我的分身").click();
   await button(page, "小月").click();
+  await button(page, "设为当前分身").click();
   await tab(page, "作品").click();
   await button(page, "蝴蝶层次剪, 小夏").click();
   await expect(page.getByText("小夏", { exact: true })).toBeVisible();
@@ -211,16 +219,25 @@ test("我的分身库位于推荐上方，删除当前分身后自动选择剩�
   await expect(page.getByRole("heading", { name: "我的分身", exact: true })).toHaveCount(0);
   const heroBox = (await page.locator(".ai-profile-hero").boundingBox())!;
   expect(heroBox.width / heroBox.height).toBeCloseTo(1, 2);
-  await button(page, "删除分身小夏").click();
+  await expect(page.locator(".ai-profile-hero").getByRole("button")).toHaveCount(0);
+  await page.screenshot({ path: "test-results/profile-hero-summary.png" });
+  await button(page, "小夏").click();
+  await expect(page.getByRole("dialog", { name: "分身详情" })).toContainText("创建于");
+  await expect(button(page, "当前使用中")).toBeDisabled();
+  await page.waitForTimeout(300);
+  await page.screenshot({ path: "test-results/profile-detail.png" });
+  await button(page, "删除分身").click();
   await expect(page.getByRole("dialog")).toContainText("使用该分身创建的作品仍会保留");
   await button(page, "取消").click();
   await expect(selectedProfile(page, "小夏")).toBeVisible();
-  await button(page, "删除分身小夏").click();
+  await button(page, "小夏").click();
+  await button(page, "删除分身").click();
   await button(page, "删除分身").click();
   await expect(page.getByRole("status")).toHaveText("分身已删除");
   await expect(selectedProfile(page, "小月")).toBeVisible();
   await expect(button(page, "小夏")).toHaveCount(0);
-  await button(page, "删除分身小月").click();
+  await button(page, "小月").click();
+  await button(page, "删除分身").click();
   await button(page, "删除分身").click();
   await expect(button(page, "创建我的分身")).toBeVisible();
 });
@@ -621,6 +638,12 @@ test("camera captures three guided angles then confirms once to generate", async
   await expect(page.locator('.capture-step').first()).toHaveAttribute('aria-pressed','true');
   await expect(button(page,'重拍')).toBeVisible();
   await button(page,'重拍').click();
+  await expect(button(page,'重新拍摄正面照片')).toBeVisible();
+  await expect(page.locator('.capture-guide')).toBeVisible();
+  await expect(page.getByRole('status')).toHaveText('正在重拍正面');
+  await page.screenshot({path:"test-results/camera-retake.png"});
+  await button(page,'重新拍摄正面照片').click();
+  await expect(page.locator('.capture-step').first()).toHaveAttribute('aria-pressed','true');
   await expect(button(page,'完成')).toBeVisible();
   await page.screenshot({path:"test-results/camera-complete.png"});
   for (const [width, height] of [[375,667],[1280,620],[390,844]]) {

@@ -7,6 +7,7 @@ import { BottomNav } from "./components/ui";
 import {
   DeleteSheet,
   DeleteProfileSheet,
+  ProfileDetailSheet,
   CreateSourceSheet,
   SwitchSheet,
 } from "./components/sheets";
@@ -70,11 +71,8 @@ export function App() {
           profiles={aiProfiles}
           onCreate={() => beginCreate("my-ai")}
           onSwitch={() => setSheet({ kind: "switch" })}
-          onSelect={(profile) => useProfile(profile)}
+          onProfile={(profile) => setSheet({ kind: "profile-detail", profileId: profile.id })}
           onLook={openLook}
-          onDelete={() =>
-            current && setSheet({ kind: "delete-profile", profileId: current.id })
-          }
         />
       )}
       {screen.kind === "creations" && (
@@ -172,6 +170,18 @@ export function App() {
           onDelete={() => state.remove(sheet.creationId)}
         />
       )}
+      {sheet?.kind === "profile-detail" && (() => {
+        const profile = findProfile(sheet.profileId);
+        return profile ? (
+          <ProfileDetailSheet
+            profile={profile}
+            current={profile.id === current?.id}
+            onClose={() => setSheet(null)}
+            onUse={() => useProfile(profile)}
+            onDelete={() => setSheet({ kind: "delete-profile", profileId: profile.id })}
+          />
+        ) : null;
+      })()}
       {sheet?.kind === "delete-profile" && (() => {
         const profile = findProfile(sheet.profileId);
         return profile ? (

@@ -181,3 +181,53 @@ export function DeleteProfileSheet({
     </Sheet>
   );
 }
+
+const formatProfileCreatedAt = (timestamp: number) =>
+  new Intl.DateTimeFormat("zh-CN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(timestamp);
+
+export function ProfileDetailSheet({
+  profile,
+  current,
+  onClose,
+  onUse,
+  onDelete,
+}: {
+  profile: AIProfile;
+  current: boolean;
+  onClose: () => void;
+  onUse: () => void;
+  onDelete: () => void;
+}) {
+  return (
+    <Sheet title="分身详情" onClose={onClose}>
+      <div className="picker-head">
+        <h2>分身详情</h2>
+        <button aria-label="关闭" onClick={onClose}>
+          <X />
+        </button>
+      </div>
+      <div className="profile-detail-card">
+        <img src={profile.avatar} alt="" />
+        <div>
+          <strong>{profile.name}</strong>
+          <small>{profile.faceShape ? faceLabels[profile.faceShape] : "脸型分析中"}</small>
+        </div>
+      </div>
+      <p className="profile-created-at">创建于 {formatProfileCreatedAt(profile.createdAt)}</p>
+      <button className="primary" disabled={current} onClick={onUse}>
+        {current ? "当前使用中" : "设为当前分身"}
+      </button>
+      <button className="danger" onClick={onDelete}>
+        <Trash2 size={18} />
+        删除分身
+      </button>
+    </Sheet>
+  );
+}

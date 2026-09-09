@@ -176,57 +176,31 @@
 .ai-profile-hero:after {
   content: "";
   position: absolute;
-  inset: 50% 0 0;
+  inset: 38% 0 0;
   background: linear-gradient(transparent, #171421b0);
 }
-.ai-profile-hero > div {
+.ai-profile-hero > .profile-face-summary {
   position: absolute;
   left: 22px;
-  bottom: 23px;
+  right: 22px;
+  bottom: 22px;
   color: #fff;
   z-index: 1;
-}
-.ai-profile-hero span {
-  font-size: 10px;
-  letter-spacing: 0.12em;
 }
 .ai-profile-hero h2 {
   font: 700 22px "Manrope";
   margin: 0;
   letter-spacing: -0.04em;
 }
-.ai-profile-hero .profile-delete-button {
-  position: absolute;
-  z-index: 2;
-  top: 14px;
-  right: 14px;
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: #fffffff0;
-  color: var(--ink);
-  box-shadow: 0 8px 24px #1714211a;
-}
-.my-face-shape {
-  padding: 26px 2px;
-  margin-bottom: 27px;
-  border-bottom: 1px solid var(--line);
-}
-.my-face-shape h2 {
-  font: 700 29px "Manrope";
-  letter-spacing: -0.04em;
-  margin: 6px 0 8px;
-}
-.my-face-shape p {
-  color: var(--muted);
+.profile-face-summary p {
+  color: #ffffffd6;
   line-height: 1.5;
-  font-size: 14px;
-  margin: 0;
+  font-size: 12px;
+  margin: 7px 0 0;
+  max-width: 310px;
 }
 .profiles-section {
-  padding-top: 25px;
+  padding-top: 24px;
   margin-bottom: 27px;
   padding-bottom: 25px;
   border-bottom: 1px solid var(--line);
@@ -330,6 +304,46 @@
 }
 .switch-profiles svg {
   color: var(--accent);
+}
+.profile-detail-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 18px;
+  background: #ebe7ed;
+  text-align: left;
+}
+.profile-detail-card img {
+  width: 68px;
+  height: 68px;
+  border-radius: 18px;
+  object-fit: cover;
+}
+.profile-detail-card div {
+  display: grid;
+  gap: 5px;
+}
+.profile-detail-card strong {
+  font: 700 18px "Manrope";
+}
+.profile-detail-card small,
+.sheet .profile-created-at {
+  color: var(--muted);
+  font-size: 12px;
+}
+.sheet .profile-created-at {
+  margin: 12px 2px 18px;
+  text-align: left;
+}
+.sheet .primary:disabled {
+  background: #ddd8e1;
+  color: #8f8795;
+  cursor: default;
+}
+.sheet .profile-created-at + .primary + .danger {
+  width: 100%;
+  margin-top: 7px;
 }
 .setup-copy {
   padding: 27px 5px 18px;
