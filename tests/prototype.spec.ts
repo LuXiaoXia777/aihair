@@ -85,7 +85,7 @@ test("A: first-use gate, three photos, identity, automatic face analysis and 发
   await expect(page.getByRole("navigation")).toBeVisible();
   await finishToExplore(page);
   await expect(page.locator(".rail-section")).toHaveCount(7);
-  await expect(button(page, "切换分身，当前小月")).toHaveCount(0);
+  await expect(button(page, "切换分身，当前wink1")).toHaveCount(0);
   await expect(tab(page, "发现")).toHaveAttribute("aria-current", "page");
 });
 
@@ -94,7 +94,7 @@ test("B: hairstyle generates into works automatically with download and regenera
 }) => {
   await setup(page);
   await button(page, "蝴蝶层次剪").first().click();
-  await expect(page.getByText("当前分身：小月")).toBeVisible();
+  await expect(page.getByText("当前分身：wink1")).toBeVisible();
   await generate(page);
   await expect(page.locator(".result-image")).toBeVisible();
   const resultImage = (await page.locator(".result-image").boundingBox())!;
@@ -115,7 +115,7 @@ test("B: hairstyle generates into works automatically with download and regenera
   await backExplore(page);
   await tab(page, "作品").click();
   await expect(page.locator(".creation-grid button")).toHaveCount(2);
-  await expect(page.locator(".creation-grid")).toContainText("小月");
+  await expect(page.locator(".creation-grid")).toContainText("wink1");
   await expect(page.locator(".creation-grid")).toHaveCSS("column-count", "2");
 });
 
@@ -157,7 +157,7 @@ for (const [name, section, label] of [
     await tab(page, "作品").click();
     await expect(page.locator(".filter-tabs")).toHaveCount(0);
     await expect(page.locator(".creation-grid button")).toHaveCount(1);
-    await button(page, `${name}, 小月`).click();
+    await button(page, `${name}, wink1`).click();
     await expect(page.getByText(label, { exact: true })).toBeVisible();
     await button(page, "重新生成").click();
     await expect(screen(page, "Template Detail")).toBeVisible();
@@ -178,31 +178,31 @@ test("F/G: second AI, origin return, switching everywhere and immutable creation
   await expect(
     page.getByRole("heading", { name: "椭圆脸", exact: true }),
   ).toBeVisible();
-  await expect(selectedProfile(page, "小夏")).toBeVisible();
+  await expect(selectedProfile(page, "wink2")).toBeVisible();
   await expect(button(page, "切换分身")).toHaveCount(0);
-  await button(page, "小月").click();
+  await button(page, "wink1").click();
   await expect(page.getByRole("dialog", { name: "分身详情" })).toContainText("创建于");
   await expect(button(page, "设为当前分身")).toBeEnabled();
   await button(page, "设为当前分身").click();
-  await expect(selectedProfile(page, "小月")).toBeVisible();
-  await button(page, "小夏").click();
+  await expect(selectedProfile(page, "wink1")).toBeVisible();
+  await button(page, "wink2").click();
   await button(page, "设为当前分身").click();
-  await expect(selectedProfile(page, "小夏")).toBeVisible();
+  await expect(selectedProfile(page, "wink2")).toBeVisible();
   await tab(page, "发现").click();
-  await expect(button(page, "切换分身，当前小夏")).toHaveCount(0);
+  await expect(button(page, "切换分身，当前wink2")).toHaveCount(0);
   await button(page, "蝴蝶层次剪").first().click();
-  await expect(page.getByText("当前分身：小夏")).toBeVisible();
+  await expect(page.getByText("当前分身：wink2")).toBeVisible();
   await generate(page);
-  await expect(page.getByText("当前分身：小夏")).toBeVisible();
+  await expect(page.getByText("当前分身：wink2")).toBeVisible();
   await backExplore(page);
   await tab(page, "我的分身").click();
-  await button(page, "小月").click();
+  await button(page, "wink1").click();
   await button(page, "设为当前分身").click();
   await tab(page, "作品").click();
-  await button(page, "蝴蝶层次剪, 小夏").click();
-  await expect(page.getByText("小夏", { exact: true })).toBeVisible();
+  await button(page, "蝴蝶层次剪, wink2").click();
+  await expect(page.getByText("wink2", { exact: true })).toBeVisible();
   await button(page, "重新生成").click();
-  await expect(page.getByText("当前分身：小月")).toBeVisible();
+  await expect(page.getByText("当前分身：wink1")).toBeVisible();
 });
 
 test("我的分身库位于推荐上方，删除当前分身后自动选择剩余分身", async ({ page }) => {
@@ -221,7 +221,7 @@ test("我的分身库位于推荐上方，删除当前分身后自动选择剩�
   expect(heroBox.width / heroBox.height).toBeCloseTo(1, 2);
   await expect(page.locator(".ai-profile-hero").getByRole("button")).toHaveCount(0);
   await page.screenshot({ path: "test-results/profile-hero-summary.png" });
-  await button(page, "小夏").click();
+  await button(page, "wink2").click();
   await expect(page.getByRole("dialog", { name: "分身详情" })).toContainText("创建于");
   await expect(button(page, "当前使用中")).toBeDisabled();
   await page.waitForTimeout(300);
@@ -229,14 +229,14 @@ test("我的分身库位于推荐上方，删除当前分身后自动选择剩�
   await button(page, "删除分身").click();
   await expect(page.getByRole("dialog")).toContainText("使用该分身创建的作品仍会保留");
   await button(page, "取消").click();
-  await expect(selectedProfile(page, "小夏")).toBeVisible();
-  await button(page, "小夏").click();
+  await expect(selectedProfile(page, "wink2")).toBeVisible();
+  await button(page, "wink2").click();
   await button(page, "删除分身").click();
   await button(page, "删除分身").click();
   await expect(page.getByRole("status")).toHaveText("分身已删除");
-  await expect(selectedProfile(page, "小月")).toBeVisible();
-  await expect(button(page, "小夏")).toHaveCount(0);
-  await button(page, "小月").click();
+  await expect(selectedProfile(page, "wink1")).toBeVisible();
+  await expect(button(page, "wink2")).toHaveCount(0);
+  await button(page, "wink1").click();
   await button(page, "删除分身").click();
   await button(page, "删除分身").click();
   await expect(button(page, "创建我的分身")).toBeVisible();
@@ -250,10 +250,10 @@ test("H: 下载图片 feedback, delete cancel, confirm and 作品 back", async (
   await generate(page);
   await backExplore(page);
   await tab(page, "作品").click();
-  await button(page, "蝴蝶层次剪, 小月").click();
+  await button(page, "蝴蝶层次剪, wink1").click();
   await button(page, "返回").click();
   await expect(screen(page, "作品")).toBeVisible();
-  await button(page, "蝴蝶层次剪, 小月").click();
+  await button(page, "蝴蝶层次剪, wink1").click();
   await button(page, "下载图片").click();
   await expect(page.getByRole("status")).toHaveText("下载演示已完成");
   await button(page, "删除作品").click();
@@ -423,11 +423,12 @@ for (const [width, height] of [[1280, 620], [900, 900], [375, 667]]) {
   });
 }
 
-test('all core screens expose Chinese content and labels', async ({page}) => {
+test('all core screens expose Chinese content and approved profile names', async ({page}) => {
   const chinese = async () => {
-    expect(await page.locator('main').innerText()).not.toMatch(/[A-Za-z]{2,}/);
+    const withoutProfileNames = (text: string) => text.replace(/wink\d+/g, '');
+    expect(withoutProfileNames(await page.locator('main').innerText())).not.toMatch(/[A-Za-z]{2,}/);
     const labels = await page.locator('[aria-label],img[alt]').evaluateAll(elements => elements.map(el => el.getAttribute('aria-label') || el.getAttribute('alt')).join(' '));
-    expect(labels).not.toMatch(/[A-Za-z]{2,}/);
+    expect(withoutProfileNames(labels)).not.toMatch(/[A-Za-z]{2,}/);
   };
   await chinese();
   await createAI(page);
@@ -441,7 +442,7 @@ test('all core screens expose Chinese content and labels', async ({page}) => {
   await backExplore(page);
   await tab(page,'作品').click();
   await chinese();
-  await button(page,'蝴蝶层次剪, 小月').click();
+  await button(page,'蝴蝶层次剪, wink1').click();
   await button(page,'删除作品').click();
   await chinese();
 });
@@ -466,10 +467,10 @@ for (const [section, name] of [['人气发型', '蝴蝶层次剪'], ['流行发�
     await page.clock.fastForward(1300);
     await expect(screen(page,'我的分身')).toBeVisible();
     await expect(screen(page,'脸型与推荐')).toHaveCount(0);
-    await expect(selectedProfile(page, '小月')).toBeVisible();
+    await expect(selectedProfile(page, 'wink1')).toBeVisible();
     await tab(page,'发现').click();
     await button(page,name).first().click();
-    await expect(page.getByText('当前分身：小月')).toBeVisible();
+    await expect(page.getByText('当前分身：wink1')).toBeVisible();
     await generate(page);
     await button(page,'返回').click();
     await button(page,'返回').click();
@@ -548,7 +549,7 @@ test('optional create-model banner creates and returns to discovery', async ({pa
   await createAI(page,'创建我的模特');
   await expect(screen(page,'我的分身')).toBeVisible();
   await tab(page,'发现').click();
-  await expect(button(page,'切换分身，当前小月')).toHaveCount(0);
+  await expect(button(page,'切换分身，当前wink1')).toHaveCount(0);
   await expect(button(page,'创建我的模特')).toBeVisible();
   await tab(page,'作品').click();
   await expect(page.getByText('收藏每一个心动造型')).toHaveCount(0);
@@ -565,7 +566,7 @@ test('My AI merges introduction and enters photos with one create click', async 
   await button(page,'取消').click();
   await expect(screen(page,'我的分身')).toBeVisible();
   await createAI(page,'创建我的分身');
-  await expect(selectedProfile(page, '小月')).toBeVisible();
+  await expect(selectedProfile(page, 'wink1')).toBeVisible();
 });
 
 

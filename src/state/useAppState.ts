@@ -4,7 +4,6 @@ import {
   analyzeProfile,
   emptyDraft,
   faceRecommendations,
-  profileNames,
   slots,
 } from "./faceData";
 import type {
@@ -169,11 +168,7 @@ export function useAppState() {
         const index = nextProfileNumber.current++;
         const profile: AIProfile = {
           id: `ai-${++nextId.current}`,
-          name:
-            profileNames[index % profileNames.length] +
-            (index >= profileNames.length
-              ? ` ${Math.floor(index / profileNames.length) + 1}`
-              : ""),
+          name: `wink${index + 1}`,
           createdAt: Date.now(),
           avatar: screen.photos[0].image,
           photos: { front: screen.photos[0], left: screen.photos[1], right: screen.photos[2] },

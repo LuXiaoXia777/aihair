@@ -38,7 +38,6 @@ export const faceShapes: FaceShape[] = [
   "Diamond",
   "Oblong",
 ];
-export const profileNames = ["小月", "小夏", "小林", "小米", "小森", "小禾"];
 export const faceDescriptions: Record<FaceShape, string> = {
   Oval: "脸部比例均衡，下颌线柔和。可以尝试层次剪或波波头，突出自然轮廓。",
   Round: "脸部线条圆润。轻盈的长层次和八字刘海能增加纵向层次感。",
