@@ -1,4 +1,4 @@
-# 拍照缩略图与创建完成去向 Design QA
+# 我的分身布局、删除与创建完成去向 Design QA
 
 - Source visual truth: `design-qa-source.jpg`（用户标注的原拍照页由 860×1462 px 归一为 430×731 px，对应约 430×731 CSS px）
 - Implementation screenshots: `design-qa-partial-selected.jpg`、`design-qa-complete.jpg`（Codex 内置浏览器，479×762 px；手机内容区域约 430×730 CSS px，1× 密度）
@@ -8,6 +8,8 @@
 - Face-result source: `design-qa-face-result-source.jpg`（待删除的脸型内页，430×738 px）
 - My AI implementation: `design-qa-my-ai.jpg`（内置浏览器截图；手机内容区域归一为 430×738 px）
 - Route comparison: `design-qa-face-route-comparison.jpg`（左为待删除内页，右为分析完成后直接进入的我的分身 Tab）
+- Current My AI implementation: `design-qa-my-ai-reordered.jpg`（Codex 内置浏览器，479×762 px）
+- Current comparison: `design-qa-my-ai-order-comparison.jpg`（用户上一版截图与本次实现并排对照）
 
 **Findings**
 
@@ -19,6 +21,8 @@
 - 图片质量：继续使用项目既有本地人物素材，无拉伸、模糊、占位图或新增不一致素材。
 - 文案：使用“已选择…照片”“重拍”“完成”，与用户指定交互一致；拍摄仍明确标注为模拟演示。
 - 创建完成去向：独立脸型结果内页已取消；创建完成后直接展示我的分身一级页，当前分身、脸型特点、推荐发型和底部 Tab 同时可见。
+- 我的分身信息顺序：当前分身、脸型特点、我的分身库、适合你的发型依次排列；分身库已移到推荐上方。
+- 当前分身大图内不再显示“切换分身”；右上角为独立删除图标，避免把全局管理动作叠在人物信息上。
 
 **Interaction Checks**
 
@@ -27,6 +31,8 @@
 - 三张拍齐后无额外页面，圆形完成按钮可见。
 - 点击完成并等待创建结束后直接进入“我的分身”，页面中不存在“脸型与推荐”内页或返回按钮。
 - 内置浏览器交互过程中页面未出现错误提示或失效控件。
+- 点击右上角删除图标可打开确认弹窗；取消后保留当前分身，确认删除最后一个分身后返回创建空状态并显示“分身已删除”。
+- 页面可访问结构中“我的分身库”位于“适合你的发型”之前，库内头像仍可直接选择已有分身。
 
 **Focused Comparison**
 
@@ -49,6 +55,10 @@
 - [x] 保留拍照页固定高度与三角度流程
 - [x] 分析完成直接进入我的分身 Tab
 - [x] 删除脸型与推荐内页及其入口
+- [x] 我的分身库位于推荐发型上方
+- [x] 移除大图内切换按钮
+- [x] 右上角删除图标与删除确认
+- [x] 删除最后一个分身后返回空状态
 
 **Follow-up Polish**
 

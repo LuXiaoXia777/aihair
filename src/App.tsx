@@ -6,6 +6,7 @@ import { CapturePhoto } from "./screens/CapturePhoto";
 import { BottomNav } from "./components/ui";
 import {
   DeleteSheet,
+  DeleteProfileSheet,
   CreateSourceSheet,
   SwitchSheet,
 } from "./components/sheets";
@@ -73,6 +74,9 @@ export function App() {
           onSwitch={() => setSheet({ kind: "switch" })}
           onSelect={(profile) => useProfile(profile)}
           onLook={openLook}
+          onDelete={() =>
+            current && setSheet({ kind: "delete-profile", profileId: current.id })
+          }
         />
       )}
       {screen.kind === "creations" && (
@@ -174,6 +178,16 @@ export function App() {
           onDelete={() => state.remove(sheet.creationId)}
         />
       )}
+      {sheet?.kind === "delete-profile" && (() => {
+        const profile = findProfile(sheet.profileId);
+        return profile ? (
+          <DeleteProfileSheet
+            profileName={profile.name}
+            onClose={() => setSheet(null)}
+            onDelete={() => state.removeProfile(profile.id)}
+          />
+        ) : null;
+      })()}
       {state.toast && (
         <div className="toast" role="status">
           {state.toast}

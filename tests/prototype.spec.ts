@@ -175,11 +175,8 @@ test("F/G: second AI, origin return, switching everywhere and immutable creation
   await expect(
     page.getByRole("heading", { name: "小夏", exact: true }),
   ).toBeVisible();
-  await button(page, "切换分身").click();
-  await page
-    .getByRole("dialog")
-    .getByRole("button", { name: "小月 椭圆脸", exact: true })
-    .click();
+  await expect(button(page, "切换分身")).toHaveCount(0);
+  await button(page, "小月").click();
   await expect(
     page.getByRole("heading", { name: "小月", exact: true }),
   ).toBeVisible();
@@ -214,6 +211,30 @@ test("F/G: second AI, origin return, switching everywhere and immutable creation
   await expect(page.getByText("小夏", { exact: true })).toBeVisible();
   await button(page, "重新生成").click();
   await expect(page.getByText("当前分身：小月")).toBeVisible();
+});
+
+test("我的分身库位于推荐上方，删除当前分身后自动选择剩余分身", async ({ page }) => {
+  await setup(page);
+  await tab(page, "我的分身").click();
+  await createAI(page, "新建分身", "示例照片 2");
+  const library = page.locator(".profiles-section");
+  const recommendations = page.locator(".profile-recommendations");
+  const libraryBox = (await library.boundingBox())!;
+  const recommendationsBox = (await recommendations.boundingBox())!;
+  expect(libraryBox.y).toBeLessThan(recommendationsBox.y);
+  await expect(button(page, "切换分身")).toHaveCount(0);
+  await button(page, "删除分身小夏").click();
+  await expect(page.getByRole("dialog")).toContainText("使用该分身创建的作品仍会保留");
+  await button(page, "取消").click();
+  await expect(page.getByRole("heading", { name: "小夏", exact: true })).toBeVisible();
+  await button(page, "删除分身小夏").click();
+  await button(page, "删除分身").click();
+  await expect(page.getByRole("status")).toHaveText("分身已删除");
+  await expect(page.getByRole("heading", { name: "小月", exact: true })).toBeVisible();
+  await expect(button(page, "小夏")).toHaveCount(0);
+  await button(page, "删除分身小月").click();
+  await button(page, "删除分身").click();
+  await expect(button(page, "创建我的分身")).toBeVisible();
 });
 
 test("H: 下载图片 feedback, delete cancel, confirm and 作品 back", async ({

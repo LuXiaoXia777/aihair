@@ -156,3 +156,28 @@ export function DeleteSheet({
     </Sheet>
   );
 }
+export function DeleteProfileSheet({
+  profileName,
+  onClose,
+  onDelete,
+}: {
+  profileName: string;
+  onClose: () => void;
+  onDelete: () => void;
+}) {
+  return (
+    <Sheet title={`确定删除分身${profileName}？`} onClose={onClose}>
+      <div className="sheet-icon danger-icon">
+        <Trash2 />
+      </div>
+      <h2>确定删除「{profileName}」？</h2>
+      <p>删除后无法恢复，使用该分身创建的作品仍会保留。</p>
+      <button className="danger filled" onClick={onDelete}>
+        删除分身
+      </button>
+      <button className="plain" onClick={onClose}>
+        取消
+      </button>
+    </Sheet>
+  );
+}

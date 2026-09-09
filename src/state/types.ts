@@ -48,4 +48,5 @@ export type ActiveSheet =
   | null
   | { kind: "create-source"; returnTo: RootTab }
   | { kind: "switch" }
-  | { kind: "delete"; creationId: string };
+  | { kind: "delete"; creationId: string }
+  | { kind: "delete-profile"; profileId: string };

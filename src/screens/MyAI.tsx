@@ -1,5 +1,5 @@
 import { faceLabels } from "../state/faceData";
-import { ArrowUpRight, Check, ChevronRight, Plus } from "lucide-react";
+import { ArrowUpRight, Check, Plus, Trash2 } from "lucide-react";
 import { byId } from "../data";
 import { mockPhotos, faceDescriptions } from "../state/faceData";
 import type { AIProfile } from "../state/types";
@@ -40,6 +40,7 @@ export function MyAI({
   onSwitch,
   onSelect,
   onLook,
+  onDelete,
 }: {
   profile: AIProfile | null;
   profiles: AIProfile[];
@@ -47,12 +48,22 @@ export function MyAI({
   onSwitch: () => void;
   onSelect: (profile: AIProfile) => void;
   onLook: (id: string) => void;
+  onDelete: () => void;
 }) {
   return (
     <div className="screen my-ai" data-screen-label="我的分身">
       <header className="page-title">
         <span>为你而定</span>
         <h1>我的分身</h1>
+        {profile && (
+          <button
+            className="profile-delete-button"
+            aria-label={`删除分身${profile.name}`}
+            onClick={onDelete}
+          >
+            <Trash2 size={21} />
+          </button>
+        )}
       </header>
       {!profile ? (
         <ProfileGate
@@ -66,9 +77,6 @@ export function MyAI({
             <div>
               <span>当前分身</span>
               <h2>{profile.name}</h2>
-              <button onClick={onSwitch}>
-                切换分身 <ChevronRight size={16} />
-              </button>
             </div>
           </div>
           {profile.faceShape && (
@@ -77,20 +85,6 @@ export function MyAI({
                 <span className="eyebrow">脸型特点</span>
                 <h2>{faceLabels[profile.faceShape]}</h2>
                 <p>{faceDescriptions[profile.faceShape]}</p>
-              </section>
-              <section className="rail-section">
-                <div className="section-head">
-                  <h2>适合你的发型</h2>
-                </div>
-                <div className="look-rail">
-                  {profile.recommendations.map((id) => (
-                    <LookCard
-                      key={id}
-                      look={byId(id)}
-                      onClick={() => onLook(id)}
-                    />
-                  ))}
-                </div>
               </section>
             </>
           )}
@@ -123,6 +117,22 @@ export function MyAI({
               </button>
             </div>
           </section>
+          {profile.faceShape && (
+            <section className="rail-section profile-recommendations">
+              <div className="section-head">
+                <h2>适合你的发型</h2>
+              </div>
+              <div className="look-rail">
+                {profile.recommendations.map((id) => (
+                  <LookCard
+                    key={id}
+                    look={byId(id)}
+                    onClick={() => onLook(id)}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
         </>
       )}
     </div>

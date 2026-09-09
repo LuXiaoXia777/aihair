@@ -141,6 +141,15 @@ export function useAppState() {
     home("creations");
     setToast("作品已删除");
   };
+  const removeProfile = (id: string) => {
+    const remaining = aiProfiles.filter((profile) => profile.id !== id);
+    setAIProfiles(remaining);
+    if (currentAIProfileId === id) {
+      setCurrentAIProfileId(remaining[0]?.id ?? null);
+    }
+    home("my-ai");
+    setToast("分身已删除");
+  };
   useEffect(() => {
     if (!toast) return;
     const timer = setTimeout(() => setToast(""), 1800);
@@ -216,5 +225,6 @@ export function useAppState() {
     setupTemplateId: setupTemplate?.id,
     save,
     remove,
+    removeProfile,
   };
 }

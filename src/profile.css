@@ -202,18 +202,6 @@
   margin: 4px 0 11px;
   letter-spacing: -0.04em;
 }
-.ai-profile-hero button {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 13px;
-  background: #ffffff24;
-  border: 1px solid #ffffff55;
-  border-radius: 999px;
-  padding: 9px 13px;
-  min-height: 40px;
-  backdrop-filter: blur(12px);
-}
 .my-face-shape {
   padding: 26px 2px;
   margin-bottom: 27px;
@@ -231,8 +219,10 @@
   margin: 0;
 }
 .profiles-section {
-  border-top: 1px solid var(--line);
   padding-top: 25px;
+  margin-bottom: 27px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid var(--line);
 }
 .profiles-section h2 {
   font: 700 18px "Manrope";
@@ -932,6 +922,9 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .capture-guide.right { left: 56%; right: auto; }
 .creations .page-title { position: relative; padding-right: 54px; margin-bottom: 10px; }
 .settings-button { position: absolute; right: 0; top: 32px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: white; }
+.my-ai .page-title { position: relative; padding-right: 54px; }
+.profile-delete-button { position: absolute; right: 0; top: 22px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: white; color: var(--ink); }
+.profile-recommendations { margin-bottom: 0; }
 .creations .empty { min-height: calc(var(--phone-height) - 230px); }
 .settings-group { margin-top: 22px; border-radius: 18px; overflow: hidden; background: white; border: 1px solid var(--line); }
 .settings-group button { display: flex; align-items: center; gap: 13px; width: 100%; min-height: 66px; padding: 16px; text-align: left; }
