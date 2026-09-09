@@ -63,21 +63,7 @@ export function useAppState() {
         ...value.slice(0, -1),
         screen.source === "camera" ? { kind: "camera", slot: null, returnTo: screen.returnTo } : { kind: "photo-upload", returnTo: screen.returnTo },
       ]);
-    } else if (screen.kind === "analyzing-ai") {
-      setStack((value) => [
-        ...value.slice(0, -1),
-        {
-          kind: "ai-ready",
-          returnTo: screen.returnTo,
-          profileId: screen.profileId,
-        },
-      ]);
     } else setStack((value) => (value.length > 1 ? value.slice(0, -1) : value));
-  };
-  // A template-led setup retains the exact browsing stack underneath it.
-  const setupPrefix = () => {
-    const start = stack.findIndex((entry) => ["photo-upload", "camera", "validating", "creating-ai", "ai-ready", "analyzing-ai"].includes(entry.kind));
-    return start >= 0 ? stack.slice(0, start) : [{ kind: rootTab() } as Screen];
   };
   const setupTemplate = [...stack].reverse().find((entry) => entry.kind === "detail");
   const finishSetup = () => {
@@ -91,12 +77,10 @@ export function useAppState() {
   };
   const beginCreate = (
     returnTo: RootTab = rootTab(),
-    replaceCurrent = false,
   ) => {
     closeTransient();
     setDraft(emptyDraft());
     setUploadedPhotos([]);
-    if (replaceCurrent) setStack(setupPrefix());
     setSheet({ kind: "create-source", returnTo });
   };
   const chooseSource = (source: SetupSource) => {
@@ -120,16 +104,9 @@ export function useAppState() {
     if (photos.length < 3) return;
     replace({kind: "validating", returnTo: screen.returnTo, source, photos});
   };
-  const useProfile = (profile: AIProfile, returnTo: RootTab = rootTab()) => {
+  const useProfile = (profile: AIProfile) => {
     setCurrentAIProfileId(profile.id);
     setSheet(null);
-    if (!profile.faceShape) {
-      closeTransient();
-      setStack([
-        ...setupPrefix(),
-        { kind: "analyzing-ai", profileId: profile.id, returnTo },
-      ]);
-    }
   };
   const generate = (templateId: string, regenerate = false) => {
     if (!currentAIProfile) {
@@ -204,36 +181,12 @@ export function useAppState() {
       }, 450);
     } else if (screen.kind === "creating-ai") {
       operationTimer.current = setTimeout(() => {
-        setAIProfiles((value) =>
-          value.some((profile) => profile.id === screen.profile.id)
-            ? value
-            : [...value, screen.profile],
-        );
-        finish({
-          kind: "ai-ready",
-          profileId: screen.profile.id,
-          returnTo: screen.returnTo,
-        });
+        const faceShape = analyzeProfile(screen.profile.photos.front);
+        const profile = {...screen.profile, faceShape, recommendations: faceRecommendations[faceShape]};
+        setAIProfiles(value => value.some(item => item.id === profile.id) ? value : [...value, profile]);
+        setCurrentAIProfileId(profile.id);
+        finish({kind: "face-result", profileId: profile.id, returnTo: screen.returnTo});
       }, 1250);
-    } else if (screen.kind === "analyzing-ai") {
-      operationTimer.current = setTimeout(() => {
-        setAIProfiles((value) =>
-          value.map((profile) => {
-            if (profile.id !== screen.profileId) return profile;
-            const faceShape = analyzeProfile(profile.photos.front);
-            return {
-              ...profile,
-              faceShape,
-              recommendations: faceRecommendations[faceShape],
-            };
-          }),
-        );
-        finish({
-          kind: "face-result",
-          profileId: screen.profileId,
-          returnTo: screen.returnTo,
-        });
-      }, 1000);
     }
     return cancelOperation;
   }, [screen]);

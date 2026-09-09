@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import {
   Check,
-  ChevronRight,
-  ScanFace,
   Sparkles,
 } from "lucide-react";
 import { Top, UsingAI } from "../components/ui";
 import type {
-  AIProfile,
   Creation,
 } from "../state/types";
 export function CreatingAI({
@@ -39,7 +36,7 @@ export function CreatingAI({
           {[
             "检查照片",
             "建立分身",
-            "准备就绪",
+            "匹配推荐",
           ].map((label, index) => (
             <li key={label} className={index <= step ? "active" : ""}>
               {index < step ? <Check size={14} /> : <i />}
@@ -47,65 +44,6 @@ export function CreatingAI({
             </li>
           ))}
         </ol>
-      </div>
-    </div>
-  );
-}
-export function AIReady({
-  profile,
-  onBack,
-  onUse,
-  onAnother,
-}: {
-  profile: AIProfile;
-  onBack: () => void;
-  onUse: () => void;
-  onAnother: () => void;
-}) {
-  return (
-    <div className="screen ai-ready" data-screen-label="AI Profile Created">
-      <Top onBack={onBack} />
-      <div className="ready-hero">
-        <img src={profile.avatar} alt={profile.name} />
-        <span>
-          <Check size={22} />
-        </span>
-      </div>
-      <div className="setup-copy">
-        <span className="eyebrow">专属分身，准备就绪</span>
-        <h1>你的分身已就绪</h1>
-        <p className="ready-name">{profile.name}</p>
-      </div>
-      <button className="primary" onClick={onUse}>
-        使用这个分身 <Sparkles size={18} />
-      </button>
-      <button className="plain" onClick={onAnother}>
-        再创建一个
-      </button>
-    </div>
-  );
-}
-export function AnalyzingAI({
-  profile,
-  onBack,
-}: {
-  profile: AIProfile;
-  onBack: () => void;
-}) {
-  return (
-    <div className="screen ai-progress" data-screen-label="Analyzing Face">
-      <Top onBack={onBack} />
-      <div className="analysis-photo">
-        <img src={profile.avatar} alt={profile.name} />
-        <span className="scan-line" />
-      </div>
-      <div className="analysis-progress">
-        <div className="loader small">
-          <span />
-          <ScanFace size={25} />
-        </div>
-        <h1>正在分析脸型…</h1>
-        <p>为你挑选更适合的发型。</p>
       </div>
     </div>
   );

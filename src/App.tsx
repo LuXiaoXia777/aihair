@@ -18,8 +18,6 @@ import { SettingsScreen, Agreement } from "./screens/Settings";
 import { Creations } from "./screens/Creations";
 import { CreationDetail } from "./screens/CreationDetail";
 import {
-  AIReady,
-  AnalyzingAI,
   CreatingAI,
   Generating,
 } from "./screens/CreateAI";
@@ -74,7 +72,7 @@ export function App() {
           profiles={aiProfiles}
           onCreate={() => beginCreate("my-ai")}
           onSwitch={() => setSheet({ kind: "switch" })}
-          onSelect={(profile) => useProfile(profile, "my-ai")}
+          onSelect={(profile) => useProfile(profile)}
           onLook={openLook}
           onRecommendations={() =>
             current &&
@@ -159,19 +157,6 @@ export function App() {
       )}
       {screen.kind === "creating-ai" && (
         <CreatingAI avatar={screen.profile.avatar} onBack={back} />
-      )}
-      {screen.kind === "ai-ready" && (
-        <AIReady
-          profile={findProfile(screen.profileId)}
-          onBack={back}
-          onUse={() =>
-            useProfile(findProfile(screen.profileId), screen.returnTo)
-          }
-          onAnother={() => beginCreate(screen.returnTo, true)}
-        />
-      )}
-      {screen.kind === "analyzing-ai" && (
-        <AnalyzingAI profile={findProfile(screen.profileId)} onBack={back} />
       )}
       {screen.kind === "face-result" && (
         <FaceResult

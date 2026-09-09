@@ -36,10 +36,8 @@ async function createAI(
   await page.clock.fastForward(500);
   await expect(screen(page, "Creating AI")).toBeVisible();
   await page.clock.fastForward(1300);
-  await expect(screen(page, "AI Profile Created")).toBeVisible();
-  await button(page, "使用这个分身").click();
-  await expect(screen(page, "Analyzing Face")).toBeVisible();
-  await page.clock.fastForward(1100);
+  await expect(screen(page, "AI Profile Created")).toHaveCount(0);
+  await expect(button(page, "使用这个分身")).toHaveCount(0);
   await expect(screen(page, "脸型与推荐")).toBeVisible();
 }
 async function setup(page: Page) {
@@ -452,8 +450,7 @@ for (const [section, name] of [['人气发型', '蝴蝶层次剪'], ['流行发�
     await button(page,'生成我的模特').click();
     await page.clock.fastForward(500);
     await page.clock.fastForward(1300);
-    await button(page,'使用这个分身').click();
-    await page.clock.fastForward(1100);
+    await expect(screen(page,'脸型与推荐')).toBeVisible();
     await button(page,`返回应用「${name}」`).click();
     await expect(page.getByRole('heading',{name,exact:true})).toBeVisible();
     await expect(page.getByText('当前分身：小月')).toBeVisible();
@@ -637,8 +634,7 @@ test("camera captures three guided angles then confirms once to generate", async
   await page.clock.fastForward(500);
   await expect(screen(page,"Creating AI")).toBeVisible();
   await page.clock.fastForward(1300);
-  await button(page,"使用这个分身").click();
-  await page.clock.fastForward(1100);
+  await expect(screen(page,"脸型与推荐")).toBeVisible();
   await button(page,"去发现新造型").click();
   await expect(page.locator('.rail-section')).toHaveCount(7);
 });

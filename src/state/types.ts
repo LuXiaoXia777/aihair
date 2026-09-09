@@ -44,8 +44,6 @@ export type Screen =
   | { kind: "camera"; slot: PhotoSlot | null; returnTo: RootTab }
   | { kind: "validating"; returnTo: RootTab; source: SetupSource; photos: MockPhoto[] }
   | { kind: "creating-ai"; returnTo: RootTab; source: SetupSource; profile: AIProfile }
-  | { kind: "ai-ready"; returnTo: RootTab; profileId: string }
-  | { kind: "analyzing-ai"; returnTo: RootTab; profileId: string }
   | { kind: "face-result"; profileId: string; returnTo: RootTab };
 export type ActiveSheet =
   | null

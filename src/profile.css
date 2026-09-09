@@ -562,40 +562,6 @@ button:disabled:active {
   max-height: 90dvh;
   overflow-y: auto;
 }
-.ready-hero {
-  width: 245px;
-  height: 325px;
-  position: relative;
-  margin: 18px auto 0;
-}
-.ready-hero > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 120px 120px 27px 27px;
-}
-.ready-hero > span {
-  position: absolute;
-  bottom: -16px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  background: var(--accent);
-  border: 4px solid var(--paper);
-  color: #fff;
-  display: grid;
-  place-items: center;
-}
-.ai-ready .setup-copy {
-  padding-top: 40px;
-  padding-bottom: 28px;
-}
-.setup-copy .ready-name {
-  font: 600 22px "Manrope";
-  color: var(--ink);
-}
 .progress-content {
   min-height: calc(100dvh - 150px);
   display: flex;
