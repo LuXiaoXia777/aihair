@@ -153,7 +153,7 @@ export function App() {
         <PhotoUpload photos={state.uploadedPhotos} onAdd={state.addUploads} onRemove={state.removeUpload} onBack={back} onGenerate={state.validatePhotos} validating={screen.kind === "validating"} />
       )}
       {(screen.kind === "camera" || (screen.kind === "validating" && screen.source === "camera")) && (
-        <CapturePhoto key={screen.kind === "camera" ? screen.slot ?? "complete" : "complete"} slot={screen.kind === "camera" ? screen.slot : null} draft={state.draft} photo={mockPhotos[2]} onBack={back} onCapture={state.capturePhoto} onGenerate={state.validatePhotos} validating={screen.kind === "validating"} />
+        <CapturePhoto key={screen.kind === "camera" ? screen.slot ?? "complete" : "complete"} slot={screen.kind === "camera" ? screen.slot : null} draft={state.draft} photo={mockPhotos[2]} onBack={back} onCapture={state.capturePhoto} onRetake={state.retakePhoto} onGenerate={state.validatePhotos} validating={screen.kind === "validating"} />
       )}
       {screen.kind === "creating-ai" && (
         <CreatingAI avatar={screen.profile.avatar} onBack={back} />

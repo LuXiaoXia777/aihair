@@ -95,6 +95,10 @@ export function useAppState() {
     const next = slots[slots.indexOf(slot) + 1];
     replace({...screen, slot: next ?? null});
   };
+  const retakePhoto = (slot: PhotoSlot, photo: MockPhoto) => {
+    if (screen.kind !== "camera") return;
+    setDraft(value => ({...value, [slot]: photo}));
+  };
   const addUploads = (photos: MockPhoto[]) => setUploadedPhotos(value => [...new Map([...value, ...photos].map(photo => [photo.id, photo])).values()]);
   const removeUpload = (id: string) => setUploadedPhotos(value => value.filter(photo => photo.id !== id));
   const validatePhotos = () => {
@@ -200,6 +204,7 @@ export function useAppState() {
     uploadedPhotos,
     chooseSource,
     capturePhoto,
+    retakePhoto,
     addUploads,
     removeUpload,
     creations,
