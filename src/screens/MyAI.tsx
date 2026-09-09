@@ -52,19 +52,12 @@ export function MyAI({
 }) {
   return (
     <div className="screen my-ai" data-screen-label="我的分身">
-      <header className="page-title">
-        <span>为你而定</span>
-        <h1>我的分身</h1>
-        {profile && (
-          <button
-            className="profile-delete-button"
-            aria-label={`删除分身${profile.name}`}
-            onClick={onDelete}
-          >
-            <Trash2 size={21} />
-          </button>
-        )}
-      </header>
+      {!profile && (
+        <header className="page-title">
+          <span>为你而定</span>
+          <h1>我的分身</h1>
+        </header>
+      )}
       {!profile ? (
         <ProfileGate
           onCreate={onCreate}
@@ -75,14 +68,19 @@ export function MyAI({
           <div className="ai-profile-hero">
             <img src={profile.avatar} alt={profile.name} />
             <div>
-              <span>当前分身</span>
-              <h2>{profile.name}</h2>
+              <h2>当前分身</h2>
             </div>
+            <button
+              className="profile-delete-button"
+              aria-label={`删除分身${profile.name}`}
+              onClick={onDelete}
+            >
+              <Trash2 size={21} />
+            </button>
           </div>
           {profile.faceShape && (
             <>
               <section className="my-face-shape">
-                <span className="eyebrow">脸型特点</span>
                 <h2>{faceLabels[profile.faceShape]}</h2>
                 <p>{faceDescriptions[profile.faceShape]}</p>
               </section>

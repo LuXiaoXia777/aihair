@@ -106,8 +106,7 @@ button:active {
   font: 700 10px "Manrope";
   letter-spacing: 0.1em;
 }
-.section-head h2,
-.similar h2 {
+.section-head h2 {
   margin: 0;
   font: 700 18px "Manrope";
   letter-spacing: -0.03em;
@@ -300,21 +299,9 @@ button:active {
   background: var(--ink);
   color: #fff;
 }
-.primary.saved {
-  background: #e6e2e9;
-  color: #625c68;
-}
 .secondary {
   background: #ebe7ed;
   color: var(--ink);
-}
-.similar {
-  margin-top: 30px;
-  padding-top: 24px;
-  border-top: 1px solid var(--line);
-}
-.similar h2 {
-  margin-bottom: 13px;
 }
 .generating {
   display: flex;

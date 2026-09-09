@@ -1,18 +1,13 @@
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { byId, exploreSections, type LookType } from "../data";
 import { mockPhotos } from "../state/faceData";
 import { LookCard } from "../components/ui";
-import type { AIProfile } from "../state/types";
 export function Explore({
-  profile,
   onCreate,
-  onSwitch,
   onLook,
   onAll,
 }: {
-  profile: AIProfile | null;
   onCreate: () => void;
-  onSwitch: () => void;
   onLook: (id: string) => void;
   onAll: (type: LookType, category: string) => void;
 }) {
@@ -25,17 +20,6 @@ export function Explore({
         <div>
           <h1>发型灵感</h1>
         </div>
-        {profile && (
-          <button
-            className="profile-chip"
-            onClick={onSwitch}
-            aria-label={`切换分身，当前${profile.name}`}
-          >
-            <img src={profile.avatar} alt="" />
-            {profile.name}
-            <ChevronDown size={15} />
-          </button>
-        )}
       </header>
       <div className="discovery-banner-copy">
         <h2>发现属于你的<br />新造型</h2>

@@ -6,24 +6,6 @@
 .brand-head h1 {
   font-size: 28px;
 }
-.profile-chip {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 42px;
-  padding: 4px 9px 4px 4px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 600;
-  background: #fff9;
-}
-.profile-chip img {
-  width: 30px;
-  height: 30px;
-  object-fit: cover;
-  border-radius: 50%;
-}
 .eyebrow {
   font:
     700 10px "Manrope",
@@ -117,7 +99,8 @@
 }
 .result-image {
   width: 100%;
-  height: 470px;
+  height: auto;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
   display: block;
   border-radius: 24px;
@@ -125,6 +108,7 @@
 .result-actions {
   grid-template-columns: 1fr 1fr;
 }
+.result-actions button { display: flex; align-items: center; justify-content: center; gap: 7px; }
 .creation-owner {
   color: var(--muted);
   font-size: 16px;
@@ -139,20 +123,28 @@
   min-width: 0;
 }
 .creation-grid {
-  gap: 18px 12px;
+  display: block;
+  columns: 2;
+  column-gap: 12px;
 }
 .creation-grid button {
+  display: block;
+  width: 100%;
+  break-inside: avoid;
+  margin-bottom: 18px;
   aspect-ratio: auto;
   border-radius: 0;
   text-align: left;
   overflow: visible;
 }
 .creation-grid img {
-  aspect-ratio: 0.8;
+  width: 100%;
+  aspect-ratio: 3 / 4;
   height: auto;
   display: block;
   border-radius: 17px;
 }
+.creation-hero { height: auto; aspect-ratio: 3 / 4; }
 .creation-grid button > span {
   display: block;
   padding-top: 9px;
@@ -168,7 +160,8 @@
   margin-top: 3px;
 }
 .ai-profile-hero {
-  height: 375px;
+  height: auto;
+  aspect-ratio: 1;
   border-radius: 24px;
   overflow: hidden;
   position: relative;
@@ -198,9 +191,23 @@
   letter-spacing: 0.12em;
 }
 .ai-profile-hero h2 {
-  font: 700 32px "Manrope";
-  margin: 4px 0 11px;
+  font: 700 22px "Manrope";
+  margin: 0;
   letter-spacing: -0.04em;
+}
+.ai-profile-hero .profile-delete-button {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  right: 14px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #fffffff0;
+  color: var(--ink);
+  box-shadow: 0 8px 24px #1714211a;
 }
 .my-face-shape {
   padding: 26px 2px;
@@ -896,8 +903,8 @@ body { min-width: 0; }
 .capture-preview { height: clamp(150px, calc(var(--phone-height) - 360px), 390px); }
 .capture-controls { margin-top: 16px; }
 .capture-footnote { margin: 10px 0 0; }
-.hero-photo, .result-image, .creation-hero { height: clamp(210px, calc(var(--phone-height) * .47), 390px); }
-.ai-profile-hero { height: clamp(210px, calc(var(--phone-height) * .40), 330px); }
+.hero-photo { height: clamp(210px, calc(var(--phone-height) * .47), 390px); }
+.ai-profile-hero { height: auto; aspect-ratio: 1; }
 .progress-content, .generation-content { min-height: calc(var(--phone-height) - 100px); }
 .empty { min-height: clamp(230px, calc(var(--phone-height) - 250px), 500px); }
 .detail-copy h1, .result-copy h1, .creation-copy h1 { font-size: 27px; line-height: 1.4; }
@@ -922,8 +929,6 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .capture-guide.right { left: 56%; right: auto; }
 .creations .page-title { position: relative; padding-right: 54px; margin-bottom: 10px; }
 .settings-button { position: absolute; right: 0; top: 32px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: white; }
-.my-ai .page-title { position: relative; padding-right: 54px; }
-.profile-delete-button { position: absolute; right: 0; top: 22px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: white; color: var(--ink); }
 .profile-recommendations { margin-bottom: 0; }
 .creations .empty { min-height: calc(var(--phone-height) - 230px); }
 .settings-group { margin-top: 22px; border-radius: 18px; overflow: hidden; background: white; border: 1px solid var(--line); }
@@ -957,7 +962,6 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .banner-portrait { position: absolute; z-index: -2; right: -20px; top: 0; width: 72%; height: 100%; object-fit: cover; object-position: center 30%; }
 .banner-shade { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, #e8e8f7 10%, #e8e8f7f5 35%, #e8e8f766 57%, transparent 75%); }
 .explore .discovery-banner .brand-head { padding: 14px 20px; height: 64px; }
-.discovery-banner .profile-chip { background: #ffffffc9; }
 .discovery-banner-copy { position: relative; padding: 16px 20px 20px; width: 60%; }
 .discovery-banner-copy h2 { font-size: 28px; line-height: 1.35; letter-spacing: -.04em; margin: 0 0 12px; }
 .discovery-banner-copy p { font-size: 12px; line-height: 1.7; color: #706982; margin: 0 0 18px; }

@@ -1,22 +1,17 @@
-import { byId, similarLooks } from "../data";
+import { Download } from "lucide-react";
 import type { Creation } from "../state/types";
-import { LookCard, Top, UsingAI } from "../components/ui";
+import { Top, UsingAI } from "../components/ui";
 export function Result({
   result,
-  saved,
   onBack,
-  onSave,
+  onDownload,
   onRegenerate,
-  onMore,
 }: {
   result: Creation;
-  saved: boolean;
   onBack: () => void;
-  onSave: () => void;
+  onDownload: () => void;
   onRegenerate: () => void;
-  onMore: (id: string) => void;
 }) {
-  const look = byId(result.templateId);
   return (
     <div className="screen result" data-screen-label="Result">
       <Top onBack={onBack} />
@@ -35,29 +30,15 @@ export function Result({
           }}
         />
         <div className="result-actions">
-          <button
-            className={`primary ${saved ? "saved" : ""}`}
-            onClick={onSave}
-          >
-            {saved ? "已保存 ✓" : "保存到作品"}
+          <button className="primary" onClick={onDownload}>
+            <Download size={18} />
+            下载图片
           </button>
           <button className="secondary" onClick={onRegenerate}>
             重新生成
           </button>
         </div>
       </div>
-      <section className="similar">
-        <h2>试试其他风格</h2>
-        <div className="look-rail">
-          {similarLooks(look).map((item) => (
-            <LookCard
-              key={item.id}
-              look={item}
-              onClick={() => onMore(item.id)}
-            />
-          ))}
-        </div>
-      </section>
     </div>
   );
 }

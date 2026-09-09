@@ -59,9 +59,7 @@ export function App() {
       <div className="app-viewport" ref={viewport} inert={sheet ? true : undefined}>
       {screen.kind === "explore" && (
         <Explore
-          profile={current}
           onCreate={() => beginCreate("explore")}
-          onSwitch={() => setSheet({ kind: "switch" })}
           onLook={openLook}
           onAll={(type, category) => push({ kind: "library", type, category })}
         />
@@ -116,13 +114,9 @@ export function App() {
       {screen.kind === "result" && (
         <Result
           result={screen.result}
-          saved={state.creations.some(
-            (creation) => creation.id === screen.result.id,
-          )}
           onBack={back}
-          onSave={() => state.save(screen.result)}
+          onDownload={() => state.notify("下载演示已完成")}
           onRegenerate={() => state.generate(screen.result.templateId, true)}
-          onMore={openLook}
         />
       )}
       {screen.kind === "creation" && (

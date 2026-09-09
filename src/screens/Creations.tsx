@@ -42,7 +42,7 @@ export function Creations({
           <p>
             从发型、发色或艺术照中选择喜欢的风格，
             <br />
-            生成并保存你的第一张作品。
+            生成你的第一张作品。
           </p>
           <button className="primary" onClick={onExplore}>
             发现

@@ -127,15 +127,6 @@ export function useAppState() {
     if (regenerate) replace({ kind: "generating", result });
     else push({ kind: "generating", result });
   };
-  const save = (result: Creation) => {
-    if (creations.some((creation) => creation.id === result.id)) return;
-    setCreations((value) =>
-      value.some((creation) => creation.id === result.id)
-        ? value
-        : [result, ...value],
-    );
-    setToast("已保存到作品");
-  };
   const remove = (id: string) => {
     setCreations((value) => value.filter((creation) => creation.id !== id));
     home("creations");
@@ -165,10 +156,14 @@ export function useAppState() {
           : value,
       );
     if (screen.kind === "generating") {
-      operationTimer.current = setTimeout(
-        () => finish({ kind: "result", result: screen.result }),
-        1250,
-      );
+      operationTimer.current = setTimeout(() => {
+        setCreations((value) =>
+          value.some((creation) => creation.id === screen.result.id)
+            ? value
+            : [screen.result, ...value],
+        );
+        finish({ kind: "result", result: screen.result });
+      }, 1250);
     } else if (screen.kind === "validating") {
       operationTimer.current = setTimeout(() => {
         const index = nextProfileNumber.current++;
@@ -223,7 +218,6 @@ export function useAppState() {
     useProfile,
     generate,
     setupTemplateId: setupTemplate?.id,
-    save,
     remove,
     removeProfile,
   };
