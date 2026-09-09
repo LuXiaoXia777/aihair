@@ -351,25 +351,6 @@
   margin: 0 auto;
   max-width: 310px;
 }
-.angle-guide {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  padding: 0 10px 26px;
-  gap: 13px;
-}
-.angle-guide > div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 7px;
-  font-size: 13px;
-  color: var(--muted);
-}
-.angle-guide svg {
-  width: 28px;
-  height: 28px;
-  color: var(--accent);
-}
 .profile-photos {
   padding-bottom: 116px;
 }
@@ -1043,8 +1024,7 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .creations .settings-button { top: 22px; }
 
 .profile-gate .gate-copy p { margin-bottom: 16px; }
-.profile-gate .angle-guide { padding-bottom: 20px; }
-
+.profile-gate 
 .discovery-banner { position: relative; isolation: isolate; height: 280px; margin: 0 -18px 20px; overflow: hidden; border-radius: 0 0 28px 28px; background: #e9e5f3; }
 .banner-portrait { position: absolute; z-index: -2; right: -20px; top: 0; width: 72%; height: 100%; object-fit: cover; object-position: center 30%; }
 .banner-shade { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, #e8e8f7 10%, #e8e8f7f5 35%, #e8e8f766 57%, transparent 75%); }

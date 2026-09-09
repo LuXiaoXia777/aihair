@@ -541,7 +541,7 @@ test('optional create-model banner creates and returns to discovery', async ({pa
 
 test('My AI merges introduction and enters photos with one create click', async ({page}) => {
   await tab(page,'我的分身').click();
-  for (const angle of ['正面','左侧面','右侧面']) await expect(page.locator('.angle-guide').getByText(angle,{exact:true})).toBeVisible();
+  await expect(page.locator('.angle-guide')).toHaveCount(0);
   await button(page,'创建我的分身').click();
   await expect(page.getByRole('dialog')).toBeVisible();
   await expect(button(page,'开始创建')).toHaveCount(0);

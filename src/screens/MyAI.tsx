@@ -1,7 +1,7 @@
 import { faceLabels } from "../state/faceData";
-import { ArrowUpRight, Check, ChevronRight, Plus, ScanFace } from "lucide-react";
+import { ArrowUpRight, Check, ChevronRight, Plus } from "lucide-react";
 import { byId } from "../data";
-import { mockPhotos, faceDescriptions, slots, slotLabels } from "../state/faceData";
+import { mockPhotos, faceDescriptions } from "../state/faceData";
 import type { AIProfile } from "../state/types";
 import { LookCard } from "../components/ui";
 export function ProfileGate({
@@ -21,9 +21,6 @@ export function ProfileGate({
         <span className="eyebrow">从你开始，发现新造型</span>
         <h1>创建专属分身</h1>
         <p>一次创建，即可体验发型、发色和艺术照。<br />选择相机拍摄三个角度，或从相册选择至少三张照片。</p>
-        <div className="angle-guide">
-          {slots.map((slot) => <div key={slot}><ScanFace /><span>{slotLabels[slot]}</span></div>)}
-        </div>
         <button className="primary" onClick={onCreate}>
           创建我的分身 <ArrowUpRight size={18} />
         </button>
